@@ -72,7 +72,8 @@ body.fc-wide #fc-side.fc-split{width:780px;flex-direction:row}\
 #fc-side .nav .pos{margin-left:auto;font-size:12px;color:#6b6862;white-space:nowrap}\
 #fc-side .nav .step{border:1px solid #d3cfc4;background:#fff;height:28px;width:28px;justify-content:center;padding:0;border-radius:6px;color:#1c1b18;display:inline-flex;align-items:center;gap:5px;font-size:14px}#fc-side .nav .step:hover{background:#f1efe9}\
 #fc-side kbd{font:600 10px/1 ' + SANS + ';color:#6b6862;border:1px solid #d3cfc4;border-bottom-width:2px;border-radius:3px;padding:2px 4px;background:#faf9f6}\
-#fc-side .nav .keys{flex-basis:100%;font-size:11px;color:#8a877f;line-height:1.9;padding:2px 0 0 4px}#fc-side .nav .keys .typing{display:block;color:#a09d95}\
+#fc-side .nav .keys{border:0;background:transparent;color:#8a877f;font-size:11px;padding:4px 6px;border-radius:5px;white-space:nowrap}#fc-side .nav .keys:hover{background:#eceae3;color:#1c1b18}\
+#fc-modal table{border-collapse:collapse;width:100%;margin:0 0 14px}#fc-modal td{padding:6px 0;border-bottom:1px solid #eceae3;vertical-align:top}#fc-modal td:first-child{width:38%;white-space:nowrap}#fc-modal th{text-align:left;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#8a877f;padding:10px 0 4px}\
 #fc-side .cardwrap{flex:none;padding:10px 12px 0;max-height:62%;overflow:auto}\
 #fc-side .card{display:flex;flex-direction:column;gap:10px;padding:12px 16px 8px;background:#fff;border:1px solid #e2dfd6;border-radius:8px;box-shadow:0 1px 2px rgba(0,0,0,.04)}\
 #fc-side .meta{display:flex;align-items:center;gap:8px}\
@@ -92,8 +93,9 @@ body.fc-wide #fc-side.fc-split{width:780px;flex-direction:row}\
 #fc-modal textarea{width:100%;box-sizing:border-box;height:120px;font:12px/1.4 ui-monospace,Menlo,monospace;border:1px solid #c9c5ba;border-radius:5px;padding:8px;margin:0 0 12px}\
 #fc-modal .row{display:flex;align-items:center;gap:14px;margin-top:6px}\
 #fc-modal .row .btn{font:inherit;font-weight:600;border:1px solid #1c1b18;background:#1c1b18;color:#fff;border-radius:6px;padding:8px 16px;cursor:pointer}#fc-modal .row .btn:hover{background:#000}\
-#fc-modal .row .hint{color:#8a877f;font-size:12px}#fc-modal kbd{font:inherit;font-size:11px;border:1px solid #c9c5ba;border-bottom-width:2px;border-radius:4px;padding:0 5px;background:#faf9f6}\
-#fc-side .notewrap{position:relative}#fc-side .savedhint{position:absolute;right:0;bottom:2px;font-size:11px;color:#8a877f;background:#fff;padding-left:6px;opacity:0;transition:opacity .2s;pointer-events:none}#fc-side .savedhint.show{opacity:1}\
+#fc-modal .row .btn kbd.enter{margin-left:8px;color:#fff;background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.35)}#fc-modal kbd{font:inherit;font-size:11px;border:1px solid #c9c5ba;border-bottom-width:2px;border-radius:4px;padding:0 5px;background:#faf9f6}\
+#fc-side .notewrap{position:relative}#fc-side .btn.queued .b{display:none}#fc-side .btn.queued:hover .a{display:none}#fc-side .btn.queued:hover .b{display:inline}#fc-side .btn.queued:hover{background:#8f1a12;border-color:#8f1a12;color:#fff}\
+#fc-side .savedhint{position:absolute;right:0;bottom:2px;font-size:11px;color:#8a877f;background:#fff;padding-left:6px;opacity:0;transition:opacity .2s;pointer-events:none}#fc-side .savedhint.show{opacity:1}\
 #fc-side .edit textarea:focus{border-color:#1c1b18;box-shadow:0 0 0 3px rgba(28,27,24,.12)}\
 #fc-side .edit .acts{margin-top:10px}\
 #fc-side .btn{border-radius:6px;padding:7px 12px;font-weight:600;font-size:13px;white-space:nowrap;border:1px solid #d3cfc4;background:#fff;color:#1c1b18}\
@@ -295,10 +297,24 @@ mark[data-fc][data-pulse="1"]{animation:fc-pulse .6s ease 2}\
     else h += '<p>' + esc(what.join(', ')) + ' ' + (copiedOk ? 'are on your clipboard as instructions for the fact-checking agent.' : 'are in the box below.') + '</p>';
     if (!copiedOk) h += '<textarea readonly>' + esc(text) + '</textarea>';
     h += '<p>Nothing has changed in ' + target + ' yet. To apply the edits:</p><ol><li>Go back to your chat with the fact-checking agent.</li><li>Paste the block and send it.</li><li>The agent shows you the edits it will make to ' + target + ', then applies them as suggestions when you confirm.</li></ol>';
-    h += '<div class="row"><button class="btn" data-act="closemodal">OK, got it</button><span class="hint">or press <kbd>Enter</kbd> or <kbd>Esc</kbd></span></div></div>';
+    h += '<div class="row"><button class="btn" data-act="closemodal">OK, got it <kbd class="enter">↵</kbd></button></div></div>';
     modal.innerHTML = h;
     document.body.appendChild(modal);
     if (!copiedOk) { var ta = modal.querySelector('textarea'); ta.focus(); ta.select(); } else modal.querySelector('button').focus();
+  }
+  function showShortcuts() {
+    closeModal();
+    var mac = /Mac|iPhone|iPad/.test(navigator.platform), mod = mac ? '⌘' : 'Ctrl', alt = mac ? '⌥' : 'Alt';
+    modal = document.createElement('div'); modal.id = 'fc-modal';
+    var row = function (keys, what) { return '<tr><td>' + keys + '</td><td>' + what + '</td></tr>'; };
+    var h = '<div class="box" role="dialog" aria-modal="true"><h2>Keyboard shortcuts</h2><table>';
+    h += '<tr><th colspan="2">Anywhere</th></tr>';
+    h += row('<kbd>J</kbd> or <kbd>↓</kbd>', 'Next issue') + row('<kbd>K</kbd> or <kbd>↑</kbd>', 'Previous issue') + row('<kbd>1</kbd>', 'Queue the edit (or update a queued edit)') + row('<kbd>2</kbd>', 'Dismiss the issue');
+    h += '<tr><th colspan="2">While typing in a text box</th></tr>';
+    h += row('<kbd>' + alt + '</kbd> + <kbd>J</kbd> / <kbd>K</kbd>', 'Next / previous issue, keeping your place in the box') + row('<kbd>' + alt + '</kbd> + <kbd>1</kbd> / <kbd>2</kbd>', 'Queue / dismiss') + row('<kbd>' + mod + '</kbd> + <kbd>↵</kbd>', 'Queue the edit');
+    h += '<tr><th colspan="2">Dialogs</th></tr>' + row('<kbd>↵</kbd> or <kbd>Esc</kbd>', 'Close');
+    h += '</table><div class="row"><button class="btn" data-act="closemodal">OK <kbd class="enter">↵</kbd></button></div></div>';
+    modal.innerHTML = h; document.body.appendChild(modal); modal.querySelector('button').focus();
   }
   function closeModal() { if (modal) { modal.remove(); modal = null; } }
   document.addEventListener('click', function (e) {
@@ -354,7 +370,8 @@ mark[data-fc][data-pulse="1"]{animation:fc-pulse .6s ease 2}\
   function applyButton(rec) {
     var dirty = rec.d === 'apply' && draft != null && draft !== rec.replacement;
     if (dirty) return '<button class="btn primary" data-d="apply" title="The queued edit still has the previous wording">Update queued edit · unsaved changes</button>';
-    return '<button class="btn ' + (rec.d === 'apply' ? 'on' : 'primary') + '" data-d="apply">' + (rec.d === 'apply' ? '✓ Edit queued · click to unqueue' : 'Queue edit') + '</button>';
+    if (rec.d === 'apply') return '<button class="btn on queued" data-d="apply" title="Unqueue this edit"><span class="a">✓ Edit queued</span><span class="b">Unqueue</span></button>';
+    return '<button class="btn primary" data-d="apply">Queue edit</button>';
   }
   function renderDetail(c) {
     var s = st(c), rec = decisions[c.id] || {}, sug = suggested(c);
@@ -364,7 +381,7 @@ mark[data-fc][data-pulse="1"]{animation:fc-pulse .6s ease 2}\
     var replacement = draft != null ? draft : (rec.replacement != null ? rec.replacement : sug);
     var nav = '<div class="nav"><button class="back" data-act="back">← <span>' + ({ issues: 'Issues', all: 'All claims' })[filter] + '</span></button>';
     var h = '';
-    nav += '<span class="pos">' + (pos >= 0 ? (pos + 1) + ' of ' + navl.length : '') + '</span><button class="step" data-act="prev" title="Previous issue (K or ↑)">‹</button><button class="step" data-act="next" title="Next issue (J or ↓)">›</button><span class="keys" title="While typing in a box, hold ⌥ (Alt) with the same key; ⌘↵ or Ctrl+↵ queues the edit"><kbd>J</kbd> next <kbd>K</kbd> prev <kbd>1</kbd> queue <kbd>2</kbd> dismiss<span class="typing">While typing: hold <kbd>⌥</kbd> with the key, or <kbd>⌘↵</kbd> to queue</span></span></div>';
+    nav += '<span class="pos">' + (pos >= 0 ? (pos + 1) + ' of ' + navl.length : '') + '</span><button class="step" data-act="prev" title="Previous issue (K or ↑)">‹</button><button class="step" data-act="next" title="Next issue (J or ↓)">›</button><button class="keys" data-act="shortcuts" title="Keyboard shortcuts">⌨ Shortcuts</button></div>';
     // decision card
     h += '<div class="cardwrap"><div class="card">';
     h += '<div class="meta"><span class="pill" style="background:' + (s.pill || '#e9e6de') + ';color:' + s.color + '">' + esc(s.label) + '</span><span class="kind">' + esc(KIND[c.kind] || c.kind || '') + '</span><span class="cid">' + esc(c.id) + '</span></div>';
@@ -461,6 +478,7 @@ mark[data-fc][data-pulse="1"]{animation:fc-pulse .6s ease 2}\
     if (a === 'more') { more = !more; renderSide(); sizeAll(); }
     if (a === 'writefix') { forceEdit = true; renderSide(); sizeAll(); side.querySelector('[data-f="replacement"]').focus(); }
     if (a === 'copytable') copy('table');
+    if (a === 'shortcuts') showShortcuts();
   });
   side.addEventListener('input', function (e) {
     var f = e.target.getAttribute('data-f'); if (!f || !selId) return;
