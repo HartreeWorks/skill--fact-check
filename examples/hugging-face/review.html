@@ -132,6 +132,7 @@ mark[data-fc][data-tone="red"]{background:#fad6d1;box-shadow:inset 0 -2px #d9564
 mark[data-fc][data-quiet="1"]{background:transparent;box-shadow:none;border-bottom-color:transparent;cursor:text}\
 mark[data-fc][data-decided="1"]{background:transparent;box-shadow:none;border-bottom:2px solid}\
 mark[data-fc][data-decided="1"][data-tone="caveat"]{border-color:#dda634}mark[data-fc][data-decided="1"][data-tone="red"]{border-color:#d9564b}\
+mark[data-fc][data-dismissed="1"]{background:transparent;box-shadow:none;border-bottom:0}\
 mark[data-fc]:hover:not([data-quiet="1"]){box-shadow:0 0 0 3px rgba(28,27,24,.12)}\
 mark[data-fc][data-sel="1"]{outline:2px solid #1c1b18;outline-offset:2px}\
 mark[data-fc][data-tone="caveat"][data-sel="1"]{background:#f7d98f}mark[data-fc][data-tone="red"][data-sel="1"]{background:#f5b9b1}mark[data-fc][data-tone="supported"][data-sel="1"]{background:#c4e5cc}\
@@ -225,6 +226,7 @@ mark[data-fc][data-pulse="1"]{animation:fc-pulse .6s ease 2}\
       var c = byId[m.getAttribute('data-fc')]; if (!c) return;
       m.setAttribute('data-quiet', (filter !== 'all' && !isProblem(c)) ? '1' : '0');
       m.setAttribute('data-decided', decided(c) ? '1' : '0');
+      m.setAttribute('data-dismissed', decided(c) === 'dismiss' ? '1' : '0');
       m.setAttribute('data-sel', selId === c.id ? '1' : '0');
     });
   }
