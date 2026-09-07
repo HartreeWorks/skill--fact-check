@@ -115,7 +115,7 @@ body.fc-wide #fc-side.fc-split{width:780px;flex-direction:row}\
 #fc-side .src{display:flex;flex-direction:column;gap:4px;padding:10px 12px;background:#fff;border:1px solid #e6e3dc;border-radius:6px;margin-bottom:8px}\
 #fc-side .src .h{display:flex;gap:8px;align-items:baseline;font-size:12px}#fc-side .src .h b{font-weight:600}#fc-side .src .h .loc{color:#8a877f}#fc-side .src .h a{margin-left:auto;color:#2456a4;text-decoration:none}\
 #fc-side .src .q{font:15px/1.5 ' + SERIF + ';color:#2a2925;white-space:pre-wrap;max-height:160px;overflow:auto}\
-#fc-side .srcacts{display:flex;align-items:center;gap:10px;margin-top:8px;font-size:12px}#fc-side .srcacts .act{color:#2456a4;text-decoration:none;font-weight:500}#fc-side .srcacts .act:hover{text-decoration:underline}#fc-side .srcacts .fine{margin-left:auto}\
+#fc-side .srcacts{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin-top:8px;font-size:12px}#fc-side .srcacts .act{color:#2456a4;text-decoration:none;font-weight:500}#fc-side .srcacts .act:hover{text-decoration:underline}#fc-side .srcacts .fine{margin-left:auto;white-space:nowrap}\
 #fc-side .fine{font-size:11px;color:#a09d95}#fc-side .fine a{color:#2456a4;text-decoration:none}#fc-side .fine a:hover{text-decoration:underline}\
 #fc-side .more{align-self:flex-start;border:0;background:transparent;color:#2456a4;padding:0;font-size:13px}\
 #fc-side .nosrc{font-size:13px;color:#b3261e}\
@@ -609,7 +609,23 @@ mark[data-fc][data-pulse="1"]{animation:fc-pulse .6s ease 2}\
       legendHost.parentNode.insertBefore(lg, legendHost.nextSibling);
     }
     refresh();
-    var shot = q.get('shot'); if (shot && byId[shot]) { try { localStorage.setItem('fc-tip-seen', '1'); } catch (e) {} select(shot, false); }
+    // Screenshot hooks for documentation: ?shot=<claim id> selects a claim; &seed=1 queues two edits and
+    // dismisses one in memory only; &panel=viewer|send|shortcuts opens that dialog; ?shot=list shows the list with the tip.
+    var shot = q.get('shot');
+    if (shot) {
+      if (q.get('seed')) {
+        var probs = claims.filter(isProblem), n = 0;
+        probs.forEach(function (c) { if (n < 2 && suggested(c)) { decisions[c.id] = { d: 'apply', replacement: suggested(c) }; n++; } });
+        var dis = probs.find(function (c) { return !decisions[c.id]; }); if (dis) decisions[dis.id] = { d: 'dismiss', replacement: suggested(dis) };
+        save = function () {};
+      }
+      if (shot === 'list') { try { localStorage.removeItem('fc-tip-seen'); } catch (e) {} refresh(); }
+      else if (byId[shot]) { try { localStorage.setItem('fc-tip-seen', '1'); } catch (e) {} select(shot, false); }
+      var panel = q.get('panel');
+      if (panel === 'viewer' && byId[shot]) showExcerpt(shot, 0);
+      if (panel === 'send') { var o = { doc: docKey, decisions: {} }; Object.keys(decisions).forEach(function (id) { var c = byId[id], d = decisions[id]; if (c) o.decisions[id] = { d: d.d || null, anchor: c.anchor, replacement: d.replacement, note: d.note || '' }; }); showSendModal('FACTCHECK DECISIONS\n```json\n' + JSON.stringify(o, null, 1) + '\n```', true); }
+      if (panel === 'shortcuts') showShortcuts();
+    }
   }
   function start(data) { if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function () { boot(data); }); else boot(data); }
   start(embedded);

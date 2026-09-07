@@ -6,6 +6,18 @@ A skill for checking that a draft says only what its sources support, and review
 
 A fact check of a one-page summary of the July 2026 OpenAI / Hugging Face incident. The selected claim has the direction of an event backwards; the card quotes the METR report that shows it, and the reviewer can queue the corrected wording for the agent to apply.
 
+![The issue list: the document with two queued edits shown as green underlines, and a sidebar listing every issue in document order with its status tag, the queued ones showing the new wording beneath the struck-through original.](./assets/issue-list.png)
+
+The issue list. Queued edits turn green in the text and in the list, dismissed ones disappear from the list, and the progress bar in the header counts them off.
+
+![The source viewer: a dialog showing the METR report rendered from Markdown, scrolled to the quoted passage highlighted in amber, with Close and Open website buttons.](./assets/source-viewer.png)
+
+The source viewer. Every cited source is saved as Markdown and embedded in the page, so the passage can be read in context; "Open website" goes to the live page, scrolled to the same passage where the browser supports it.
+
+![The send dialog after clicking Send edits to agent: "Copied to your clipboard", a count of the queued edits and dismissals, and three numbered steps for pasting the block back to the agent.](./assets/send-edits.png)
+
+Sending the decisions. The block on the clipboard is what the agent turns into tracked suggestions in the Google Doc, after showing you a dry run.
+
 What you get:
 
 - **A review page.** Every checkable claim is highlighted by status: supported, supported with a caveat, unsupported, contradicted, or opinion presented as fact. A sidebar lists the issues in document order. Each opens a card with the finding, the current and proposed wording, the verbatim source passages with a viewer and a link to the live page, and Queue edit or Dismiss. "Send edits to agent" copies your decisions as a block the agent acts on.
