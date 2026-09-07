@@ -50,11 +50,11 @@ class Extractor(HTMLParser):
     def __init__(self):
         super().__init__(convert_charrefs=True)
         self.blocks, self.stack, self.drop, self.cur, self.title, self.in_title = [], [], 0, None, "", False
-        self.selector_hit, self.main_depth, self.seen_main = False, 0, False
+        self.selector_hit, self.main_depth, self.seen_main, self.title_done = False, 0, False, False
 
     def handle_starttag(self, tag, attrs):
         a = dict(attrs)
-        if tag == "title": self.in_title = True
+        if tag == "title" and not self.title_done: self.in_title = True
         if tag in DROP_TAGS or (a.get("hidden") is not None) or (a.get("aria-hidden") == "true"):
             self.drop += 1; self.stack.append((tag, True)); return
         self.stack.append((tag, False))
@@ -78,7 +78,7 @@ class Extractor(HTMLParser):
             self.cur["text"] += " "; self.cur["html"] += " "
 
     def handle_endtag(self, tag):
-        if tag == "title": self.in_title = False
+        if tag == "title" and self.in_title: self.in_title = False; self.title_done = True
         while self.stack:
             t, dropped = self.stack.pop()
             if dropped: self.drop -= 1

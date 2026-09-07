@@ -16,4 +16,4 @@ Planted errors, for checking the skill catches them:
 
 Wording that should come back as a caveat rather than an error: "within four hours" (source says within hours), "over 70,000 messages" (messages and files), "most agents ... stopped" (a large fraction), "the only independent investigation" (only published one), "roughly a third" (30 to 40 percent), "an industry pledge with no binding commitments" (a call for collective action; fair characterisation).
 
-To try the apply-to-doc loop: open `review.html`, pin a red claim, edit the replacement, click "Apply to doc", then "Copy decisions" in the top bar and paste the block to the agent with the Google Doc URL from `gdoc.json`.
+To try the apply-to-doc loop: open `review.html`, work through the Issues tab (edit the new wording, click "Queue edit" or "Dismiss"), then "Send edits to agent" in the header and paste the block to the agent with the Google Doc URL from `gdoc.json`.

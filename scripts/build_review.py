@@ -2,7 +2,7 @@
 """Build the self-contained review page.
 
 Usage:
-  build_review.py <work_dir> [--out review.html] [--page]
+  build_review.py <work_dir> [--out review.html] [--page] [--no-fonts]
 
 --page: instead of the plain template, overlay the claims on a snapshot of the original web
 page (work_dir/page.html, saved by extract_document.py). Scripts are removed, relative URLs
@@ -19,21 +19,24 @@ import argparse, html, json, os, re, sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 OVERLAY = os.path.join(HERE, "..", "assets", "overlay.js")
 
-CSS = """
-:root{color-scheme:light}
-body{margin:0;background:#f4f4f2;color:#1a1a1a;font:17px/1.6 Georgia,'Times New Roman',serif}
-#document{max-width:760px;margin:0 auto;padding:40px 24px 120px;background:#fff;box-shadow:0 0 0 1px #e6e6e3}
-#document h1{font:700 2rem/1.2 -apple-system,Helvetica,Arial,sans-serif;margin:0 0 .6em}
-#document h2{font:700 1.4rem/1.25 -apple-system,Helvetica,Arial,sans-serif;margin:1.6em 0 .5em}
-#document h3,#document h4,#document h5,#document h6{font:700 1.1rem/1.3 -apple-system,Helvetica,Arial,sans-serif;margin:1.4em 0 .4em}
-#document p{margin:0 0 1em}
-#document li{margin:0 0 .4em}
-#document blockquote{margin:0 0 1em;padding:0 0 0 14px;border-left:3px solid #ccc;color:#444}
-#document .cell{display:inline-block;margin:0 12px 6px 0;padding:2px 6px;background:#f7f7f5;border:1px solid #e3e3e0;border-radius:3px;font-size:.9em}
-#document a{color:#0b6bcb}
-#fc-meta{max-width:760px;margin:0 auto;padding:10px 24px;font:12px/1.5 -apple-system,Helvetica,Arial,sans-serif;color:#666}
-#fc-meta a{color:#0b6bcb}
+SANS = '"IBM Plex Sans",-apple-system,"Helvetica Neue",Helvetica,sans-serif'
+SERIF = '"Source Serif 4",Georgia,"Iowan Old Style",serif'
+CSS = f"""
+:root{{color-scheme:light}}
+body{{margin:0;background:#eeece6;color:#1c1b18;font:18px/1.7 {SERIF};text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased}}
+#document{{max-width:720px;margin:36px auto 0;padding:56px 64px 72px;background:#fff;border-radius:4px;box-shadow:0 1px 0 rgba(0,0,0,.05),0 0 0 1px #e6e3dc}}
+#document h1{{font:700 30px/1.15 {SANS};letter-spacing:-.01em;margin:0 0 22px}}
+#document h2{{font:700 20px/1.25 {SANS};margin:34px 0 10px}}
+#document h3,#document h4,#document h5,#document h6{{font:700 17px/1.3 {SANS};margin:26px 0 8px}}
+#document p{{margin:0 0 16px;text-wrap:pretty}}
+#document ul{{margin:0 0 16px;padding-left:22px}}#document li{{margin:0 0 6px}}
+#document blockquote{{margin:0 0 16px;padding-left:14px;border-left:3px solid #d9d5cb;color:#4a4740}}
+#document .cell{{display:inline-block;margin:0 12px 6px 0;padding:2px 6px;background:#f7f7f5;border:1px solid #e3e3e0;border-radius:3px;font-size:.9em}}
+#document a{{color:#2456a4;text-decoration-color:#a9bde0}}
+@media (max-width:860px){{#document{{padding:32px 24px 48px;margin-top:16px}}}}
 """
+# Optional webfonts. The page still works offline: the stacks above fall back to Georgia / system sans.
+FONTS = '<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">'
 
 
 def norm(s):
@@ -72,7 +75,9 @@ def build_page_snapshot(work_dir, doc, claims, out):
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("work_dir"); ap.add_argument("--out"); ap.add_argument("--page", action="store_true")
+    ap.add_argument("work_dir"); ap.add_argument("--out")
+    ap.add_argument("--no-fonts", action="store_true", help="skip the Google Fonts link (fully offline page)")
+    ap.add_argument("--page", action="store_true", help="overlay on a snapshot of the original web page (work_dir/page.html)")
     a = ap.parse_args()
     doc = json.load(open(os.path.join(a.work_dir, "document.json")))
     claims = json.load(open(os.path.join(a.work_dir, "claims.json")))
@@ -98,9 +103,9 @@ def main():
     page = f"""<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Fact check: {html.escape(title)}</title>
+{'' if a.no_fonts else FONTS}
 <style>{CSS}</style>
 </head><body>
-<div id="fc-meta">Fact check of <a href="{html.escape(doc.get('source',''))}" target="_blank" rel="noopener">{html.escape(doc.get('source',''))}</a>. Hover a highlight for sources; click to pin and record a decision. Decisions stay in this browser until you copy them out.</div>
 <div id="document">
 {body}
 </div>

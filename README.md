@@ -4,7 +4,7 @@ A Claude Code skill that fact-checks a draft document, web page or Google Doc ag
 
 What you get:
 
-- **A review page.** Every checkable claim is highlighted by status (supported, caveat, unsupported, contradicted, opinion). Hover for the verbatim source passage and a link that jumps to it; click to pin, then Accept, Dismiss, or Apply to doc with an editable replacement. Decisions stay in the browser and copy out as a block the agent acts on.
+- **A review page.** Every checkable claim is highlighted by status (supported, caveat, unsupported, contradicted, opinion). A sidebar queues the issues; each opens a card with the finding, the current and proposed wording (editable), the source passages with links that jump to them, and Queue edit / Dismiss. "Send edits to agent" copies the decisions as a block the agent acts on.
 - **A findings file** in severity order, with suggested rewording.
 - **Suggested edits in the Google Doc**, when the reviewer asks for them (tracked suggestions with an anchored comment each).
 
