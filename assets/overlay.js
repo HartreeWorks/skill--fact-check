@@ -38,6 +38,8 @@ body.fc-active.fc-wide.fc-detail{padding-right:780px}\
 #fc-top .progress{display:flex;align-items:center;gap:10px;font-size:13px;color:#6b6862;white-space:nowrap}\
 #fc-top .track{width:120px;height:6px;border-radius:3px;background:#e2dfd6;overflow:hidden}#fc-top .fill{height:100%;background:#1c1b18;transition:width .25s}\
 #fc-top .actions{display:flex;gap:8px}\
+#fc-top .kbdlink{border:0;background:transparent;color:#8a877f;font-size:12px;padding:4px 8px;white-space:nowrap}#fc-top .kbdlink:hover{color:#1c1b18;background:#f1efe9}#fc-top .kbdlink kbd{font:600 10px/1 ' + SANS + ';color:#6b6862;border:1px solid #d3cfc4;border-bottom-width:2px;border-radius:3px;padding:2px 4px;background:#faf9f6;margin-left:3px}\
+#fc-side .tip{display:flex;align-items:flex-start;gap:8px;margin:0 0 4px;padding:8px 10px;border:1px solid #e2dfd6;border-radius:6px;background:#fff;font-size:12px;line-height:1.45;color:#3d3b36}#fc-side .tip .x{margin-left:auto;border:0;background:transparent;color:#8a877f;font-size:14px;line-height:1;padding:0 2px}#fc-side .tip .x:hover{color:#1c1b18}\
 #fc-top button{font:inherit;border:1px solid #d3cfc4;background:transparent;color:#1c1b18;border-radius:6px;padding:6px 12px;cursor:pointer;white-space:nowrap}\
 #fc-top button:hover{background:#f1efe9}\
 #fc-top button.send{display:flex;align-items:center;gap:7px;border-color:#2e7d4f;background:#2e7d4f;color:#fff;font-weight:600;padding:6px 14px;box-shadow:0 1px 2px rgba(46,125,79,.3)}#fc-top button.send:hover{background:#256a41}\
@@ -144,6 +146,8 @@ mark[data-fc][data-pulse="1"]{animation:fc-pulse .6s ease 2}\
   var docKey = (embedded && embedded.doc) || location.pathname;
   var decisions = {};
   try { decisions = JSON.parse(localStorage.getItem('fc-decisions:' + docKey) || '{}'); } catch (e) { decisions = {}; }
+  function tipSeen() { try { return localStorage.getItem('fc-tip-seen') === '1'; } catch (e) { return true; } }
+  function markTip() { try { localStorage.setItem('fc-tip-seen', '1'); } catch (e) {} }
   function save() { try { localStorage.setItem('fc-decisions:' + docKey, JSON.stringify(decisions)); } catch (e) {} }
   var view = 'list', filter = q.get('only') === 'all' ? 'all' : 'issues', selId = null, more = false, forceEdit = false, draft = null;
 
@@ -249,6 +253,7 @@ mark[data-fc][data-pulse="1"]{animation:fc-pulse .6s ease 2}\
     if (orphans.length) h += '<span style="font-size:12px;color:#b3261e" title="' + esc(orphans.map(function (c) { return c.id + ': ' + c.anchor; }).join('\n')) + '">' + orphans.length + ' orphaned anchor' + (orphans.length > 1 ? 's' : '') + '</span>';
     h += '</div><div class="grow"></div>';
     h += '<div class="progress"><span>' + (iss.length ? done + ' of ' + iss.length + ' issues decided' : claims.length + ' claims') + '</span><div class="track"><div class="fill" style="width:' + (iss.length ? Math.round(done / iss.length * 100) : 0) + '%"></div></div></div>';
+    h += '<button class="kbdlink" data-act="shortcuts" title="Keyboard shortcuts (?)">Keyboard shortcuts <kbd>?</kbd></button>';
     h += '<div class="actions"><button data-act="table" title="See every claim as a table">View claim table</button>';
     h += '<button class="send" data-act="send" title="Copy your queued edits and decisions as a block to paste to the agent"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 2L11 13"></path><path d="M22 2L15 22L11 13L2 9L22 2z"></path></svg>' + (copied === 'send' ? 'Copied — paste to the agent' : 'Send edits to agent' + (nd ? ' (' + nd + ')' : '')) + '</button>';
     if (!embedded) h += '<button data-act="off">Hide</button>';
@@ -259,6 +264,7 @@ mark[data-fc][data-pulse="1"]{animation:fc-pulse .6s ease 2}\
     var b = e.target.closest('button'); if (!b) return;
     var a = b.getAttribute('data-act');
     if (a === 'table') { view = 'table'; selId = null; renderSide(); paint(); }
+    if (a === 'shortcuts') showShortcuts();
     if (a === 'send') copy('send');
     if (a === 'off') { q.delete('factcheck'); q.delete('fc'); q.delete('only'); location.search = q.toString(); }
   });
@@ -315,7 +321,7 @@ mark[data-fc][data-pulse="1"]{animation:fc-pulse .6s ease 2}\
     h += row('<kbd>J</kbd> or <kbd>↓</kbd>', 'Next issue') + row('<kbd>K</kbd> or <kbd>↑</kbd>', 'Previous issue') + row('<kbd>1</kbd>', 'Queue the edit (or update a queued edit)') + row('<kbd>2</kbd>', 'Dismiss the issue');
     h += '<tr><th colspan="2">While typing in a text box</th></tr>';
     h += row('<kbd>' + alt + '</kbd> + <kbd>J</kbd> / <kbd>K</kbd>', 'Next / previous issue, keeping your place in the box') + row('<kbd>' + alt + '</kbd> + <kbd>1</kbd> / <kbd>2</kbd>', 'Queue / dismiss') + row('<kbd>' + mod + '</kbd> + <kbd>↵</kbd>', 'Queue the edit');
-    h += '<tr><th colspan="2">Dialogs</th></tr>' + row('<kbd>↵</kbd> or <kbd>Esc</kbd>', 'Close');
+    h += '<tr><th colspan="2">Elsewhere</th></tr>' + row('<kbd>?</kbd>', 'Show this list') + row('<kbd>↵</kbd> or <kbd>Esc</kbd>', 'Close a dialog');
     h += '</table><div class="row"><button class="btn" data-act="closemodal">OK <kbd class="enter">↵</kbd></button></div></div>';
     modal.innerHTML = h; document.body.appendChild(modal); modal.querySelector('button').focus();
   }
@@ -357,7 +363,9 @@ mark[data-fc][data-pulse="1"]{animation:fc-pulse .6s ease 2}\
     [['issues', 'Issues', open], ['all', 'All claims', claims.length]].forEach(function (f) {
       h += '<button data-filter="' + f[0] + '"' + (filter === f[0] ? ' class="on"' : '') + '>' + f[1] + ' · ' + f[2] + '</button>';
     });
-    h += '</div></div>';
+    h += '</div>';
+    if (!tipSeen()) h += '<div class="tip"><span><kbd>J</kbd> and <kbd>K</kbd> move between issues, <kbd>1</kbd> queues the edit, <kbd>2</kbd> dismisses. Press <kbd>?</kbd> for all shortcuts.</span><button class="x" data-act="tipdone" title="Got it">×</button></div>';
+    h += '</div>';
     h += '<div class="scroll">';
     var list = queueFor(filter);
     if (!list.length) h += '<div class="empty">' + (filter === 'issues' ? (iss.length ? 'Every issue is handled. Send your edits to the agent.' : 'No issues found in this document.') : 'Nothing to show.') + '</div>';
@@ -397,7 +405,7 @@ mark[data-fc][data-pulse="1"]{animation:fc-pulse .6s ease 2}\
     var replacement = draft != null ? draft : (rec.replacement != null ? rec.replacement : sug);
     var nav = '<div class="nav"><button class="back" data-act="back">← <span>' + ({ issues: 'Issues', all: 'All claims' })[filter] + '</span></button>';
     var h = '';
-    nav += '<span class="pos">' + (pos >= 0 ? (pos + 1) + ' of ' + navl.length : '') + '</span><button class="step" data-act="prev" title="Previous issue (K or ↑)">‹</button><button class="step" data-act="next" title="Next issue (J or ↓)">›</button><button class="keys" data-act="shortcuts" title="Keyboard shortcuts">⌨ Shortcuts</button></div>';
+    nav += '<span class="pos">' + (pos >= 0 ? (pos + 1) + ' of ' + navl.length : '') + '</span><button class="step" data-act="prev" title="Previous issue (K or ↑)">‹</button><button class="step" data-act="next" title="Next issue (J or ↓)">›</button></div>';
     // decision card
     h += '<div class="cardwrap"><div class="card">';
     h += '<div class="meta"><span class="pill" style="background:' + (s.pill || '#e9e6de') + ';color:' + s.color + '">' + esc(s.label) + '</span><span class="kind">' + esc(KIND[c.kind] || c.kind || '') + '</span><span class="cid">' + esc(c.id) + '</span></div>';
@@ -499,6 +507,7 @@ mark[data-fc][data-pulse="1"]{animation:fc-pulse .6s ease 2}\
     if (a === 'writefix') { forceEdit = true; renderSide(); sizeAll(); side.querySelector('[data-f="replacement"]').focus(); }
     if (a === 'copytable') copy('table');
     if (a === 'shortcuts') showShortcuts();
+    if (a === 'tipdone') { markTip(); renderSide(); }
     if (a === 'excerpt') { e.preventDefault(); showExcerpt(b.getAttribute('data-cid'), +b.getAttribute('data-si')); }
   });
   side.addEventListener('input', function (e) {
@@ -526,11 +535,12 @@ mark[data-fc][data-pulse="1"]{animation:fc-pulse .6s ease 2}\
     if (modal) { if (e.key === 'Enter' || e.key === 'Escape') { e.preventDefault(); closeModal(); } return; }
     var typing = /TEXTAREA|INPUT/.test(e.target.tagName);
     if (typing && (e.metaKey || e.ctrlKey) && e.key === 'Enter' && view === 'detail') { e.preventDefault(); decide('apply'); return; }
+    if (!typing && e.key === '?') { e.preventDefault(); showShortcuts(); return; }
     if (typing && !e.altKey) return;
     if (e.metaKey || e.ctrlKey) return;
     var k = e.code === 'KeyJ' ? 'j' : e.code === 'KeyK' ? 'k' : e.code === 'Digit1' ? '1' : e.code === 'Digit2' ? '2' : e.key;
-    if (k === 'j' || k === 'ArrowDown') { e.preventDefault(); step(1); }
-    if (k === 'k' || k === 'ArrowUp') { e.preventDefault(); step(-1); }
+    if (k === 'j' || k === 'ArrowDown') { e.preventDefault(); markTip(); step(1); }
+    if (k === 'k' || k === 'ArrowUp') { e.preventDefault(); markTip(); step(-1); }
     if (view === 'detail' && (k === '1' || k === '2')) { e.preventDefault(); decide(k === '1' ? 'apply' : 'dismiss'); }
   });
   function onResize() {
