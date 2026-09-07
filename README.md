@@ -4,19 +4,11 @@ A skill for checking that a draft says only what its sources support, and review
 
 ![The review page: the document on the left with claims highlighted red, amber and green; on the right a card for the selected claim showing the finding, the current wording struck through, an editable new wording with Queue edit and Dismiss buttons, and the source passage with Source viewer and Website links.](./assets/review-page.png)
 
-A fact check of a one-page summary of the July 2026 OpenAI / Hugging Face incident. The selected claim has the direction of an event backwards; the card quotes the METR report that shows it, and the reviewer can queue the corrected wording for the agent to apply.
-
-![The issue list: the document with two queued edits shown as green underlines, and a sidebar listing every issue in document order with its status tag, the queued ones showing the new wording beneath the struck-through original.](./assets/issue-list.png)
-
-The issue list. Queued edits turn green in the text and in the list, dismissed ones disappear from the list, and the progress bar in the header counts them off.
-
 ![The source viewer: a dialog showing the METR report rendered from Markdown, scrolled to the quoted passage highlighted in amber, with Close and Open website buttons.](./assets/source-viewer.png)
-
-The source viewer. Every cited source is saved as Markdown and embedded in the page, so the passage can be read in context; "Open website" goes to the live page, scrolled to the same passage where the browser supports it.
 
 ![The send dialog after clicking Send edits to agent: "Copied to your clipboard", a count of the queued edits and dismissals, and three numbered steps for pasting the block back to the agent.](./assets/send-edits.png)
 
-Sending the decisions. The block on the clipboard is what the agent turns into tracked suggestions in the Google Doc, after showing you a dry run.
+![The Google Doc after the agent applied the queued edit: "around 1,200 of them" struck through and "around 700 of them" inserted as a tracked suggestion, with an anchored comment giving the reason and the METR quote.](./assets/google-doc-suggestion.png)
 
 What you get:
 
