@@ -330,6 +330,7 @@ mark[data-fc][data-pulse="1"]{animation:fc-pulse .6s ease 2}\
   function mdInline(t) {
     t = esc(t);
     t = t.replace(/\[([^\]]+)\]\((https?:[^)\s]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+    t = t.replace(/\[([^\]]*)\]\([^)]*\)/g, '$1');  // relative and anchor links: keep the text
     t = t.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>').replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>').replace(/`([^`]+)`/g, '<code>$1</code>');
     return t;
   }
