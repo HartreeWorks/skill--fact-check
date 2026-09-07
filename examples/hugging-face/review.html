@@ -71,7 +71,7 @@ body.fc-active.fc-wide.fc-detail{padding-right:780px}\
 #fc-top .track{width:120px;height:6px;border-radius:3px;background:#e2dfd6;overflow:hidden}#fc-top .fill{height:100%;background:#1c1b18;transition:width .25s}\
 #fc-top .actions{display:flex;gap:8px}\
 #fc-top .kbdlink{border:0;background:transparent;color:#8a877f;font-size:12px;padding:4px 8px;white-space:nowrap}#fc-top .kbdlink:hover{color:#1c1b18;background:#f1efe9}#fc-top .kbdlink kbd{font:600 10px/1 ' + SANS + ';color:#6b6862;border:1px solid #d3cfc4;border-bottom-width:2px;border-radius:3px;padding:2px 4px;background:#faf9f6;margin-left:3px}\
-#fc-side .tip{display:flex;align-items:flex-start;gap:8px;margin:0 0 4px;padding:8px 10px;border:1px solid #e2dfd6;border-radius:6px;background:#fff;font-size:12px;line-height:1.45;color:#3d3b36}#fc-side .tip b{display:block;margin-bottom:2px;color:#1c1b18}#fc-side .tip .x{margin-left:auto;border:0;background:transparent;color:#8a877f;font-size:14px;line-height:1;padding:0 2px}#fc-side .tip .x:hover{color:#1c1b18}\
+#fc-side .tip{display:flex;align-items:flex-start;gap:8px;margin:0 0 4px;padding:8px 10px 9px;border:1px solid #e2dfd6;border-radius:6px;background:#fff;font-size:12px;line-height:1.45;color:#3d3b36}#fc-side .tip .tipbody{flex:1}#fc-side .tip b{display:block;margin:0 0 4px;color:#1c1b18}#fc-side .tip .grid{display:grid;grid-template-columns:auto 1fr;gap:3px 10px;align-items:center;font-size:12px;color:#3d3b36}#fc-side .tip .grid span:nth-child(odd){white-space:nowrap}#fc-side .tip .x{margin-left:auto;border:0;background:transparent;color:#8a877f;font-size:14px;line-height:1;padding:0 2px}#fc-side .tip .x:hover{color:#1c1b18}\
 #fc-top button{font:inherit;border:1px solid #d3cfc4;background:transparent;color:#1c1b18;border-radius:6px;padding:6px 12px;cursor:pointer;white-space:nowrap}\
 #fc-top button:hover{background:#f1efe9}\
 #fc-top button.send{display:flex;align-items:center;gap:7px;border-color:#2e7d4f;background:#2e7d4f;color:#fff;font-weight:600;padding:6px 14px;box-shadow:0 1px 2px rgba(46,125,79,.3)}#fc-top button.send:hover{background:#256a41}\
@@ -437,7 +437,7 @@ mark[data-fc][data-pulse="1"]{animation:fc-pulse .6s ease 2}\
       h += '<button data-filter="' + f[0] + '"' + (filter === f[0] ? ' class="on"' : '') + '>' + f[1] + ' · ' + f[2] + '</button>';
     });
     h += '</div>';
-    if (!tipSeen()) h += '<div class="tip"><span><b>Keyboard shortcuts</b><br><kbd>J</kbd> and <kbd>K</kbd> move between issues, <kbd>1</kbd> queues the edit, <kbd>2</kbd> dismisses. Press <kbd>?</kbd> for all shortcuts.</span><button class="x" data-act="tipdone" title="Got it">×</button></div>';
+    if (!tipSeen()) h += '<div class="tip"><div class="tipbody"><b>Keyboard shortcuts</b><div class="grid"><span><kbd>J</kbd> <kbd>K</kbd></span><span>Next / previous issue</span><span><kbd>1</kbd></span><span>Queue the edit</span><span><kbd>2</kbd></span><span>Dismiss</span><span><kbd>?</kbd></span><span>All shortcuts</span></div></div><button class="x" data-act="tipdone" title="Got it">×</button></div>';
     h += '</div>';
     h += '<div class="scroll">';
     var list = queueFor(filter);
