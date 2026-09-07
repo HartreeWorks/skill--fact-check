@@ -7,7 +7,11 @@ The skill also accepts a web page URL or PDF file, and your agent can probably e
 
 ![The review page: the document on the left with claims highlighted red, amber and green; on the right a card for the selected claim showing the finding, the current wording struck through, an editable new wording with Queue edit and Dismiss buttons, and the source passage with Source viewer and Website links.](./assets/review-page.png)
 
+<br>
+
 ![The source viewer: a dialog showing the METR report rendered from Markdown, scrolled to the quoted passage highlighted in amber, with Close and Open website buttons.](./assets/source-viewer.png)
+
+<br>
 
 ![The Google Doc after the agent applied the queued edit: "around 1,200 of them" struck through and "around 700 of them" inserted as a tracked suggestion, with an anchored comment giving the reason and the METR quote.](./assets/google-doc-suggestion.png)
 
