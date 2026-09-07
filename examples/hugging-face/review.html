@@ -36,13 +36,13 @@ body{margin:0;background:#eeece6;color:#1c1b18;font:18px/1.7 "Source Serif 4",Ge
 // and a "Send edits to agent" button that copies the decision block. Decisions persist in
 // localStorage under the same key and format as v1 ('fc-decisions:<doc>').
 //
-// Data: window.FACTCHECK (embedded by build_review.py: {doc, title, claims}) or, failing
-// that, claims.json next to this script. Activation: always on when window.FACTCHECK
-// exists; otherwise only with ?factcheck=1 in the URL (for injection into a live page).
+// Data: window.FACTCHECK, embedded by build_review.py as {doc, title, claims}.
+// Layout: sidebar on the right; on wide screens (1500px and up) it has two columns, the
+// issue list and the selected claim side by side; under 860px it is a bottom sheet.
 (function () {
   var q = new URLSearchParams(location.search);
   var embedded = window.FACTCHECK || null;
-  if (!embedded && !(q.get('factcheck') || q.get('fc'))) return;
+  if (!embedded) return;
 
   var STATUS = {
     'supported': { label: 'Supported', tone: 'supported', color: '#2e7d4f' },
@@ -60,6 +60,7 @@ body{margin:0;background:#eeece6;color:#1c1b18;font:18px/1.7 "Source Serif 4",Ge
   var css = '\
 body.fc-active{padding-top:54px;padding-right:400px}\
 body.fc-active.fc-narrow{padding-right:0;padding-bottom:60vh}\
+body.fc-active.fc-wide{padding-right:780px}\
 #fc-top{position:fixed;top:0;left:0;right:0;height:54px;z-index:99990;display:flex;align-items:center;gap:20px;padding:0 20px;box-sizing:border-box;background:#faf9f6;border-bottom:1px solid #e2dfd6;color:#1c1b18;font:14px/1.45 ' + SANS + '}\
 #fc-top .brand{display:flex;align-items:baseline;gap:12px;min-width:0}\
 #fc-top .eyebrow{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#8a877f}\
@@ -74,6 +75,13 @@ body.fc-active.fc-narrow{padding-right:0;padding-bottom:60vh}\
 #fc-top button.send{display:flex;align-items:center;gap:7px;border-color:#2e7d4f;background:#2e7d4f;color:#fff;font-weight:600;padding:6px 14px;box-shadow:0 1px 2px rgba(46,125,79,.3)}#fc-top button.send:hover{background:#256a41}\
 #fc-side{position:fixed;top:54px;right:0;bottom:0;width:400px;z-index:99990;display:flex;flex-direction:column;background:#faf9f6;border-left:1px solid #e2dfd6;color:#1c1b18;font:14px/1.45 ' + SANS + ';box-sizing:border-box}\
 body.fc-narrow #fc-side{top:auto;left:0;width:auto;height:60vh;border-left:0;border-top:1px solid #e2dfd6;box-shadow:0 -6px 20px rgba(0,0,0,.08)}\
+body.fc-wide #fc-side{width:780px;flex-direction:row}\
+#fc-side .col{display:flex;flex-direction:column;min-height:0;min-width:0}\
+#fc-side .col.list{flex:none;width:340px;border-right:1px solid #e2dfd6}\
+#fc-side .col.detail{flex:1}\
+body.fc-wide #fc-side .nav .back{display:none}\
+#fc-side .item.sel{box-shadow:inset 0 0 0 2px #1c1b18;border-radius:2px}\
+#fc-side .pick{flex:1;display:flex;align-items:center;justify-content:center;padding:40px;text-align:center;color:#8a877f;font-size:13px;line-height:1.5}\
 #fc-side *{box-sizing:border-box}\
 #fc-side button{font:inherit;cursor:pointer}\
 #fc-side .hd{flex:none;padding:14px 16px 10px;border-bottom:1px solid #e2dfd6;display:flex;flex-direction:column;gap:10px}\
@@ -104,14 +112,15 @@ body.fc-narrow #fc-side{top:auto;left:0;width:auto;height:60vh;border-left:0;bor
 #fc-side .edit{border:1px solid #e2dfd6;border-radius:6px;background:#faf9f6;padding:10px}\
 #fc-side .edit .lbl{margin-bottom:4px}\
 #fc-side .edit .old{padding:0 2px 10px;font:15px/1.45 ' + SERIF + ';color:#9a978f;text-decoration:line-through}\
-#fc-side .edit textarea{display:block;width:100%;border:1px solid #c9c5ba;border-radius:5px;resize:vertical;padding:8px 10px;font:15px/1.45 ' + SERIF + ';background:#fff;color:#1c1b18;outline:none;min-height:56px;box-shadow:inset 0 1px 2px rgba(0,0,0,.05)}\
+#fc-side .edit textarea{display:block;width:100%;border:1px solid #c9c5ba;border-radius:5px;resize:none;overflow:hidden;padding:8px 10px;font:15px/1.45 ' + SERIF + ';background:#fff;color:#1c1b18;outline:none;min-height:56px;box-shadow:inset 0 1px 2px rgba(0,0,0,.05)}\
+#fc-side .savedhint{height:14px;font-size:11px;color:#8a877f;text-align:right;opacity:0;transition:opacity .2s}#fc-side .savedhint.show{opacity:1}\
 #fc-side .edit textarea:focus{border-color:#1c1b18;box-shadow:0 0 0 3px rgba(28,27,24,.12)}\
 #fc-side .edit .acts{margin-top:10px}\
 #fc-side .btn{border-radius:6px;padding:7px 12px;font-weight:600;font-size:13px;white-space:nowrap;border:1px solid #d3cfc4;background:#fff;color:#1c1b18}\
 #fc-side .btn.primary{border-color:#1c1b18;background:#1c1b18;color:#faf9f6}\
 #fc-side .btn.on{border-color:#2e7d4f;background:#2e7d4f;color:#fff}#fc-side .btn.on.grey{border-color:#6b6862;background:#6b6862}\
 #fc-side .acts{display:flex;align-items:center;gap:6px;flex-wrap:wrap}\
-#fc-side .usernote{display:block;width:100%;border:0;border-top:1px solid #eceae3;padding:8px 0 0;background:transparent;resize:vertical;outline:none;font:13px/1.45 ' + SANS + ';min-height:30px}\
+#fc-side .usernote{display:block;width:100%;border:0;border-top:1px solid #eceae3;padding:8px 0 0;background:transparent;resize:none;overflow:hidden;outline:none;font:13px/1.45 ' + SANS + ';min-height:30px}\
 #fc-side .body{flex:1;min-height:120px;overflow:auto;padding:18px 18px 32px;display:flex;flex-direction:column;gap:18px}\
 #fc-side .lbl{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#8a877f;margin-bottom:8px}\
 #fc-side .anchor{font:16px/1.5 ' + SERIF + '}#fc-side .claim{font-size:13px;color:#6b6862;font-style:italic;margin-top:6px}\
@@ -132,6 +141,8 @@ mark[data-fc][data-tone="red"]{background:#fad6d1;box-shadow:inset 0 -2px #d9564
 mark[data-fc][data-quiet="1"]{background:transparent;box-shadow:none;border-bottom-color:transparent;cursor:text}\
 mark[data-fc][data-decided="1"]{background:transparent;box-shadow:none;border-bottom:2px solid}\
 mark[data-fc][data-decided="1"][data-tone="caveat"]{border-color:#dda634}mark[data-fc][data-decided="1"][data-tone="red"]{border-color:#d9564b}\
+mark[data-fc][data-queued="1"]{background:transparent!important;box-shadow:none!important;border-bottom:2px solid #2e7d4f!important}\
+mark[data-fc][data-queued="1"]::after{content:"\\270E";color:#2e7d4f;font:700 .7em/1 ' + SANS + ';margin-left:3px;vertical-align:super}\
 mark[data-fc][data-dismissed="1"],mark[data-fc][data-dismissed="1"][data-tone="red"],mark[data-fc][data-dismissed="1"][data-tone="caveat"],mark[data-fc][data-dismissed="1"][data-sel="1"]{background:transparent!important;box-shadow:none!important;border-bottom:0!important}\
 mark[data-fc]:hover:not([data-quiet="1"]){box-shadow:0 0 0 3px rgba(28,27,24,.12)}\
 mark[data-fc][data-sel="1"]{outline:2px solid #1c1b18;outline-offset:2px}\
@@ -149,7 +160,7 @@ mark[data-fc][data-pulse="1"]{animation:fc-pulse .6s ease 2}\
   var decisions = {};
   try { decisions = JSON.parse(localStorage.getItem('fc-decisions:' + docKey) || '{}'); } catch (e) { decisions = {}; }
   function save() { try { localStorage.setItem('fc-decisions:' + docKey, JSON.stringify(decisions)); } catch (e) {} }
-  var view = 'list', filter = q.get('only') === 'all' ? 'all' : 'issues', selId = null, more = false, forceEdit = false;
+  var view = 'list', filter = q.get('only') === 'all' ? 'all' : 'issues', selId = null, more = false, forceEdit = false, draft = null;
 
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
   function st(c) { return STATUS[c.status] || STATUS.unchecked; }
@@ -173,7 +184,7 @@ mark[data-fc][data-pulse="1"]{animation:fc-pulse .6s ease 2}\
   }
 
   // ---- anchoring -------------------------------------------------------------
-  function root() { return document.getElementById('document') || document.getElementById('page') || document.body; }
+  function root() { return document.getElementById('document') || document.body; }
   function textNodes(r) {
     var out = [], w = document.createTreeWalker(r, NodeFilter.SHOW_TEXT, {
       acceptNode: function (n) {
@@ -227,6 +238,7 @@ mark[data-fc][data-pulse="1"]{animation:fc-pulse .6s ease 2}\
       m.setAttribute('data-quiet', (filter !== 'all' && !isProblem(c)) ? '1' : '0');
       m.setAttribute('data-decided', decided(c) ? '1' : '0');
       m.setAttribute('data-dismissed', decided(c) === 'dismiss' ? '1' : '0');
+      m.setAttribute('data-queued', decided(c) === 'apply' ? '1' : '0');
       m.setAttribute('data-sel', selId === c.id ? '1' : '0');
     });
   }
@@ -281,9 +293,14 @@ mark[data-fc][data-pulse="1"]{animation:fc-pulse .6s ease 2}\
 
   // ---- sidebar -------------------------------------------------------------------
   function renderSide() {
-    if (view === 'table') return renderTable();
-    if (view === 'detail' && byId[selId]) return renderDetail(byId[selId]);
-    view = 'list'; renderList();
+    var wide = document.body.classList.contains('fc-wide');
+    if (!wide) {
+      if (view === 'table') { side.innerHTML = renderTable(); return; }
+      if (view === 'detail' && byId[selId]) { side.innerHTML = renderDetail(byId[selId]); return; }
+      view = 'list'; side.innerHTML = renderList(); return;
+    }
+    var right = view === 'table' ? renderTable() : (view === 'detail' && byId[selId]) ? renderDetail(byId[selId]) : '<div class="pick">Select an issue on the left, or press J to start at the top.</div>';
+    side.innerHTML = '<div class="col list">' + renderList() + '</div><div class="col detail">' + right + '</div>';
   }
   function renderList() {
     var iss = issues(), open = iss.filter(function (c) { return decided(c) !== 'dismiss'; }).length;
@@ -297,7 +314,7 @@ mark[data-fc][data-pulse="1"]{animation:fc-pulse .6s ease 2}\
     if (!list.length) h += '<div class="empty">' + (filter === 'issues' ? (iss.length ? 'Every issue is handled. Send your edits to the agent.' : 'No issues found in this document.') : 'Nothing to show.') + '</div>';
     list.forEach(function (c) {
       var s = st(c), d = decided(c), prob = isProblem(c), queued = d === 'apply', rec = decisions[c.id] || {};
-      h += '<button class="item' + (queued ? ' queued' : '') + '" data-id="' + esc(c.id) + '" style="border-left-color:' + (queued ? '#2e7d4f' : prob ? s.color : 'transparent') + ';background:' + (queued ? '#eef7f0' : prob ? s.row : 'transparent') + '">';
+      h += '<button class="item' + (queued ? ' queued' : '') + (c.id === selId ? ' sel' : '') + '" data-id="' + esc(c.id) + '" style="border-left-color:' + (queued ? '#2e7d4f' : prob ? s.color : 'transparent') + ';background:' + (queued ? '#eef7f0' : prob ? s.row : 'transparent') + '">';
       h += '<div class="row"><span class="tag" style="color:' + s.color + ';background:' + (prob ? s.pill : 'transparent') + '">' + esc(s.label) + '</span>';
       h += queued ? '<span class="qd">✓ Edit queued</span>' : (d ? '<span class="dec">' + (DECIDED[d] || '') + '</span>' : '');
       h += '</div><div class="snip">“' + esc(c.anchor) + '”</div>';
@@ -305,7 +322,7 @@ mark[data-fc][data-pulse="1"]{animation:fc-pulse .6s ease 2}\
       h += '</button>';
     });
     h += '</div>';
-    side.innerHTML = h;
+    return h;
   }
   function renderTable() {
     var h = '<div class="nav"><button class="back" data-act="back">← <span>Back</span></button><span style="font-weight:600">Claim table</span><span class="pos"></span><button class="btn" data-act="copytable" style="font-size:12px;padding:5px 10px;font-weight:400">' + (copied === 'table' ? 'Copied' : 'Copy as Markdown') + '</button></div>';
@@ -315,14 +332,19 @@ mark[data-fc][data-pulse="1"]{animation:fc-pulse .6s ease 2}\
       h += '<tr class="r" data-id="' + esc(c.id) + '"><td class="n">' + (i + 1) + '</td><td class="s" style="color:' + s.color + '">' + esc(s.label) + '</td><td>' + esc(c.claim || c.anchor) + '<div class="srcs">' + esc(keys) + '</div></td></tr>';
     });
     h += '</tbody></table></div>';
-    side.innerHTML = h;
+    return h;
+  }
+  function applyButton(rec) {
+    var dirty = rec.d === 'apply' && draft != null && draft !== rec.replacement;
+    if (dirty) return '<button class="btn primary" data-d="apply" title="The queued edit still has the previous wording">Update queued edit · unsaved changes</button>';
+    return '<button class="btn ' + (rec.d === 'apply' ? 'on' : 'primary') + '" data-d="apply">' + (rec.d === 'apply' ? '✓ Edit queued · click to unqueue' : 'Queue edit') + '</button>';
   }
   function renderDetail(c) {
     var s = st(c), rec = decisions[c.id] || {}, sug = suggested(c);
     var srcs = dedupe(c.sources || []), shown = more ? srcs : srcs.slice(0, 2);
     var nav = navList(), pos = nav.findIndex(function (x) { return x.id === c.id; });
     var hasSug = !!(sug || rec.d === 'apply' || rec.replacement || forceEdit);
-    var replacement = rec.replacement != null ? rec.replacement : sug;
+    var replacement = draft != null ? draft : (rec.replacement != null ? rec.replacement : sug);
     var h = '<div class="nav"><button class="back" data-act="back">← <span>' + ({ issues: 'Issues', all: 'All claims' })[filter] + '</span></button>';
     h += '<span class="pos">' + (pos >= 0 ? (pos + 1) + ' of ' + nav.length : '') + '</span><button class="step" data-act="prev" title="Previous (K)">‹</button><button class="step" data-act="next" title="Next (J)">›</button></div>';
     // decision card
@@ -332,11 +354,11 @@ mark[data-fc][data-pulse="1"]{animation:fc-pulse .6s ease 2}\
     var dismissBtn = '<button class="btn' + (rec.d === 'dismiss' ? ' on grey' : '') + '" data-d="dismiss" title="Not a problem; leave the text as it is">' + (rec.d === 'dismiss' ? '— Dismissed' : 'Dismiss') + '</button>';
     if (hasSug) {
       h += '<div class="edit"><div class="lbl">Current</div><div class="old">' + esc(c.anchor) + '</div><div class="lbl">New wording</div><textarea data-f="replacement" placeholder="Type the replacement text">' + esc(replacement) + '</textarea>';
-      h += '<div class="acts"><button class="btn ' + (rec.d === 'apply' ? 'on' : 'primary') + '" data-d="apply">' + (rec.d === 'apply' ? '✓ Edit queued · click to unqueue' : 'Queue edit') + '</button>' + dismissBtn + '</div></div>';
+      h += '<div class="acts">' + applyButton(rec) + dismissBtn + '</div></div>';
     } else {
       h += '<div class="acts">' + (isProblem(c) ? '<button class="btn primary" data-act="writefix">Write a fix</button>' : '') + dismissBtn + '</div>';
     }
-    h += '<textarea class="usernote" data-f="note" rows="1" placeholder="Add a note for the agent…">' + esc(rec.note || '') + '</textarea>';
+    h += '<textarea class="usernote" data-f="note" rows="1" placeholder="Add a note for the agent…">' + esc(rec.note || '') + '</textarea><div class="savedhint">Note saved</div>';
     h += '</div></div>';
     // evidence
     h += '<div class="body"><section><div class="lbl">In the document</div><div class="anchor">“' + esc(c.anchor) + '”</div>' + (c.claim ? '<div class="claim">' + esc(c.claim) + '</div>' : '') + '</section>';
@@ -352,7 +374,7 @@ mark[data-fc][data-pulse="1"]{animation:fc-pulse .6s ease 2}\
     if (srcs.length > 2) h += '<button class="more" data-act="more">' + (more ? 'Show fewer' : 'Show ' + (srcs.length - 2) + ' more source' + (srcs.length - 2 > 1 ? 's' : '')) + '</button>';
     if (c.checked_by && c.checked_by.length) h += '<div class="fine" style="margin-top:8px">Checked by ' + esc(c.checked_by.join(', ')) + '</div>';
     h += '</section></div>';
-    side.innerHTML = h;
+    return h;
   }
 
   function update(id, fn) {
@@ -364,12 +386,28 @@ mark[data-fc][data-pulse="1"]{animation:fc-pulse .6s ease 2}\
   }
   function decide(d) {
     if (!selId) return;
-    update(selId, function (r) { if (r.d === d) delete r.d; else r.d = d; });
+    var rec = decisions[selId] || {};
+    if (d === 'apply' && rec.d === 'apply' && draft != null && draft !== rec.replacement) {
+      var v = draft; draft = null;
+      update(selId, function (r) { r.replacement = v; r.d = 'apply'; });
+    } else {
+      draft = null;
+      update(selId, function (r) { if (r.d === d) delete r.d; else r.d = d; });
+    }
     refresh();
   }
-  function refresh() { renderTop(); renderSide(); paint(); }
+  function autosize(ta, maxLines) {
+    if (!ta) return;
+    var lh = parseFloat(getComputedStyle(ta).lineHeight) || 20, pad = ta.offsetHeight - ta.clientHeight;
+    ta.style.height = 'auto';
+    var max = maxLines * lh + (parseFloat(getComputedStyle(ta).paddingTop) || 0) + (parseFloat(getComputedStyle(ta).paddingBottom) || 0) + pad;
+    ta.style.height = Math.min(ta.scrollHeight + pad, max) + 'px';
+    ta.style.overflowY = ta.scrollHeight + pad > max ? 'auto' : 'hidden';
+  }
+  function sizeAll() { autosize(side.querySelector('[data-f="replacement"]'), 5); autosize(side.querySelector('[data-f="note"]'), 10); }
+  function refresh() { renderTop(); renderSide(); paint(); sizeAll(); }
   function select(id, scroll) {
-    selId = id; view = 'detail'; more = false; forceEdit = false;
+    selId = id; view = 'detail'; more = false; forceEdit = false; draft = null;
     refresh();
     if (scroll) scrollTo(id);
   }
@@ -396,13 +434,22 @@ mark[data-fc][data-pulse="1"]{animation:fc-pulse .6s ease 2}\
     if (a === 'back') back();
     if (a === 'prev') step(-1);
     if (a === 'next') step(1);
-    if (a === 'more') { more = !more; renderSide(); }
-    if (a === 'writefix') { forceEdit = true; renderSide(); side.querySelector('[data-f="replacement"]').focus(); }
+    if (a === 'more') { more = !more; renderSide(); sizeAll(); }
+    if (a === 'writefix') { forceEdit = true; renderSide(); sizeAll(); side.querySelector('[data-f="replacement"]').focus(); }
     if (a === 'copytable') copy('table');
   });
   side.addEventListener('input', function (e) {
     var f = e.target.getAttribute('data-f'); if (!f || !selId) return;
-    var v = e.target.value;
+    var v = e.target.value, rec = decisions[selId] || {};
+    autosize(e.target, f === 'note' ? 10 : 5);
+    if (f === 'note') {
+      var hint = side.querySelector('.savedhint'); if (hint) { hint.classList.add('show'); clearTimeout(hint._t); hint._t = setTimeout(function () { hint.classList.remove('show'); }, 1500); }
+    }
+    if (f === 'replacement' && rec.d === 'apply') {
+      draft = v;
+      var b = side.querySelector('[data-d="apply"]'); if (b) b.outerHTML = applyButton(rec);
+      return;
+    }
     update(selId, function (r) { r[f] = v; });
     // Light refresh: keep focus in the textarea, update labels only.
     renderTop(); paint();
@@ -418,7 +465,13 @@ mark[data-fc][data-pulse="1"]{animation:fc-pulse .6s ease 2}\
     if (e.key === 'Escape') back();
     if (view === 'detail' && /^[12]$/.test(e.key)) decide(['apply', 'dismiss'][+e.key - 1]);
   });
-  function onResize() { document.body.classList.toggle('fc-narrow', innerWidth < 860); }
+  function onResize() {
+    var wide = innerWidth >= 1500;
+    document.body.classList.toggle('fc-narrow', innerWidth < 860);
+    var was = document.body.classList.contains('fc-wide');
+    document.body.classList.toggle('fc-wide', wide);
+    if (was !== wide && claims.length) renderSide();
+  }
   window.addEventListener('resize', onResize);
 
   // ---- boot ---------------------------------------------------------------------
@@ -431,19 +484,13 @@ mark[data-fc][data-pulse="1"]{animation:fc-pulse .6s ease 2}\
     var legendHost = document.getElementById('document');
     if (legendHost) {
       var lg = document.createElement('div'); lg.id = 'fc-legend';
-      lg.innerHTML = '<span><i style="background:#fad6d1;box-shadow:inset 0 -2px #d9564b"></i>Unsupported or contradicted</span><span><i style="background:#fbe9bf;box-shadow:inset 0 -2px #dda634"></i>Supported with caveat</span><span><i style="background:#dff0e3;box-shadow:inset 0 -2px #5aa876"></i>Supported</span><span><i style="height:0;border-bottom:2px solid #d9564b;vertical-align:3px"></i>Decided</span>';
+      lg.innerHTML = '<span><i style="background:#fad6d1;box-shadow:inset 0 -2px #d9564b"></i>Unsupported or contradicted</span><span><i style="background:#fbe9bf;box-shadow:inset 0 -2px #dda634"></i>Supported with caveat</span><span><i style="background:#dff0e3;box-shadow:inset 0 -2px #5aa876"></i>Supported</span><span><i style="height:0;border-bottom:2px solid #2e7d4f;vertical-align:3px"></i>Edit queued ✎</span>';
       legendHost.parentNode.insertBefore(lg, legendHost.nextSibling);
     }
     refresh();
   }
   function start(data) { if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function () { boot(data); }); else boot(data); }
-  if (embedded) { start(embedded); return; }
-  var src = (document.currentScript && document.currentScript.src) || 'overlay.js';
-  fetch(src.replace(/overlay\.js.*$/, 'claims.json') + '?t=' + Date.now()).then(function (r) { return r.json(); }).then(start).catch(function (e) {
-    document.body.classList.add('fc-active');
-    top.innerHTML = '<span style="color:#b3261e">Fact check: could not load claims.json: ' + esc(e.message) + '</span>';
-    document.body.appendChild(top);
-  });
+  start(embedded);
 })();
 </script>
 </body></html>
