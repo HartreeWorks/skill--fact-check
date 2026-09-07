@@ -81,6 +81,16 @@ body.fc-wide #fc-side .nav .back{display:none}\
 #fc-side .edit .lbl{margin-bottom:4px}\
 #fc-side .edit .old{padding:0 2px 10px;font:15px/1.45 ' + SERIF + ';color:#9a978f;text-decoration:line-through}\
 #fc-side .edit textarea{display:block;width:100%;border:1px solid #c9c5ba;border-radius:5px;resize:none;overflow:hidden;padding:8px 10px;font:15px/1.45 ' + SERIF + ';background:#fff;color:#1c1b18;outline:none;min-height:56px;box-shadow:inset 0 1px 2px rgba(0,0,0,.05)}\
+#fc-modal{position:fixed;inset:0;z-index:99999;background:rgba(28,27,24,.45);display:flex;align-items:center;justify-content:center;padding:20px;font:14px/1.5 ' + SANS + '}\
+#fc-modal .box{background:#fff;color:#1c1b18;border-radius:10px;box-shadow:0 20px 60px rgba(0,0,0,.3);width:520px;max-width:100%;padding:24px 26px 20px;box-sizing:border-box}\
+#fc-modal h2{margin:0 0 10px;font-size:18px;line-height:1.3;display:flex;align-items:center;gap:10px}\
+#fc-modal h2 .ok{display:inline-flex;width:26px;height:26px;border-radius:13px;background:#2e7d4f;color:#fff;align-items:center;justify-content:center;font-size:15px}\
+#fc-modal p{margin:0 0 12px;color:#3d3b36}\
+#fc-modal ol{margin:0 0 14px;padding-left:20px;color:#3d3b36}#fc-modal li{margin:0 0 6px}\
+#fc-modal textarea{width:100%;box-sizing:border-box;height:120px;font:12px/1.4 ui-monospace,Menlo,monospace;border:1px solid #c9c5ba;border-radius:5px;padding:8px;margin:0 0 12px}\
+#fc-modal .row{display:flex;align-items:center;gap:14px;margin-top:6px}\
+#fc-modal .row .btn{font:inherit;font-weight:600;border:1px solid #1c1b18;background:#1c1b18;color:#fff;border-radius:6px;padding:8px 16px;cursor:pointer}#fc-modal .row .btn:hover{background:#000}\
+#fc-modal .row .hint{color:#8a877f;font-size:12px}#fc-modal kbd{font:inherit;font-size:11px;border:1px solid #c9c5ba;border-bottom-width:2px;border-radius:4px;padding:0 5px;background:#faf9f6}\
 #fc-side .savedhint{height:14px;font-size:11px;color:#8a877f;text-align:right;opacity:0;transition:opacity .2s}#fc-side .savedhint.show{opacity:1}\
 #fc-side .edit textarea:focus{border-color:#1c1b18;box-shadow:0 0 0 3px rgba(28,27,24,.12)}\
 #fc-side .edit .acts{margin-top:10px}\
@@ -256,8 +266,43 @@ mark[data-fc][data-pulse="1"]{animation:fc-pulse .6s ease 2}\
       Object.keys(decisions).forEach(function (id) { var c = byId[id], d = decisions[id]; if (!c) return; out.decisions[id] = { d: d.d || null, anchor: c.anchor, replacement: d.replacement, note: d.note || '' }; });
       text = 'FACTCHECK DECISIONS\n```json\n' + JSON.stringify(out, null, 1) + '\n```';
     }
-    navigator.clipboard.writeText(text).then(function () { copied = kind; renderTop(); if (kind === 'table') renderSide(); setTimeout(function () { copied = ''; renderTop(); if (view === 'table') renderSide(); }, 1600); });
+    var done = function (ok) {
+      copied = kind; renderTop(); if (kind === 'table') renderSide();
+      setTimeout(function () { copied = ''; renderTop(); if (view === 'table') renderSide(); }, 1600);
+      if (kind !== 'table') showSendModal(text, ok);
+    };
+    var settled = false, finish = function (ok) { if (!settled) { settled = true; done(ok); } };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () { finish(true); }, function () { finish(false); });
+      setTimeout(function () { finish(false); }, 1500);  // clipboard blocked or waiting on a permission prompt
+    } else finish(false);
   }
+  var modal = null;
+  function showSendModal(text, copiedOk) {
+    closeModal();
+    var n = Object.keys(decisions), queued = n.filter(function (id) { return decisions[id].d === 'apply'; }).length, dismissed = n.filter(function (id) { return decisions[id].d === 'dismiss'; }).length, noted = n.filter(function (id) { return decisions[id].note; }).length;
+    var target = /docs\.google/.test(docKey) ? 'the Google Doc' : 'the source document';
+    var what = [];
+    if (queued) what.push(queued + ' queued edit' + (queued > 1 ? 's' : ''));
+    if (dismissed) what.push(dismissed + ' dismissal' + (dismissed > 1 ? 's' : ''));
+    if (noted) what.push(noted + ' note' + (noted > 1 ? 's' : ''));
+    modal = document.createElement('div'); modal.id = 'fc-modal';
+    var h = '<div class="box" role="dialog" aria-modal="true" aria-labelledby="fc-modal-title">';
+    h += '<h2 id="fc-modal-title"><span class="ok">' + (copiedOk ? '✓' : '!') + '</span>' + (copiedOk ? 'Copied to your clipboard' : 'Copy this block by hand') + '</h2>';
+    if (!n.length) h += '<p>You have not decided anything yet, so the block is empty. Queue an edit or dismiss an issue first.</p>';
+    else h += '<p>' + esc(what.join(', ')) + ' ' + (copiedOk ? 'are on your clipboard as instructions for the fact-checking agent.' : 'are in the box below.') + '</p>';
+    if (!copiedOk) h += '<textarea readonly>' + esc(text) + '</textarea>';
+    h += '<p>Nothing has changed in ' + target + ' yet. To apply the edits:</p><ol><li>Go back to your chat with the fact-checking agent.</li><li>Paste the block and send it.</li><li>The agent shows you the edits it will make to ' + target + ', then applies them as suggestions when you confirm.</li></ol>';
+    h += '<div class="row"><button class="btn" data-act="closemodal">OK, got it</button><span class="hint">or press <kbd>Enter</kbd> or <kbd>Esc</kbd></span></div></div>';
+    modal.innerHTML = h;
+    document.body.appendChild(modal);
+    if (!copiedOk) { var ta = modal.querySelector('textarea'); ta.focus(); ta.select(); } else modal.querySelector('button').focus();
+  }
+  function closeModal() { if (modal) { modal.remove(); modal = null; } }
+  document.addEventListener('click', function (e) {
+    if (!modal) return;
+    if (e.target.closest('[data-act="closemodal"]') || e.target === modal) closeModal();
+  });
 
   // ---- sidebar -------------------------------------------------------------------
   function renderSide() {
@@ -427,6 +472,7 @@ mark[data-fc][data-pulse="1"]{animation:fc-pulse .6s ease 2}\
     if (m && m.getAttribute('data-quiet') !== '1') { e.preventDefault(); e.stopPropagation(); select(m.getAttribute('data-fc'), false); }
   }, true);
   document.addEventListener('keydown', function (e) {
+    if (modal) { if (e.key === 'Enter' || e.key === 'Escape') { e.preventDefault(); closeModal(); } return; }
     if (/TEXTAREA|INPUT/.test(e.target.tagName)) return;
     if (e.key === 'j' || e.key === 'ArrowDown') { e.preventDefault(); step(1); }
     if (e.key === 'k' || e.key === 'ArrowUp') { e.preventDefault(); step(-1); }
