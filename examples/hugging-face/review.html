@@ -641,6 +641,7 @@ mark[data-fc][data-pulse="1"]{animation:fc-pulse .6s ease 2}\
       legendHost.parentNode.insertBefore(lg, legendHost.nextSibling);
     }
     refresh();
+    var shot = q.get('shot'); if (shot && byId[shot]) { try { localStorage.setItem('fc-tip-seen', '1'); } catch (e) {} select(shot, false); }
   }
   function start(data) { if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function () { boot(data); }); else boot(data); }
   start(embedded);
