@@ -43,11 +43,11 @@ body.fc-active.fc-wide{padding-right:780px}\
 #fc-top button.send{display:flex;align-items:center;gap:7px;border-color:#2e7d4f;background:#2e7d4f;color:#fff;font-weight:600;padding:6px 14px;box-shadow:0 1px 2px rgba(46,125,79,.3)}#fc-top button.send:hover{background:#256a41}\
 #fc-side{position:fixed;top:54px;right:0;bottom:0;width:400px;z-index:99990;display:flex;flex-direction:column;background:#faf9f6;border-left:1px solid #e2dfd6;color:#1c1b18;font:14px/1.45 ' + SANS + ';box-sizing:border-box}\
 body.fc-narrow #fc-side{top:auto;left:0;width:auto;height:60vh;border-left:0;border-top:1px solid #e2dfd6;box-shadow:0 -6px 20px rgba(0,0,0,.08)}\
-body.fc-wide #fc-side{width:780px;flex-direction:row}\
+body.fc-wide #fc-side{width:780px}body.fc-wide #fc-side.fc-split{flex-direction:row}\
 #fc-side .col{display:flex;flex-direction:column;min-height:0;min-width:0}\
-#fc-side .col.list{flex:none;width:340px;border-right:1px solid #e2dfd6}\
-#fc-side .col.detail{flex:1}\
-body.fc-wide #fc-side .nav .back{display:none}\
+#fc-side .col.card{flex:none;width:380px;border-right:1px solid #e2dfd6}\
+#fc-side .col.card .cardwrap{max-height:none;flex:1;padding-bottom:12px}\
+#fc-side .col.evidence{flex:1}#fc-side .col.evidence .body{min-height:0}\
 #fc-side .item.sel{box-shadow:inset 0 0 0 2px #1c1b18;border-radius:2px}\
 #fc-side .pick{flex:1;display:flex;align-items:center;justify-content:center;padding:40px;text-align:center;color:#8a877f;font-size:13px;line-height:1.5}\
 #fc-side *{box-sizing:border-box}\
@@ -67,12 +67,14 @@ body.fc-wide #fc-side .nav .back{display:none}\
 #fc-side .item .snip{margin-top:6px;font:15px/1.4 ' + SERIF + ';color:#1c1b18;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}\
 #fc-side .item.queued .snip{color:#8a877f;text-decoration:line-through}\
 #fc-side .item.queued .snip.new{color:#1f5f3a;text-decoration:none;margin-top:4px}\
-#fc-side .nav{flex:none;display:flex;align-items:center;gap:6px;padding:10px 10px 10px 8px;border-bottom:1px solid #e2dfd6}\
+#fc-side .nav{flex:none;display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:8px 10px 8px 8px;border-bottom:1px solid #e2dfd6}\
 #fc-side .nav .back{border:0;background:transparent;color:#1c1b18;padding:6px 8px;border-radius:6px;display:flex;align-items:center;gap:6px;white-space:nowrap}#fc-side .nav .back span{color:#6b6862}#fc-side .nav .back:hover{background:#eceae3}\
-#fc-side .nav .pos{margin-left:auto;font-size:12px;color:#6b6862}\
-#fc-side .nav .step{border:1px solid #d3cfc4;background:#fff;width:28px;height:28px;border-radius:6px;color:#1c1b18}#fc-side .nav .step:hover{background:#f1efe9}\
-#fc-side .cardwrap{flex:none;padding:12px 14px 0;max-height:62%;overflow:auto}\
-#fc-side .card{display:flex;flex-direction:column;gap:12px;padding:14px 16px;background:#fff;border:1px solid #e2dfd6;border-radius:8px;box-shadow:0 1px 2px rgba(0,0,0,.04)}\
+#fc-side .nav .pos{margin-left:auto;font-size:12px;color:#6b6862;white-space:nowrap}\
+#fc-side .nav .step{border:1px solid #d3cfc4;background:#fff;height:28px;padding:0 7px;border-radius:6px;color:#1c1b18;display:inline-flex;align-items:center;gap:5px;font-size:14px}#fc-side .nav .step:hover{background:#f1efe9}\
+#fc-side kbd{font:600 10px/1 ' + SANS + ';color:#6b6862;border:1px solid #d3cfc4;border-bottom-width:2px;border-radius:3px;padding:2px 4px;background:#faf9f6}\
+#fc-side .nav .keys{flex-basis:100%;font-size:11px;color:#8a877f;white-space:nowrap;padding:2px 0 0 4px}\
+#fc-side .cardwrap{flex:none;padding:10px 12px 0;max-height:62%;overflow:auto}\
+#fc-side .card{display:flex;flex-direction:column;gap:10px;padding:12px 16px 8px;background:#fff;border:1px solid #e2dfd6;border-radius:8px;box-shadow:0 1px 2px rgba(0,0,0,.04)}\
 #fc-side .meta{display:flex;align-items:center;gap:8px}\
 #fc-side .pill{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:4px 8px;border-radius:4px}\
 #fc-side .kind{font-size:12px;color:#6b6862}#fc-side .cid{margin-left:auto;font:11px ui-monospace,Menlo,monospace;color:#a09d95}\
@@ -91,7 +93,7 @@ body.fc-wide #fc-side .nav .back{display:none}\
 #fc-modal .row{display:flex;align-items:center;gap:14px;margin-top:6px}\
 #fc-modal .row .btn{font:inherit;font-weight:600;border:1px solid #1c1b18;background:#1c1b18;color:#fff;border-radius:6px;padding:8px 16px;cursor:pointer}#fc-modal .row .btn:hover{background:#000}\
 #fc-modal .row .hint{color:#8a877f;font-size:12px}#fc-modal kbd{font:inherit;font-size:11px;border:1px solid #c9c5ba;border-bottom-width:2px;border-radius:4px;padding:0 5px;background:#faf9f6}\
-#fc-side .savedhint{height:14px;font-size:11px;color:#8a877f;text-align:right;opacity:0;transition:opacity .2s}#fc-side .savedhint.show{opacity:1}\
+#fc-side .notewrap{position:relative}#fc-side .savedhint{position:absolute;right:0;bottom:2px;font-size:11px;color:#8a877f;background:#fff;padding-left:6px;opacity:0;transition:opacity .2s;pointer-events:none}#fc-side .savedhint.show{opacity:1}\
 #fc-side .edit textarea:focus{border-color:#1c1b18;box-shadow:0 0 0 3px rgba(28,27,24,.12)}\
 #fc-side .edit .acts{margin-top:10px}\
 #fc-side .btn{border-radius:6px;padding:7px 12px;font-weight:600;font-size:13px;white-space:nowrap;border:1px solid #d3cfc4;background:#fff;color:#1c1b18}\
@@ -105,7 +107,7 @@ body.fc-wide #fc-side .nav .back{display:none}\
 #fc-side .src{display:flex;flex-direction:column;gap:4px;padding:10px 12px;background:#fff;border:1px solid #e6e3dc;border-radius:6px;margin-bottom:8px}\
 #fc-side .src .h{display:flex;gap:8px;align-items:baseline;font-size:12px}#fc-side .src .h b{font-weight:600}#fc-side .src .h .loc{color:#8a877f}#fc-side .src .h a{margin-left:auto;color:#2456a4;text-decoration:none}\
 #fc-side .src .q{font:15px/1.5 ' + SERIF + ';color:#2a2925;white-space:pre-wrap;max-height:160px;overflow:auto}\
-#fc-side .fine{font-size:11px;color:#a09d95}\
+#fc-side .fine{font-size:11px;color:#a09d95}#fc-side .fine a{color:#2456a4;text-decoration:none}#fc-side .fine a:hover{text-decoration:underline}\
 #fc-side .more{align-self:flex-start;border:0;background:transparent;color:#2456a4;padding:0;font-size:13px}\
 #fc-side .nosrc{font-size:13px;color:#b3261e}\
 #fc-side table{width:100%;border-collapse:collapse;font-size:12px}#fc-side th{text-align:left;color:#8a877f;font-size:11px;letter-spacing:.04em;text-transform:uppercase;padding:8px 6px;border-bottom:1px solid #e2dfd6}\
@@ -307,13 +309,15 @@ mark[data-fc][data-pulse="1"]{animation:fc-pulse .6s ease 2}\
   // ---- sidebar -------------------------------------------------------------------
   function renderSide() {
     var wide = document.body.classList.contains('fc-wide');
-    if (!wide) {
-      if (view === 'table') { side.innerHTML = renderTable(); return; }
-      if (view === 'detail' && byId[selId]) { side.innerHTML = renderDetail(byId[selId]); return; }
-      view = 'list'; side.innerHTML = renderList(); return;
+    if (view === 'table') { side.classList.remove('fc-split'); side.innerHTML = renderTable(); return; }
+    if (view === 'detail' && byId[selId]) {
+      var d = renderDetail(byId[selId]);
+      side.classList.toggle('fc-split', wide);
+      side.innerHTML = wide ? '<div class="col card">' + d.nav + d.card + '</div><div class="col evidence">' + d.body + '</div>' : d.nav + d.card + d.body;
+      return;
     }
-    var right = view === 'table' ? renderTable() : (view === 'detail' && byId[selId]) ? renderDetail(byId[selId]) : '<div class="pick">Select an issue on the left, or press J to start at the top.</div>';
-    side.innerHTML = '<div class="col list">' + renderList() + '</div><div class="col detail">' + right + '</div>';
+    side.classList.remove('fc-split');
+    view = 'list'; side.innerHTML = renderList();
   }
   function renderList() {
     var iss = issues(), open = iss.filter(function (c) { return decided(c) !== 'dismiss'; }).length;
@@ -355,11 +359,12 @@ mark[data-fc][data-pulse="1"]{animation:fc-pulse .6s ease 2}\
   function renderDetail(c) {
     var s = st(c), rec = decisions[c.id] || {}, sug = suggested(c);
     var srcs = dedupe(c.sources || []), shown = more ? srcs : srcs.slice(0, 2);
-    var nav = navList(), pos = nav.findIndex(function (x) { return x.id === c.id; });
+    var navl = navList(), pos = navl.findIndex(function (x) { return x.id === c.id; });
     var hasSug = !!(sug || rec.d === 'apply' || rec.replacement || forceEdit);
     var replacement = draft != null ? draft : (rec.replacement != null ? rec.replacement : sug);
-    var h = '<div class="nav"><button class="back" data-act="back">← <span>' + ({ issues: 'Issues', all: 'All claims' })[filter] + '</span></button>';
-    h += '<span class="pos">' + (pos >= 0 ? (pos + 1) + ' of ' + nav.length : '') + '</span><button class="step" data-act="prev" title="Previous (K)">‹</button><button class="step" data-act="next" title="Next (J)">›</button></div>';
+    var nav = '<div class="nav"><button class="back" data-act="back">← <span>' + ({ issues: 'Issues', all: 'All claims' })[filter] + '</span></button>';
+    var h = '';
+    nav += '<span class="pos">' + (pos >= 0 ? (pos + 1) + ' of ' + navl.length : '') + '</span><button class="step" data-act="prev" title="Previous issue (K or ↑)"><kbd>K</kbd>‹</button><button class="step" data-act="next" title="Next issue (J or ↓)">›<kbd>J</kbd></button><span class="keys" title="Keyboard: 1 queue edit, 2 dismiss, Esc back to the list"><kbd>1</kbd> queue <kbd>2</kbd> dismiss <kbd>Esc</kbd></span></div>';
     // decision card
     h += '<div class="cardwrap"><div class="card">';
     h += '<div class="meta"><span class="pill" style="background:' + (s.pill || '#e9e6de') + ';color:' + s.color + '">' + esc(s.label) + '</span><span class="kind">' + esc(KIND[c.kind] || c.kind || '') + '</span><span class="cid">' + esc(c.id) + '</span></div>';
@@ -371,8 +376,9 @@ mark[data-fc][data-pulse="1"]{animation:fc-pulse .6s ease 2}\
     } else {
       h += '<div class="acts">' + (isProblem(c) ? '<button class="btn primary" data-act="writefix">Write a fix</button>' : '') + dismissBtn + '</div>';
     }
-    h += '<textarea class="usernote" data-f="note" rows="1" placeholder="Add a note for the agent…">' + esc(rec.note || '') + '</textarea><div class="savedhint">Note saved</div>';
+    h += '<div class="notewrap"><textarea class="usernote" data-f="note" rows="1" placeholder="Add a note for the agent…">' + esc(rec.note || '') + '</textarea><div class="savedhint">Note saved</div></div>';
     h += '</div></div>';
+    var card = h; h = '';
     // evidence
     h += '<div class="body"><section><div class="lbl">In the document</div><div class="anchor">“' + esc(c.anchor) + '”</div>' + (c.claim ? '<div class="claim">' + esc(c.claim) + '</div>' : '') + '</section>';
     h += '<section><div class="lbl">' + (srcs.length > 1 ? 'What the sources say' : 'What the source says') + '</div>';
@@ -381,13 +387,16 @@ mark[data-fc][data-pulse="1"]{animation:fc-pulse .6s ease 2}\
       var href = x.url ? x.url + (x.no_fragment ? '' : textFragment(x.quote)) : '';
       h += '<div class="src"><div class="h"><b>' + esc(x.key || x.url || 'Source') + '</b><span class="loc">' + esc(x.locator || '') + '</span>' + (href ? '<a href="' + esc(href) + '" target="_blank" rel="noopener">Open ↗</a>' : '') + '</div>';
       if (x.quote) h += '<div class="q">' + esc(x.quote) + '</div>';
-      if (x.verified_against) h += '<div class="fine">matched in ' + esc(x.verified_against) + '</div>';
+      if (x.verified_against) {
+        var va = String(x.verified_against), fname = va.split(' ')[0], fileHref = /^https?:/.test(fname) ? fname : (/\.\w+$/.test(fname) ? 'sources/' + fname : '');
+        h += '<div class="fine">matched in ' + (fileHref ? '<a href="' + esc(fileHref) + '" target="_blank" rel="noopener" title="Open the saved source text">' + esc(va) + '</a>' : esc(va)) + '</div>';
+      }
       h += '</div>';
     });
     if (srcs.length > 2) h += '<button class="more" data-act="more">' + (more ? 'Show fewer' : 'Show ' + (srcs.length - 2) + ' more source' + (srcs.length - 2 > 1 ? 's' : '')) + '</button>';
     if (c.checked_by && c.checked_by.length) h += '<div class="fine" style="margin-top:8px">Checked by ' + esc(c.checked_by.join(', ')) + '</div>';
     h += '</section></div>';
-    return h;
+    return { nav: nav, card: card, body: h };
   }
 
   function update(id, fn) {
@@ -469,7 +478,8 @@ mark[data-fc][data-pulse="1"]{animation:fc-pulse .6s ease 2}\
   });
   document.addEventListener('click', function (e) {
     var m = e.target.closest && e.target.closest('mark[data-fc]');
-    if (m && m.getAttribute('data-quiet') !== '1') { e.preventDefault(); e.stopPropagation(); select(m.getAttribute('data-fc'), false); }
+    if (m && m.getAttribute('data-quiet') !== '1') { e.preventDefault(); e.stopPropagation(); select(m.getAttribute('data-fc'), false); return; }
+    if (view === 'detail' && !e.target.closest('#fc-side,#fc-top,#fc-modal,a,button')) back();
   }, true);
   document.addEventListener('keydown', function (e) {
     if (modal) { if (e.key === 'Enter' || e.key === 'Escape') { e.preventDefault(); closeModal(); } return; }
