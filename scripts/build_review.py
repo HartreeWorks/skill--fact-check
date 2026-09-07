@@ -82,6 +82,20 @@ def attach_excerpts(work_dir, claims, radius=1500):
             src["excerpt_len"] = qlen
 
 
+def embed_sources(work_dir, claims, max_bytes=1_500_000):
+    """Full text of every cited source file under sources/, keyed by file name, so the page can
+    show a whole source without the folder being hosted. Files over max_bytes are skipped
+    (the excerpt still works for those)."""
+    out = {}
+    for c in claims:
+        for src in c.get("sources", []):
+            v = (src.get("verified_against") or "").split(" ")[0]
+            path = os.path.join(work_dir, "sources", v)
+            if v and v not in out and os.path.exists(path) and os.path.getsize(path) <= max_bytes:
+                out[v] = open(path, encoding="utf-8", errors="ignore").read()
+    return out
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("work_dir"); ap.add_argument("--out")
@@ -91,6 +105,7 @@ def main():
     claims = json.load(open(os.path.join(a.work_dir, "claims.json")))
     out = a.out or os.path.join(a.work_dir, "review.html")
     attach_excerpts(a.work_dir, claims)
+    sources = embed_sources(a.work_dir, claims)
     # Render blocks, grouping consecutive list items.
     parts, in_list = [], False
     for b in doc["blocks"]:
@@ -105,7 +120,7 @@ def main():
     orphans = [c for c in claims if norm(c.get("anchor", "")) not in text_tight]
     for c in orphans: sys.stderr.write(f"orphan {c['id']}: {c.get('anchor','')[:80]}\n")
     overlay = open(OVERLAY, encoding="utf-8").read()
-    data = json.dumps({"doc": doc.get("source", ""), "title": doc.get("title", ""), "claims": claims}, ensure_ascii=False).replace("</", "<\\/")
+    data = json.dumps({"doc": doc.get("source", ""), "title": doc.get("title", ""), "claims": claims, "sources": sources}, ensure_ascii=False).replace("</", "<\\/")
     title = doc.get("title") or "Fact check"
     page = f"""<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">

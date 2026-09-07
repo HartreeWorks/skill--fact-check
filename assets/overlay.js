@@ -77,7 +77,7 @@ body.fc-wide #fc-side.fc-split{width:780px;flex-direction:row}\
 #fc-side .nav .keys{border:0;background:transparent;color:#8a877f;font-size:11px;padding:4px 6px;border-radius:5px;white-space:nowrap}#fc-side .nav .keys:hover{background:#eceae3;color:#1c1b18}\
 #fc-modal .box.wide{width:760px}#fc-modal h2 .sub{font-weight:400;font-size:13px;color:#8a877f}\
 #fc-modal .excerpt{max-height:60vh;overflow:auto;white-space:pre-wrap;font:15px/1.6 ' + SERIF + ';color:#3d3b36;background:#faf9f6;border:1px solid #e2dfd6;border-radius:6px;padding:14px 16px;margin:0 0 14px}#fc-modal .excerpt mark{background:#fbe9bf;box-shadow:inset 0 -2px #dda634;color:#1c1b18}\
-#fc-modal .row a{font-size:13px}#fc-modal .row a.faint{color:#8a877f}\
+#fc-modal .row a{font-size:13px}#fc-modal .row .faint{color:#8a877f;font-size:12px}\
 #fc-modal table{border-collapse:collapse;width:100%;margin:0 0 14px}#fc-modal td{padding:6px 0;border-bottom:1px solid #eceae3;vertical-align:top}#fc-modal td:first-child{width:38%;white-space:nowrap}#fc-modal th{text-align:left;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#8a877f;padding:10px 0 4px}\
 #fc-side .cardwrap{flex:none;padding:10px 12px 0;max-height:62%;overflow:auto}\
 #fc-side .card{display:flex;flex-direction:column;gap:10px;padding:12px 16px 8px;background:#fff;border:1px solid #e2dfd6;border-radius:8px;box-shadow:0 1px 2px rgba(0,0,0,.04)}\
@@ -329,11 +329,18 @@ mark[data-fc][data-pulse="1"]{animation:fc-pulse .6s ease 2}\
     var c = byId[cid], x = c && (c.sources || [])[si]; if (!x || !x.excerpt) return;
     closeModal();
     var fname = String(x.verified_against).split(' ')[0];
+    var full = embedded.sources && embedded.sources[fname];
     var ex = x.excerpt, a = x.excerpt_start || 0, b = a + (x.excerpt_len || 0);
+    if (full) {
+      // Locate the excerpt's quote inside the full text so the whole file is shown, scrolled to it.
+      var probe = ex.slice(a, b), i = full.indexOf(probe);
+      if (i < 0) { i = full.indexOf(ex); if (i >= 0) i += a; }
+      if (i >= 0) { ex = full; a = i; b = i + probe.length; }
+    }
     modal = document.createElement('div'); modal.id = 'fc-modal';
     var h = '<div class="box wide" role="dialog" aria-modal="true"><h2>' + esc(x.key || fname) + ' <span class="sub">' + esc(fname) + (x.locator ? ' · ' + esc(x.locator) : '') + '</span></h2>';
     h += '<div class="excerpt">' + esc(ex.slice(0, a)) + '<mark>' + esc(ex.slice(a, b)) + '</mark>' + esc(ex.slice(b)) + '</div>';
-    h += '<div class="row"><button class="btn" data-act="closemodal">Close <kbd class="enter">↵</kbd></button>' + (x.url ? '<a href="' + esc(x.url) + '" target="_blank" rel="noopener">Open the original ↗</a>' : '') + '<a href="sources/' + esc(fname) + '" target="_blank" rel="noopener" class="faint">Full saved text ↗</a></div></div>';
+    h += '<div class="row"><button class="btn" data-act="closemodal">Close <kbd class="enter">↵</kbd></button>' + (x.url ? '<a href="' + esc(x.url) + '" target="_blank" rel="noopener">Open the original ↗</a>' : '') + '<span class="faint">' + (full ? 'Full saved text, ' + Math.round(full.length / 1000) + 'k characters' : 'Passage from the saved text') + '</span></div></div>';
     modal.innerHTML = h; document.body.appendChild(modal);
     var mk = modal.querySelector('.excerpt mark'); if (mk) mk.scrollIntoView({ block: 'center' });
     modal.querySelector('button').focus();
