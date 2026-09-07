@@ -13,6 +13,7 @@ Writes:
   out_dir/document.json   {"source", "title", "blocks": [{"type", "text", "html", "links"}]}
   out_dir/document.txt    one block per line, plain text (what claims are anchored to)
   out_dir/links.txt       every distinct outbound URL, one per line (for linkcheck.sh)
+  out_dir/page.html       the raw fetched page (web input only), for build_review.py --page
 
 Block types: heading, paragraph, list, quote, cell. The html field keeps inline links,
 bold and italics so the review page reads like the original.
@@ -196,6 +197,7 @@ def main():
     elif re.match(r"https?://", a.input):
         page, final = fetch(a.input); how = "fetched " + final
         title, blocks = from_html(page, final)
+        open(os.path.join(a.out_dir, "page.html"), "w", encoding="utf-8").write(page)  # for build_review.py --page
     elif a.input.endswith(".md"):
         title, blocks = from_markdown(open(a.input, encoding="utf-8").read()); how = "local markdown"
     else:

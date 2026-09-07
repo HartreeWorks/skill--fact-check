@@ -2,7 +2,12 @@
 """Build the self-contained review page.
 
 Usage:
-  build_review.py <work_dir> [--out review.html]
+  build_review.py <work_dir> [--out review.html] [--page]
+
+--page: instead of the plain template, overlay the claims on a snapshot of the original web
+page (work_dir/page.html, saved by extract_document.py). Scripts are removed, relative URLs
+are resolved against the original site so its styles and images still load, and the overlay
+is injected. The result looks like the site but is static; interactive widgets will not work.
 
 Reads work_dir/document.json and work_dir/claims.json, inlines assets/overlay.js and the
 claims, and writes work_dir/review.html: a single file with no external requests that
@@ -45,13 +50,35 @@ def render_block(b):
     return f"<p>{h}</p>"
 
 
+def build_page_snapshot(work_dir, doc, claims, out):
+    src = open(os.path.join(work_dir, "page.html"), encoding="utf-8", errors="replace").read()
+    base = doc.get("source", "")
+    origin = re.match(r"https?://[^/]+", base).group(0) if re.match(r"https?://", base) else ""
+    page = re.sub(r"<script\b[^>]*>.*?</script>", "", src, flags=re.S | re.I)
+    page = re.sub(r"<noscript\b[^>]*>.*?</noscript>", "", page, flags=re.S | re.I)
+    page = re.sub(r"\son[a-z]+=\"[^\"]*\"", "", page, flags=re.I)
+    page = re.sub(r"<base\b[^>]*>", "", page, flags=re.I)
+    if "<head" in page.lower():
+        page = re.sub(r"(<head\b[^>]*>)", r"\1<base href=\"%s/\">" % (base.rsplit("/", 1)[0] if "/" in base[8:] else origin), page, count=1, flags=re.I)
+    # Lazy-loaded images: promote data-src / srcset so pictures show without scripts.
+    page = re.sub(r"<img\b([^>]*?)\sdata-src=", r"<img\1 src=", page, flags=re.I)
+    overlay = open(OVERLAY, encoding="utf-8").read()
+    data = json.dumps({"doc": base, "title": doc.get("title", ""), "claims": claims}, ensure_ascii=False).replace("</", "<\\/")
+    inject = "<script>window.FACTCHECK = %s;</script>\n<script>%s</script>\n" % (data, overlay)
+    page = re.sub(r"</body>", lambda m: inject + "</body>", page, count=1, flags=re.I) if re.search(r"</body>", page, re.I) else page + inject
+    open(out, "w", encoding="utf-8").write(page)
+    print(f"wrote {out} (page snapshot mode): {len(claims)} claims; orphans are reported in the page bar")
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("work_dir"); ap.add_argument("--out")
+    ap.add_argument("work_dir"); ap.add_argument("--out"); ap.add_argument("--page", action="store_true")
     a = ap.parse_args()
     doc = json.load(open(os.path.join(a.work_dir, "document.json")))
     claims = json.load(open(os.path.join(a.work_dir, "claims.json")))
     out = a.out or os.path.join(a.work_dir, "review.html")
+    if a.page:
+        return build_page_snapshot(a.work_dir, doc, claims, out)
     # Render blocks, grouping consecutive list items.
     parts, in_list = [], False
     for b in doc["blocks"]:
