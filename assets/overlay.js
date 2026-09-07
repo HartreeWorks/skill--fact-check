@@ -72,7 +72,7 @@ body.fc-wide #fc-side.fc-split{width:780px;flex-direction:row}\
 #fc-side .nav .pos{margin-left:auto;font-size:12px;color:#6b6862;white-space:nowrap}\
 #fc-side .nav .step{border:1px solid #d3cfc4;background:#fff;height:28px;width:28px;justify-content:center;padding:0;border-radius:6px;color:#1c1b18;display:inline-flex;align-items:center;gap:5px;font-size:14px}#fc-side .nav .step:hover{background:#f1efe9}\
 #fc-side kbd{font:600 10px/1 ' + SANS + ';color:#6b6862;border:1px solid #d3cfc4;border-bottom-width:2px;border-radius:3px;padding:2px 4px;background:#faf9f6}\
-#fc-side .nav .keys{flex-basis:100%;font-size:11px;color:#8a877f;white-space:nowrap;padding:2px 0 0 4px}#fc-side .nav .keys .typing{color:#a09d95}\
+#fc-side .nav .keys{flex-basis:100%;font-size:11px;color:#8a877f;line-height:1.9;padding:2px 0 0 4px}#fc-side .nav .keys .typing{display:block;color:#a09d95}\
 #fc-side .cardwrap{flex:none;padding:10px 12px 0;max-height:62%;overflow:auto}\
 #fc-side .card{display:flex;flex-direction:column;gap:10px;padding:12px 16px 8px;background:#fff;border:1px solid #e2dfd6;border-radius:8px;box-shadow:0 1px 2px rgba(0,0,0,.04)}\
 #fc-side .meta{display:flex;align-items:center;gap:8px}\
@@ -364,7 +364,7 @@ mark[data-fc][data-pulse="1"]{animation:fc-pulse .6s ease 2}\
     var replacement = draft != null ? draft : (rec.replacement != null ? rec.replacement : sug);
     var nav = '<div class="nav"><button class="back" data-act="back">← <span>' + ({ issues: 'Issues', all: 'All claims' })[filter] + '</span></button>';
     var h = '';
-    nav += '<span class="pos">' + (pos >= 0 ? (pos + 1) + ' of ' + navl.length : '') + '</span><button class="step" data-act="prev" title="Previous issue (K or ↑)">‹</button><button class="step" data-act="next" title="Next issue (J or ↓)">›</button><span class="keys" title="While typing in a box, hold ⌥ (Alt) with the same key; ⌘↵ or Ctrl+↵ queues the edit"><kbd>J</kbd> next <kbd>K</kbd> prev <kbd>1</kbd> queue <kbd>2</kbd> dismiss <span class="typing">· in a text box hold <kbd>⌥</kbd>, or <kbd>⌘↵</kbd> to queue</span></span></div>';
+    nav += '<span class="pos">' + (pos >= 0 ? (pos + 1) + ' of ' + navl.length : '') + '</span><button class="step" data-act="prev" title="Previous issue (K or ↑)">‹</button><button class="step" data-act="next" title="Next issue (J or ↓)">›</button><span class="keys" title="While typing in a box, hold ⌥ (Alt) with the same key; ⌘↵ or Ctrl+↵ queues the edit"><kbd>J</kbd> next <kbd>K</kbd> prev <kbd>1</kbd> queue <kbd>2</kbd> dismiss<span class="typing">While typing: hold <kbd>⌥</kbd> with the key, or <kbd>⌘↵</kbd> to queue</span></span></div>';
     // decision card
     h += '<div class="cardwrap"><div class="card">';
     h += '<div class="meta"><span class="pill" style="background:' + (s.pill || '#e9e6de') + ';color:' + s.color + '">' + esc(s.label) + '</span><span class="kind">' + esc(KIND[c.kind] || c.kind || '') + '</span><span class="cid">' + esc(c.id) + '</span></div>';
