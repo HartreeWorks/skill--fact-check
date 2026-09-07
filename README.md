@@ -16,7 +16,7 @@ Install:
 npx skills add HartreeWorks/skill--fact-check
 ```
 
-Then ask Claude Code to "fact-check <URL or Google Doc link>". See `SKILL.md` for the steps, `references/` for the briefs and the reasoning, and `examples/hugging-face/` for a worked run on a one-page summary of the July 2026 OpenAI / Hugging Face incident with planted errors (its `README.md` is the answer key). `examples/sample/` is a smaller, fully offline fixture with three local sources.
+Then ask Claude Code to "fact-check <URL or Google Doc link>". See `SKILL.md` for the steps, `references/` for the briefs and the reasoning, and `examples/hugging-face/` for a worked run on a one-page summary of the July 2026 OpenAI / Hugging Face incident with planted errors (its `README.md` is the answer key).
 
 Optional: the `gdoc` CLI (https://github.com/LucaDeLeo/gdoc) for reading Google Docs with formatting and writing suggested edits; the latter also needs Docs API developer-preview access. Without it the skill reads link-shared docs as plain text and writes an `edits.md` for hand application.
 
