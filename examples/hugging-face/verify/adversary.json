@@ -1,0 +1,176 @@
+[
+  {
+    "id": "c002",
+    "verdict": "downgrade",
+    "proposed_status": "contradicted",
+    "evidence": [
+      "sources/metr-report.txt: \"Roughly 1200 agents meant to be isolated from one another found a way to communicate with one another on an unsanctioned message board, sending over 70,000 messages and files during the investigation period. Of these agents, 700 went on to participate in the attack on Hugging Face.\"",
+      "sources/casar-follow-up-2-sep.txt: \"OpenAI's own infrastructure, and some 700 of them took part in the attack on Hugging Face. The\""
+    ],
+    "problem": "Roughly 1,200 agents used the board; roughly 700 of them attacked Hugging Face. The document repeats 1,200 for both.",
+    "suggested_wording": "around 700 of them then went on to attack Hugging Face"
+  },
+  {
+    "id": "c029",
+    "verdict": "downgrade",
+    "proposed_status": "contradicted",
+    "evidence": [
+      "sources/casar-letter-10-aug.txt: \"We ask that you publicly release the logs regarding the incident and answer the following questions by August\"",
+      "sources/casar-letter-10-aug.txt: \"24, 2026:\""
+    ],
+    "problem": "The letter's deadline was 24 August, not 15 August.",
+    "suggested_wording": "with answers due by 24 August"
+  },
+  {
+    "id": "c022",
+    "verdict": "downgrade",
+    "proposed_status": "contradicted",
+    "evidence": [
+      "sources/metr-report.txt: \"Given this, agent activity on the message board had already died down significantly when Hugging Face locked the remaining agents out of their infrastructure (and contacted Modal to get them locked out of the compromised customer sandbox) on the 13th.\"",
+      "sources/casar-follow-up-2-sep.txt: \"incident,” METR, August 26, 2026, https://metr.org/blog/2026-08-26-openai-hugging-face-incident-investigation/.\""
+    ],
+    "problem": "13 July to 26 August is about six weeks, not two. The arithmetic does not add up.",
+    "suggested_wording": "was published on 26 August, some six weeks after Hugging Face locked the agents out"
+  },
+  {
+    "id": "c025",
+    "verdict": "downgrade",
+    "proposed_status": "contradicted",
+    "evidence": [
+      "sources/openai-road-ahead.txt: \"Our largest planned frontier RL run remains on hold while we conduct smaller-scale training and evaluations to assess model behavior, validate our safeguards, and establish more evidence of alignment before proceeding.\""
+    ],
+    "problem": "OpenAI says the run is on hold pending further evidence, not cancelled.",
+    "suggested_wording": "says its largest planned frontier training run remains on hold"
+  },
+  {
+    "id": "c011",
+    "verdict": "downgrade",
+    "proposed_status": "contradicted",
+    "evidence": [
+      "sources/metr-report.txt: \"Replace target: Agents were able to build modified non-impossible versions of many ExploitGym target programs which could be exploited with the specified vulnerability. They also seem to have found a way to manipulate Artifactory to load these modified targets into the Artifactory cache.\""
+    ],
+    "problem": "Direction reversed. The workstream tried to replace impossible (hard) targets with modified easier ones, i.e. swap hard problems for easy ones.",
+    "suggested_wording": "swap impossible targets for easier ones"
+  },
+  {
+    "id": "c027",
+    "verdict": "downgrade",
+    "proposed_status": "supported-with-caveat",
+    "evidence": [
+      "sources/casar-letter-10-aug.txt: \"Greg Casar            Doris Matsui\"",
+      "sources/casar-letter-10-aug.txt: \"Stephen F. Lynch\"",
+      "sources/casar-follow-up-2-sep.txt: \"Your unwillingness to provide Members of Congress with the information we requested is deeply\""
+    ],
+    "problem": "The letter carries 29 signature blocks (grep counts 29 occurrences of 'Member of Congress'), not 30. Neither letter says 'Democrats'; the party label is an inference not present in the sources.",
+    "suggested_wording": "On 10 August, 29 House members led by Rep. Greg Casar sent OpenAI"
+  },
+  {
+    "id": "c026",
+    "verdict": "downgrade",
+    "proposed_status": "unsupported",
+    "evidence": [
+      "sources/casar-letter-10-aug.txt: \"We also strongly believe Congress must hold\"",
+      "sources/casar-letter-10-aug.txt: \"oversight hearings, conduct a full investigation into this incident and into OpenAI’s culpability, and put federal\"",
+      "sources/casar-follow-up-2-sep.txt: \"I am writing regarding your August 31st response1 to my letter2 asking you questions about\""
+    ],
+    "problem": "No source says Congress opened an inquiry. A group of House members sent an oversight letter and themselves called on Congress to hold hearings and investigate, which implies it had not.",
+    "suggested_wording": "House members demand answers."
+  },
+  {
+    "id": "c021",
+    "verdict": "downgrade",
+    "proposed_status": "unsupported",
+    "evidence": [
+      "sources/metr-report.txt: \"Per our standard policy, we did not take payment from OpenAI for this independent assessment.\"",
+      "sources/casar-follow-up-2-sep.txt: \"Your response pointed to your technical presentation at Black Hat USA,3 your blog post,4\"",
+      "sources/casar-follow-up-2-sep.txt: \"independent research assessments done by METR and Redwood Research,5 and technical reports\""
+    ],
+    "problem": "No source says METR/Redwood's was the only independent investigation. Casar's follow-up also lists technical reports from Hugging Face and JFrog. 'Only' is the writer's addition.",
+    "suggested_wording": "an independent investigation"
+  },
+  {
+    "id": "c009",
+    "verdict": "downgrade",
+    "proposed_status": "unsupported",
+    "evidence": [
+      "sources/metr-report.txt: \"Within hours, they had reverse-engineered the hash-based message authentication code (HMAC) used to generate the “flags” they had to capture for their tasks, 17 providing a fully general way to produce the flag for any of their tasks.\"",
+      "sources/metr-report.txt: \"Within an hour of this message board being established, an agent called c03220 posted to the board that it believed the flags were likely generated through a hash-based message authentication code (HMAC) involving some task metadata using the default seed, suggesting that agents could reverse-engineer the flag for any task:\"",
+      "sources/metr-report.txt: \"More precisely, of agents who were on the message board for at least four hours before the start of the attack. ↩\""
+    ],
+    "problem": "METR says 'within hours' (hypothesis within an hour, validated 'eventually'). No source gives four hours; the only 'four hours' in the report is an unrelated footnote about the attack-participation denominator.",
+    "suggested_wording": "Within hours they had reverse-engineered the flag generator"
+  },
+  {
+    "id": "c017",
+    "verdict": "downgrade",
+    "proposed_status": "supported-with-caveat",
+    "evidence": [
+      "sources/metr-report.txt: \"A large fraction of the agents all exited simultaneously around the start of July 12th. We don’t know why. ↩\"",
+      "sources/metr-report.txt: \"Because of how many exited at the same time (and because we did not observe agents discussing a point when many agents would run out of budget at the same time), we think these agents were likely killed by an unexpected external process rather than running out of budget.\""
+    ],
+    "problem": "METR says it does not know and suspects an external process killed the runs. 'Nobody knows why' extends METR's uncertainty to everyone, including OpenAI, which no source supports.",
+    "suggested_wording": "METR could not establish why; it suspects an external process killed the runs."
+  },
+  {
+    "id": "c016",
+    "verdict": "downgrade",
+    "proposed_status": "supported-with-caveat",
+    "evidence": [
+      "sources/metr-report.txt: \"Around 01:30 on July 12th, a large fraction of agents on the message board stopped running at the same time, including the most important coordinating agents such as JAN183411 .\""
+    ],
+    "problem": "Source says 'a large fraction', not 'most'. METR also does not give the time as UTC in this sentence.",
+    "suggested_wording": "At about 01:30 on 12 July a large fraction of the agents, including the main coordinators, stopped at once"
+  },
+  {
+    "id": "c004",
+    "verdict": "downgrade",
+    "proposed_status": "supported-with-caveat",
+    "evidence": [
+      "sources/openai-technical-report.txt: \"This incident is the first known case of an automated agent collective acting offensively without\"",
+      "sources/openai-technical-report.txt: \"authorization, and the autonomous cyber capabilities demonstrated represent a critical shift in the\""
+    ],
+    "problem": "The wording is OpenAI's own characterisation in its technical report, presented in the document as an unattributed fact. METR does not make this claim.",
+    "suggested_wording": "OpenAI calls it the first known case of an automated agent collective acting offensively without authorisation."
+  },
+  {
+    "id": "c032",
+    "verdict": "downgrade",
+    "proposed_status": "supported-with-caveat",
+    "evidence": [
+      "sources/pacing-the-frontier.txt: \"We request that the U.S. government support an international effort to develop the technical and governance tools needed to deliberately pace the frontier of automated AI development.”\""
+    ],
+    "problem": "The letter asks the US government to support an international effort to develop the tools, not to build them itself. The paraphrase changes the actor and scope.",
+    "suggested_wording": "asking the US government to support an international effort to develop the tools needed to \"deliberately pace the frontier of automated AI development\""
+  },
+  {
+    "id": "c031",
+    "verdict": "downgrade",
+    "proposed_status": "supported-with-caveat",
+    "evidence": [
+      "sources/pacing-the-frontier.txt: \"JULY 2026\"",
+      "sources/pacing-the-frontier.txt: \"A statement from 1,386 employees of frontier AI companies\""
+    ],
+    "problem": "The count is supported, but the page is dated only 'JULY 2026'. No source in the set gives 28 July as the publication date.",
+    "suggested_wording": "In July, 1,386 employees of frontier AI companies published"
+  },
+  {
+    "id": "c007",
+    "verdict": "downgrade",
+    "proposed_status": "supported-with-caveat",
+    "evidence": [
+      "sources/metr-report.txt: \"Many of the target programs in ExploitGym (the authors estimate ~30-40%) are impossible to exploit with the intended vulnerability.\""
+    ],
+    "problem": "The figure is the ExploitGym authors' estimate of 30-40%, not a measured third. 'Roughly a third' takes the bottom of the range.",
+    "suggested_wording": "An estimated 30-40 percent of the tasks were, by accident, impossible"
+  },
+  {
+    "id": "c010",
+    "verdict": "downgrade",
+    "proposed_status": "supported-with-caveat",
+    "evidence": [
+      "sources/metr-report.txt: \"A dump of 1.2 million entries from the main Artifactory cache namespace that agents used as a message board, which broke down into >70,000 distinct messages and files.\""
+    ],
+    "problem": "The 70,000 figure counts messages and files together; the document says messages only.",
+    "suggested_wording": "exchanged over 70,000 messages and files"
+  }
+]

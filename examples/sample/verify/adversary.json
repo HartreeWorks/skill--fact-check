@@ -1,0 +1,156 @@
+[
+ {
+  "id": "c015",
+  "verdict": "downgrade",
+  "proposed_status": "contradicted",
+  "evidence": [
+   "sources/gazette.txt: \"commuters and shoppers arriving at the station on the east bank no longer cross to the west bank\"",
+   "sources/gazette.txt: \"Several traders said customers were staying on the east bank\""
+  ],
+  "problem": "Direction reversed. The Gazette says people arriving at the station stay on the east bank and no longer cross to the west; the document says traffic has moved from the east bank to the west bank.",
+  "suggested_wording": "foot traffic that used to cross to the west bank now stays on the east bank"
+ },
+ {
+  "id": "c017",
+  "verdict": "downgrade",
+  "proposed_status": "contradicted",
+  "evidence": [
+   "sources/council-minutes.txt: \"hoped to have a service running by 1 June 2026\"",
+   "sources/gazette.txt: \"a shuttle bus between the station and the market square was expected to be running by 1 June\""
+  ],
+  "problem": "Both sources give 1 June, not 1 May. Also 'promised' overstates: the minutes say officers 'hoped' to have a service running and the Gazette says it was 'expected'.",
+  "suggested_wording": "the council expects to have a shuttle bus running by 1 June"
+ },
+ {
+  "id": "c005",
+  "verdict": "downgrade",
+  "proposed_status": "contradicted",
+  "evidence": [
+   "sources/engineering-report.txt: \"Report date: 10 March 2026\"",
+   "sources/council-minutes.txt: \"inspection report dated 10 March 2026\""
+  ],
+  "problem": "The report is dated 10 March 2026, not 12 March. No source gives a separate publication date.",
+  "suggested_wording": "dated 10 March 2026"
+ },
+ {
+  "id": "c011",
+  "verdict": "downgrade",
+  "proposed_status": "contradicted",
+  "evidence": [
+   "sources/council-minutes.txt: \"closed to the public on 14 March 2026 following receipt of the Halden Associates inspection report dated 10 March 2026\""
+  ],
+  "problem": "Closure on 14 March is supported, but the report is dated 10 March, so the gap is four days, not two. The 'two days' arithmetic depends on the wrong 12 March date.",
+  "suggested_wording": "closed the bridge on 14 March, four days after the date of the report"
+ },
+ {
+  "id": "c014",
+  "verdict": "downgrade",
+  "proposed_status": "supported-with-caveat",
+  "evidence": [
+   "sources/council-minutes.txt: \"The Leader of the Council said that a temporary fix would be throwing good money after bad unless the drainage was also corrected\""
+  ],
+  "problem": "The quote is trimmed at a condition: the leader said a temporary fix would be throwing good money after bad 'unless the drainage was also corrected'. Cutting the condition turns a conditional into a blanket rejection of temporary repair. The minutes also record this as reported speech, not a verbatim quotation.",
+  "suggested_wording": "The minutes record the leader of the council saying that a temporary fix would be throwing good money after bad unless the drainage was also corrected."
+ },
+ {
+  "id": "c012",
+  "verdict": "downgrade",
+  "proposed_status": "supported-with-caveat",
+  "evidence": [
+   "sources/council-minutes.txt: \"RESOLVED (9 votes to 3, with 2 abstentions)\""
+  ],
+  "problem": "The vote was 9 to 3 with 2 abstentions; the document omits the abstentions.",
+  "suggested_wording": "voted 9 to 3, with two abstentions, to fund the full replacement"
+ },
+ {
+  "id": "c018",
+  "verdict": "downgrade",
+  "proposed_status": "supported-with-caveat",
+  "evidence": [
+   "sources/engineering-report.txt: \"the 40 footbridges of this design built between 1994 and 1999 under the county bridge programme\""
+  ],
+  "problem": "The source says the 40 bridges were built under 'the county bridge programme', which implies one county, not 'across England'. The count and the 1990s dates are supported.",
+  "suggested_wording": "one of 40 cable-stayed footbridges of the same design built under a county bridge programme between 1994 and 1999"
+ },
+ {
+  "id": "c020",
+  "verdict": "downgrade",
+  "proposed_status": "unsupported",
+  "evidence": [
+   "sources/engineering-report.txt: \"We recommend that the owners of those structures inspect the anchorages.\""
+  ],
+  "problem": "No source says whether the other bridges have been inspected. Halden only recommends that their owners inspect them.",
+  "suggested_wording": "Halden recommends that the owners of the other bridges inspect their anchorages."
+ },
+ {
+  "id": "c022",
+  "verdict": "downgrade",
+  "proposed_status": "unsupported",
+  "evidence": [
+   "sources/engineering-report.txt: \"2.3 Wider relevance. The same drainage detail was used on the 40 footbridges of this design\""
+  ],
+  "problem": "'Fastest-growing problem in local transport budgets' is a superlative with no source in the pack. Nothing in the three sources discusses budgets or trends.",
+  "suggested_wording": "Cut, or attribute to a named source."
+ },
+ {
+  "id": "c021",
+  "verdict": "downgrade",
+  "proposed_status": "unsupported",
+  "evidence": [
+   "sources/gazette.txt: \"The bridge was closed on 14 March after engineers found corrosion in two of its cables.\""
+  ],
+  "problem": "No source says closures of this kind are becoming more frequent; the pack covers only this one bridge.",
+  "suggested_wording": "Cut, or attribute to a named source."
+ },
+ {
+  "id": "c009",
+  "verdict": "downgrade",
+  "proposed_status": "supported-with-caveat",
+  "evidence": [
+   "sources/engineering-report.txt: \"3.4 Budget estimate for full replacement of all four cables and drainage works: £1.8 million, excluding VAT and traffic management.\""
+  ],
+  "problem": "The £1.8 million covers all four cables plus drainage reconstruction, and excludes VAT and traffic management. The document presents it as the cable replacement estimate.",
+  "suggested_wording": "estimated the full replacement, including drainage works, at £1.8 million excluding VAT"
+ },
+ {
+  "id": "c010",
+  "verdict": "downgrade",
+  "proposed_status": "supported-with-caveat",
+  "evidence": [
+   "sources/engineering-report.txt: \"A note in the 2019 principal inspection records \\\"standing water observed at west anchorage; drainage to be reviewed\\\". No remedial work is recorded.\""
+  ],
+  "problem": "The source says the 2019 inspection recorded standing water; it does not say this was the first time the problem was noted.",
+  "suggested_wording": "since at least 2019, when a principal inspection recorded standing water at the anchorage"
+ },
+ {
+  "id": "c003",
+  "verdict": "downgrade",
+  "proposed_status": "supported-with-caveat",
+  "evidence": [
+   "sources/engineering-report.txt: \"an average of 2,900 crossings per day, rising to 4,100 on market days\""
+  ],
+  "problem": "The source figure is an average of 2,900 crossings per day (4,100 on market days), and counts crossings rather than pedestrians. 'About 3,000' is a fair rounding but the document should say average crossings.",
+  "suggested_wording": "an average of about 2,900 crossings a day"
+ },
+ {
+  "id": "c013",
+  "verdict": "downgrade",
+  "proposed_status": "supported-with-caveat",
+  "evidence": [
+   "sources/council-minutes.txt: \"with works to commence in September 2026 subject to procurement\""
+  ],
+  "problem": "The start is September 2026 'subject to procurement'; the document states it as settled.",
+  "suggested_wording": "with work due to start in September, subject to procurement"
+ },
+ {
+  "id": "new-1",
+  "anchor": "has been shut ever since",
+  "verdict": "add",
+  "proposed_status": "unverifiable",
+  "evidence": [
+   "sources/gazette.txt: \"Traders count the cost as Kingfisher bridge stays shut\""
+  ],
+  "problem": "The extractor has no claim for this. The latest source (Gazette, 9 April 2026) confirms the bridge was still shut then; nothing in the pack covers the period since.",
+  "suggested_wording": "was still shut as of early April"
+ }
+]

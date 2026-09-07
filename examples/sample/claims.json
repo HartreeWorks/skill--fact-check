@@ -1,0 +1,705 @@
+[
+ {
+  "id": "c001",
+  "section": "",
+  "anchor": "In March 2026, Marlow District Council closed the Kingfisher footbridge",
+  "claim": "The council closed the bridge in March 2026.",
+  "kind": "fact",
+  "status": "supported",
+  "sources": [
+   {
+    "key": "council-minutes",
+    "url": "examples/sample/sources/council-minutes.txt",
+    "quote": "bridge had been closed to the public on 14 March 2026",
+    "locator": "Item 7.1",
+    "verified_against": "council-minutes.txt"
+   }
+  ],
+  "note": "The closure was on 14 March 2026, which is in March 2026. The claim is correct but imprecise.",
+  "checked_by": [
+   "verifier:A"
+  ]
+ },
+ {
+  "id": "c002",
+  "section": "",
+  "anchor": "corrosion in two of its four main cables",
+  "claim": "Two of four main cables were corroded.",
+  "kind": "fact",
+  "status": "supported-with-caveat",
+  "sources": [
+   {
+    "key": "engineering-report",
+    "url": "examples/sample/sources/engineering-report.txt",
+    "quote": "Corrosion has reduced the effective cross-section of cables C2 and C3",
+    "locator": "Section 1 Summary",
+    "verified_against": "engineering-report.txt"
+   }
+  ],
+  "note": "Two cables (C2 and C3) had significant corrosion; however, cables C1 and C4 also show surface corrosion. The claim focuses only on the two worst-affected cables.",
+  "checked_by": [
+   "verifier:A"
+  ]
+ },
+ {
+  "id": "c003",
+  "section": "",
+  "anchor": "about 3,000 pedestrians a day",
+  "claim": "About 3,000 crossings a day.",
+  "kind": "fact",
+  "status": "supported-with-caveat",
+  "sources": [
+   {
+    "key": "engineering-report",
+    "url": "examples/sample/sources/engineering-report.txt",
+    "quote": "Council pedestrian counts for 2025 give an average of 2,900 crossings per day, rising to 4,100 on market days",
+    "locator": "Section 4 Usage",
+    "verified_against": "engineering-report.txt"
+   },
+   {
+    "key": "engineering-report",
+    "url": "",
+    "quote": "an average of 2,900 crossings per day, rising to 4,100 on market days",
+    "locator": "found by search",
+    "verified_against": "engineering-report.txt",
+    "no_fragment": true
+   }
+  ],
+  "note": "About 3,000 (doc rounds 2,900) is the average. The source specifies this is an average not a peak; peak is 4,100 on market days. Suggest: 'average of about 2,900 pedestrians a day'. The source figure is an average of 2,900 crossings per day (4,100 on market days), and counts crossings rather than pedestrians. 'About 3,000' is a fair rounding but the document should say average crossings. Suggest: 'an average of about 2,900 crossings a day'.",
+  "hint": "Check the count and whether it is an average or a peak.",
+  "checked_by": [
+   "verifier:A",
+   "adversary"
+  ]
+ },
+ {
+  "id": "c004",
+  "section": "",
+  "anchor": "between the railway station on the east bank and the market square on the west bank",
+  "claim": "Station is on the east bank, market square on the west.",
+  "kind": "fact",
+  "status": "supported",
+  "sources": [
+   {
+    "key": "engineering-report",
+    "url": "examples/sample/sources/engineering-report.txt",
+    "quote": "spanning the River Marlow between the railway station (east bank) and the market square (west bank)",
+    "locator": "Section 1 Summary",
+    "verified_against": "engineering-report.txt"
+   }
+  ],
+  "note": "The geographic claim is correct and directly quoted from the engineering report.",
+  "checked_by": [
+   "verifier:A"
+  ]
+ },
+ {
+  "id": "c005",
+  "section": "",
+  "anchor": "published on 12 March 2026",
+  "claim": "The Halden report was published on 12 March 2026.",
+  "kind": "fact",
+  "status": "contradicted",
+  "sources": [
+   {
+    "key": "engineering-report",
+    "url": "examples/sample/sources/engineering-report.txt",
+    "quote": "Report date: 10 March 2026",
+    "locator": "Title block",
+    "verified_against": "engineering-report.txt"
+   },
+   {
+    "key": "council-minutes",
+    "url": "",
+    "quote": "inspection report dated 10 March 2026",
+    "locator": "found by search",
+    "verified_against": "council-minutes.txt",
+    "no_fragment": true
+   }
+  ],
+  "note": "The document claims publication on 12 March 2026, but the engineering report is dated 10 March 2026. Suggest: 'published on 10 March 2026'. The report is dated 10 March 2026, not 12 March. No source gives a separate publication date. Suggest: 'dated 10 March 2026'.",
+  "hint": "Check the report date.",
+  "checked_by": [
+   "verifier:A",
+   "adversary"
+  ]
+ },
+ {
+  "id": "c006",
+  "section": "",
+  "anchor": "unsafe for public use in its current condition",
+  "claim": "Verbatim quote from the report.",
+  "kind": "fact",
+  "status": "supported",
+  "sources": [
+   {
+    "key": "engineering-report",
+    "url": "examples/sample/sources/engineering-report.txt",
+    "quote": "We rate the structure unsafe for public use in its current condition",
+    "locator": "Section 1 Summary",
+    "verified_against": "engineering-report.txt"
+   }
+  ],
+  "note": "This is a direct quote from the report summary.",
+  "checked_by": [
+   "verifier:A"
+  ]
+ },
+ {
+  "id": "c007",
+  "section": "",
+  "anchor": "recommended that all four cables be replaced",
+  "claim": "The report recommends replacing all four cables.",
+  "kind": "fact",
+  "status": "supported",
+  "sources": [
+   {
+    "key": "engineering-report",
+    "url": "examples/sample/sources/engineering-report.txt",
+    "quote": "We recommend replacing all four cables so that the structure has a uniform remaining life",
+    "locator": "Section 3.2 Recommendations",
+    "verified_against": "engineering-report.txt"
+   }
+  ],
+  "note": "The report recommends full replacement of all four cables as per section 3.2.",
+  "checked_by": [
+   "verifier:A"
+  ]
+ },
+ {
+  "id": "c008",
+  "section": "",
+  "anchor": "reduced the cross-section of the two worst cables by roughly a third",
+  "claim": "Section loss of about a third on the two worst cables.",
+  "kind": "fact",
+  "status": "supported",
+  "sources": [
+   {
+    "key": "engineering-report",
+    "url": "examples/sample/sources/engineering-report.txt",
+    "quote": "Corrosion has reduced the effective cross-section of cables C2 and C3 by between 30 and 35 percent",
+    "locator": "Section 1 Summary",
+    "verified_against": "engineering-report.txt"
+   }
+  ],
+  "note": "'Roughly a third' (33%) accurately characterises the 30-35 percent section loss cited in the report.",
+  "checked_by": [
+   "verifier:A"
+  ]
+ },
+ {
+  "id": "c009",
+  "section": "",
+  "anchor": "estimated the replacement at £1.8 million",
+  "claim": "Replacement estimate £1.8 million.",
+  "kind": "fact",
+  "status": "supported-with-caveat",
+  "sources": [
+   {
+    "key": "engineering-report",
+    "url": "examples/sample/sources/engineering-report.txt",
+    "quote": "Budget estimate for full replacement of all four cables and drainage works: £1.8 million, excluding VAT and traffic management",
+    "locator": "Section 3.4 Recommendations",
+    "verified_against": "engineering-report.txt"
+   },
+   {
+    "key": "engineering-report",
+    "url": "",
+    "quote": "3.4 Budget estimate for full replacement of all four cables and drainage works: £1.8 million, excluding VAT and traffic management.",
+    "locator": "found by search",
+    "verified_against": "engineering-report.txt",
+    "no_fragment": true
+   }
+  ],
+  "note": "£1.8 million is correct but the source explicitly excludes VAT and traffic management costs. Suggest: '£1.8 million, excluding VAT and traffic management'. The £1.8 million covers all four cables plus drainage reconstruction, and excludes VAT and traffic management. The document presents it as the cable replacement estimate. Suggest: 'estimated the full replacement, including drainage works, at £1.8 million excluding VAT'.",
+  "hint": "What does the estimate include or exclude?",
+  "checked_by": [
+   "verifier:A",
+   "adversary"
+  ]
+ },
+ {
+  "id": "c010",
+  "section": "",
+  "anchor": "water had been pooling at the west anchorage since at least 2019, when a previous inspection first noted the problem",
+  "claim": "Standing water at the west anchorage noted in a 2019 inspection.",
+  "kind": "fact",
+  "status": "supported-with-caveat",
+  "sources": [
+   {
+    "key": "engineering-report",
+    "url": "examples/sample/sources/engineering-report.txt",
+    "quote": "A note in the 2019 principal inspection records 'standing water observed at west anchorage; drainage to be reviewed'",
+    "locator": "Section 2.2 Cause",
+    "verified_against": "engineering-report.txt"
+   }
+  ],
+  "note": "The 2019 inspection indeed noted standing water at the west anchorage as stated. The source says the 2019 inspection recorded standing water; it does not say this was the first time the problem was noted. Suggest: 'since at least 2019, when a principal inspection recorded standing water at the anchorage'.",
+  "checked_by": [
+   "verifier:A",
+   "adversary"
+  ]
+ },
+ {
+  "id": "c011",
+  "section": "",
+  "anchor": "closed the bridge on 14 March, two days after the report was published",
+  "claim": "Closure on 14 March, two days after publication.",
+  "kind": "fact",
+  "status": "contradicted",
+  "sources": [
+   {
+    "key": "engineering-report",
+    "url": "examples/sample/sources/engineering-report.txt",
+    "quote": "Report date: 10 March 2026",
+    "locator": "Title block",
+    "verified_against": "engineering-report.txt"
+   },
+   {
+    "key": "council-minutes",
+    "url": "examples/sample/sources/council-minutes.txt",
+    "quote": "closed to the public on 14 March 2026",
+    "locator": "Item 7.1",
+    "verified_against": "council-minutes.txt"
+   },
+   {
+    "key": "council-minutes",
+    "url": "",
+    "quote": "closed to the public on 14 March 2026 following receipt of the Halden Associates inspection report dated 10 March 2026",
+    "locator": "found by search",
+    "verified_against": "council-minutes.txt",
+    "no_fragment": true
+   }
+  ],
+  "note": "The closure was 14 March; the report date was 10 March (4 days), not 12 March (2 days). The arithmetic holds only if using the document's claimed publication date of 12 March, but the actual report date is 10 March. Suggest: 'four days after the report was dated'. Closure on 14 March is supported, but the report is dated 10 March, so the gap is four days, not two. The 'two days' arithmetic depends on the wrong 12 March date. Suggest: 'closed the bridge on 14 March, four days after the date of the report'.",
+  "hint": "Check the arithmetic against the report date.",
+  "checked_by": [
+   "verifier:A",
+   "adversary"
+  ]
+ },
+ {
+  "id": "c012",
+  "section": "",
+  "anchor": "voted 9 to 3 to fund the full replacement rather than a temporary repair",
+  "claim": "Vote was 9 to 3 for full replacement.",
+  "kind": "fact",
+  "status": "supported-with-caveat",
+  "sources": [
+   {
+    "key": "council-minutes",
+    "url": "examples/sample/sources/council-minutes.txt",
+    "quote": "RESOLVED (9 votes to 3, with 2 abstentions)",
+    "locator": "Item 7.5",
+    "verified_against": "council-minutes.txt"
+   }
+  ],
+  "note": "The vote was 9-3, but the minutes record 2 abstentions. The claim omits the abstentions. Suggest: '9 to 3 with 2 abstentions'. The vote was 9 to 3 with 2 abstentions; the document omits the abstentions. Suggest: 'voted 9 to 3, with two abstentions, to fund the full replacement'.",
+  "hint": "Abstentions?",
+  "checked_by": [
+   "verifier:A",
+   "adversary"
+  ]
+ },
+ {
+  "id": "c013",
+  "section": "",
+  "anchor": "with work to start in the autumn",
+  "claim": "Work to start in autumn 2026.",
+  "kind": "fact",
+  "status": "supported-with-caveat",
+  "sources": [
+   {
+    "key": "council-minutes",
+    "url": "examples/sample/sources/council-minutes.txt",
+    "quote": "works to commence in September 2026",
+    "locator": "Item 7.5",
+    "verified_against": "council-minutes.txt"
+   },
+   {
+    "key": "council-minutes",
+    "url": "",
+    "quote": "with works to commence in September 2026 subject to procurement",
+    "locator": "found by search",
+    "verified_against": "council-minutes.txt",
+    "no_fragment": true
+   }
+  ],
+  "note": "September 2026 is autumn, so the claim is accurate, though less precise than the source. The start is September 2026 'subject to procurement'; the document states it as settled. Suggest: 'with work due to start in September, subject to procurement'.",
+  "checked_by": [
+   "verifier:A",
+   "adversary"
+  ]
+ },
+ {
+  "id": "c014",
+  "section": "",
+  "anchor": "a temporary fix would be throwing good money after bad",
+  "claim": "Verbatim quote of the council leader.",
+  "kind": "fact",
+  "status": "supported-with-caveat",
+  "sources": [
+   {
+    "key": "council-minutes",
+    "url": "examples/sample/sources/council-minutes.txt",
+    "quote": "The Leader of the Council said that a temporary fix would be throwing good money after bad unless the drainage was also corrected",
+    "locator": "Item 7.3",
+    "verified_against": "council-minutes.txt"
+   }
+  ],
+  "note": "The quote is accurate but incomplete. The source includes a critical condition: 'unless the drainage was also corrected'. Suggest: 'a temporary fix would be throwing good money after bad unless the drainage was also corrected'. The quote is trimmed at a condition: the leader said a temporary fix would be throwing good money after bad 'unless the drainage was also corrected'. Cutting the condition turns a conditional into a blanket rejection of temporary repair. The minutes also record this as reported speech, not a verbatim quotation. Suggest: 'The minutes record the leader of the council saying that a temporary fix would be throwing good money after bad unless the drainage was also corrected.'.",
+  "hint": "Is the quote complete? Does the source attach a condition?",
+  "checked_by": [
+   "verifier:A",
+   "adversary"
+  ]
+ },
+ {
+  "id": "c015",
+  "section": "",
+  "anchor": "foot traffic has moved from the east bank to the west bank",
+  "claim": "Since the closure people stay on the west bank rather than the east.",
+  "kind": "fact",
+  "status": "contradicted",
+  "sources": [
+   {
+    "key": "gazette",
+    "url": "https://example.org/marlow/gazette",
+    "quote": "commuters and shoppers arriving at the station on the east bank no longer cross to the west bank",
+    "locator": "Paragraph 2 of main text",
+    "verified_against": "gazette.txt"
+   },
+   {
+    "key": "gazette",
+    "url": "",
+    "quote": "Several traders said customers were staying on the east bank",
+    "locator": "found by search",
+    "verified_against": "gazette.txt",
+    "no_fragment": true
+   }
+  ],
+  "note": "The document claims traffic moved FROM east TO west bank, but the source shows the opposite: people arriving at the east bank (station) are NOT crossing to the west bank (market square), meaning they stay on the east bank. The direction stated in the document is backwards. Direction reversed. The Gazette says people arriving at the station stay on the east bank and no longer cross to the west; the document says traffic has moved from the east bank to the west bank. Suggest: 'foot traffic that used to cross to the west bank now stays on the east bank'.",
+  "hint": "Check the direction against the Gazette.",
+  "checked_by": [
+   "verifier:B",
+   "adversary"
+  ]
+ },
+ {
+  "id": "c016",
+  "section": "",
+  "anchor": "takings are down by a fifth",
+  "claim": "Traders' takings down about 20 percent.",
+  "kind": "fact",
+  "status": "supported",
+  "sources": [
+   {
+    "key": "gazette",
+    "url": "https://example.org/marlow/gazette",
+    "quote": "Market square traders say the closure of the Kingfisher footbridge has cut their takings by about 20 percent",
+    "locator": "Opening of main text",
+    "verified_against": "gazette.txt"
+   }
+  ],
+  "note": "Document's 'down by a fifth' matches the source's 'about 20 percent' (20% = 1/5).",
+  "checked_by": [
+   "verifier:B"
+  ]
+ },
+ {
+  "id": "c017",
+  "section": "",
+  "anchor": "the council has promised a shuttle bus by 1 May",
+  "claim": "Shuttle bus promised by 1 May.",
+  "kind": "fact",
+  "status": "contradicted",
+  "sources": [
+   {
+    "key": "council-minutes",
+    "url": "https://example.org/marlow/council-minutes",
+    "quote": "hoped to have a service running by 1 June 2026",
+    "locator": "Section 7.4",
+    "verified_against": "council-minutes.txt"
+   },
+   {
+    "key": "gazette",
+    "url": "https://example.org/marlow/gazette",
+    "quote": "A council spokesperson said a shuttle bus between the station and the market square was expected to be running by 1 June",
+    "locator": "Paragraph 2 of main text",
+    "verified_against": "gazette.txt"
+   },
+   {
+    "key": "gazette",
+    "url": "",
+    "quote": "a shuttle bus between the station and the market square was expected to be running by 1 June",
+    "locator": "found by search",
+    "verified_against": "gazette.txt",
+    "no_fragment": true
+   }
+  ],
+  "note": "Document claims shuttle bus promised by 1 May, but both council minutes and the Gazette itself report 1 June. The date in the document is one month early. Both sources give 1 June, not 1 May. Also 'promised' overstates: the minutes say officers 'hoped' to have a service running and the Gazette says it was 'expected'. Suggest: 'the council expects to have a shuttle bus running by 1 June'.",
+  "hint": "Check the date in the minutes and the Gazette.",
+  "checked_by": [
+   "verifier:B",
+   "adversary"
+  ]
+ },
+ {
+  "id": "c018",
+  "section": "",
+  "anchor": "one of 40 cable-stayed footbridges of the same design built across England in the 1990s",
+  "claim": "40 bridges of the design, built across England in the 1990s.",
+  "kind": "fact",
+  "status": "supported-with-caveat",
+  "sources": [
+   {
+    "key": "engineering-report",
+    "url": "https://example.org/marlow/engineering-report",
+    "quote": "The same drainage detail was used on the 40 footbridges of this design built between 1994 and 1999 under the county bridge programme",
+    "locator": "Section 2.3",
+    "verified_against": "engineering-report.txt"
+   },
+   {
+    "key": "engineering-report",
+    "url": "",
+    "quote": "the 40 footbridges of this design built between 1994 and 1999 under the county bridge programme",
+    "locator": "found by search",
+    "verified_against": "engineering-report.txt",
+    "no_fragment": true
+   }
+  ],
+  "note": "Source confirms 40 bridges of same design from 1994-1999 (within the 1990s). However, the source does not explicitly say the bridges were built 'across England'—it only mentions 'county bridge programme'. Suggest: '40 cable-stayed footbridges of the same design built in the 1990s' or add 'in England' only if confirmed elsewhere. The source says the 40 bridges were built under 'the county bridge programme', which implies one county, not 'across England'. The count and the 1990s dates are supported. Suggest: 'one of 40 cable-stayed footbridges of the same design built under a county bridge programme between 1994 and 1999'.",
+  "hint": "Does the source say 'across England'?",
+  "checked_by": [
+   "verifier:B",
+   "adversary"
+  ]
+ },
+ {
+  "id": "c019",
+  "section": "",
+  "anchor": "the drainage detail that failed at Marlow is common to the whole series",
+  "claim": "Halden says the drainage detail is common to all 40.",
+  "kind": "fact",
+  "status": "supported",
+  "sources": [
+   {
+    "key": "engineering-report",
+    "url": "https://example.org/marlow/engineering-report",
+    "quote": "The same drainage detail was used on the 40 footbridges of this design",
+    "locator": "Section 2.3",
+    "verified_against": "engineering-report.txt"
+   }
+  ],
+  "note": "Report explicitly states the drainage detail that failed at Marlow was common to all 40 bridges of this design.",
+  "checked_by": [
+   "verifier:B"
+  ]
+ },
+ {
+  "id": "c020",
+  "section": "",
+  "anchor": "Nobody has yet inspected the others",
+  "claim": "None of the other 39 bridges has been inspected.",
+  "kind": "fact",
+  "status": "unsupported",
+  "sources": [
+   {
+    "key": "engineering-report",
+    "url": "https://example.org/marlow/engineering-report",
+    "quote": "We recommend that the owners of those structures inspect the anchorages",
+    "locator": "Section 2.3",
+    "verified_against": "engineering-report.txt"
+   },
+   {
+    "key": "engineering-report",
+    "url": "",
+    "quote": "We recommend that the owners of those structures inspect the anchorages.",
+    "locator": "found by search",
+    "verified_against": "engineering-report.txt",
+    "no_fragment": true
+   }
+  ],
+  "note": "The report's recommendation to inspect the other structures implies they have not yet been inspected. No evidence in any source of inspections having been performed on the other 39 bridges. No source says whether the other bridges have been inspected. Halden only recommends that their owners inspect them. Suggest: 'Halden recommends that the owners of the other bridges inspect their anchorages.'.",
+  "checked_by": [
+   "verifier:B",
+   "adversary"
+  ]
+ },
+ {
+  "id": "c021",
+  "section": "",
+  "anchor": "Bridge closures like this one are becoming more frequent",
+  "claim": "Closures of this kind are increasing in frequency.",
+  "kind": "characterisation",
+  "status": "unsupported",
+  "sources": [
+   {
+    "key": "gazette",
+    "url": "",
+    "quote": "The bridge was closed on 14 March after engineers found corrosion in two of its cables.",
+    "locator": "found by search",
+    "verified_against": "gazette.txt",
+    "no_fragment": true
+   }
+  ],
+  "note": "No evidence in any source supports this characterisation. The sources discuss only the Marlow bridge closure; there is no data on frequency trends for such closures. No source says closures of this kind are becoming more frequent; the pack covers only this one bridge. Suggest: 'Cut, or attribute to a named source.'.",
+  "checked_by": [
+   "verifier:B",
+   "adversary"
+  ]
+ },
+ {
+  "id": "c022",
+  "section": "",
+  "anchor": "the maintenance backlog on small structures is the fastest-growing problem in local transport budgets",
+  "claim": "Small-structure maintenance backlog is the fastest-growing local transport budget problem.",
+  "kind": "characterisation",
+  "status": "unsupported",
+  "sources": [
+   {
+    "key": "engineering-report",
+    "url": "",
+    "quote": "2.3 Wider relevance. The same drainage detail was used on the 40 footbridges of this design",
+    "locator": "found by search",
+    "verified_against": "engineering-report.txt",
+    "no_fragment": true
+   }
+  ],
+  "note": "No evidence in any source supports this characterisation. The sources discuss only the Marlow bridge; there is no data on maintenance budgets or growth trends in local transport spending. 'Fastest-growing problem in local transport budgets' is a superlative with no source in the pack. Nothing in the three sources discusses budgets or trends. Suggest: 'Cut, or attribute to a named source.'.",
+  "checked_by": [
+   "verifier:B",
+   "adversary"
+  ]
+ },
+ {
+  "id": "c023",
+  "section": "",
+  "anchor": "Councils should inspect every bridge of this design before the end of the year",
+  "claim": "Recommendation (author's view).",
+  "kind": "author-view",
+  "status": "unverifiable",
+  "sources": [
+   {
+    "key": "engineering-report",
+    "url": "https://example.org/marlow/engineering-report",
+    "quote": "We recommend that the owners of those structures inspect the anchorages",
+    "locator": "Section 2.3",
+    "verified_against": "engineering-report.txt"
+   }
+  ],
+  "note": "This is the author's own recommendation. The engineering report recommends inspection of the structures but does not specify 'every bridge of this design before the end of the year'—the end-of-year deadline is the document author's addition.",
+  "checked_by": [
+   "verifier:B"
+  ]
+ },
+ {
+  "id": "c024",
+  "section": "",
+  "anchor": "engineering report",
+  "claim": "Link goes to the Halden engineering report.",
+  "kind": "link",
+  "status": "supported-with-caveat",
+  "sources": [
+   {
+    "key": "engineering-report",
+    "url": "https://example.org/marlow/engineering-report",
+    "quote": "Halden Associates / Structural inspection report: Kingfisher Footbridge, Marlow",
+    "locator": "Document header",
+    "verified_against": "engineering-report.txt (NOT FOUND by string search)"
+   }
+  ],
+  "note": "Link correctly resolves to the Halden Associates engineering report as described in the document. No quote could be re-found in a source file; needs a verbatim citation.",
+  "link": "https://example.org/marlow/engineering-report",
+  "checked_by": [
+   "verifier:B"
+  ]
+ },
+ {
+  "id": "c025",
+  "section": "",
+  "anchor": "minutes",
+  "claim": "Link goes to the council minutes of 2 April.",
+  "kind": "link",
+  "status": "supported",
+  "sources": [
+   {
+    "key": "council-minutes",
+    "url": "https://example.org/marlow/council-minutes",
+    "quote": "Minutes of the Full Council meeting held on Thursday 2 April 2026",
+    "locator": "Document header",
+    "verified_against": "council-minutes.txt"
+   }
+  ],
+  "note": "Link correctly resolves to council minutes from the meeting of 2 April 2026.",
+  "link": "https://example.org/marlow/council-minutes",
+  "checked_by": [
+   "verifier:B"
+  ]
+ },
+ {
+  "id": "c026",
+  "section": "",
+  "anchor": "Marlow Gazette",
+  "claim": "Link goes to the Gazette report.",
+  "kind": "link",
+  "status": "supported",
+  "sources": [
+   {
+    "key": "gazette",
+    "url": "https://example.org/marlow/gazette",
+    "quote": "Marlow Gazette, 9 April 2026",
+    "locator": "Document header",
+    "verified_against": "gazette.txt"
+   }
+  ],
+  "note": "Link correctly resolves to a report from the Marlow Gazette as claimed.",
+  "link": "https://example.org/marlow/gazette",
+  "checked_by": [
+   "verifier:B"
+  ]
+ },
+ {
+  "id": "c027",
+  "section": "",
+  "anchor": "Halden Associates",
+  "claim": "The report's author is Halden Associates.",
+  "kind": "fact",
+  "status": "supported",
+  "sources": [
+   {
+    "key": "engineering-report",
+    "url": "https://example.org/marlow/engineering-report",
+    "quote": "Halden Associates",
+    "locator": "Document header",
+    "verified_against": "engineering-report.txt"
+   }
+  ],
+  "note": "The engineering report is authored by Halden Associates as stated in the document.",
+  "checked_by": [
+   "verifier:B"
+  ]
+ },
+ {
+  "id": "c901",
+  "section": "",
+  "anchor": "has been shut ever since",
+  "claim": "The extractor has no claim for this.",
+  "kind": "characterisation",
+  "status": "unverifiable",
+  "sources": [
+   {
+    "key": "gazette",
+    "url": "",
+    "quote": "Traders count the cost as Kingfisher bridge stays shut",
+    "locator": "found by search",
+    "verified_against": "gazette.txt",
+    "no_fragment": true
+   }
+  ],
+  "note": "The extractor has no claim for this. The latest source (Gazette, 9 April 2026) confirms the bridge was still shut then; nothing in the pack covers the period since. Suggest: 'was still shut as of early April'.",
+  "checked_by": [
+   "adversary"
+  ]
+ }
+]

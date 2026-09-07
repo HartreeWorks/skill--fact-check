@@ -1,0 +1,131 @@
+OpenAI, Anthropic, Google, and 100 other companies call for action to defend against rogue AI | TechCrunch 
+ Disrupt 2026: OpenAI, Anthropic, Replit, and more take over 6 industry stages. 25% off tickets now 
+ Back by popular demand: Save up to $300 on Disrupt 
+ Close 
+ TechCrunch Desktop Logo 
+ TechCrunch Mobile Logo 
+ Latest 
+ Startups 
+ Venture 
+ Apple 
+ Security 
+ AI 
+ Apps 
+ Disrupt 2026 
+ Events 
+ Podcasts 
+ Newsletters 
+ Search Submit 
+ Site Search Toggle 
+ Mega Menu Toggle 
+ Topics
+ Latest 
+ AI 
+ Amazon 
+ Apps 
+ Biotech & Health 
+ Climate 
+ Cloud Computing 
+ Commerce 
+ Crypto 
+ Enterprise 
+ EVs 
+ Fintech 
+ Fundraising 
+ Gadgets 
+ Gaming 
+ Google 
+ Government & Policy 
+ Hardware 
+ Instagram 
+ Layoffs 
+ Media & Entertainment 
+ Meta 
+ Microsoft 
+ Privacy 
+ Robotics 
+ Security 
+ Social 
+ Space 
+ Startups 
+ TikTok 
+ Transportation 
+ Venture 
+ More from TechCrunch
+ Staff 
+ Events 
+ Startup Battlefield 
+ StrictlyVC 
+ Newsletters 
+ Podcasts 
+ Videos 
+ Partner Content 
+ TechCrunch Brand Studio 
+ Contact Us 
+ Image Credits: Kenneth Cheung (opens in a new window) / Getty Images 
+ AI 
+ OpenAI, Anthropic, Google, and 100 other companies call for action to defend against rogue AI
+ Lucas Ropek 
+ 10:43 AM PDT · August 27, 2026 
+ Over a hundred tech companies — including OpenAI, Anthropic, Google, and Microsoft — have signed an open letter urging both the private and public sectors to work together to defend themselves from AI-related cyber threats.
+ The letter — which was also signed by prominent cyber firms like CrowdStrike, Okta, and Fortinet, as well as prominent financial institutions and internet infrastructure firms — calls for the adoption of new forms of cyber defense, while also encouraging governments at the “local, national, and international levels” to collaborate on security.
+ “In the coming months, AI-enabled cyber attacks will become far more widespread and sophisticated as models around the world become increasingly capable,” the letter states. “The companies and public services our communities depend on — from hospitals to water treatment plants to the infrastructure that powers the internet — are at risk.”
+ The problem AI poses to traditional cybersecurity defenses has been thrust into the spotlight lately by a string of bizarre incidents in which AI agents have attacked companies. 
+ The Hugging Face incident — in which one of OpenAI’s agents autonomously broke out of its sandboxed environment and attacked the tech company — has been followed by a trail of other reported break-ins involving agents developed by other AI companies, including Anthropic and Meta. These incidents have bolstered the argument that the field of cybersecurity has been fundamentally altered and that bold new commercial solutions are necessary to mitigate them.
+ The letter further suggests the mobilization of a “collective response,” one in which “new partnerships” are formed “to raise security standards and find new solutions to emerging cyber threats.” 
+ Several of the AI companies that have signed the letter are still actively developing ever more advanced AI models, highlighting their conflicted position. At the same time, they are also offering programs to use frontier AI models for defensive purposes, including OpenAI’s Daybreak program, Anthropic’s Mythos , and Microsoft’s new cyber platform Perception .
+ Topics
+ AI , Anthropic , cybersecurity , Google , Microsoft , OpenAI 
+ When you purchase through links in our articles, we may earn a small commission . This doesn’t affect our editorial independence. 
+ Lucas Ropek 
+ Senior Writer, TechCrunch 
+ Lucas is a senior writer at TechCrunch, where he covers artificial intelligence, consumer tech, and startups. He previously covered AI and cybersecurity at Gizmodo. 
+You can contact Lucas by emailing lucas.ropek@techcrunch.com. 
+ View Bio 
+ October 13 – 15
+ San Francisco
+ Don’t miss out . The startup community will gather to answer a pivotal question: How do you build sustainably in the AI era?
+ REGISTER NOW 
+ Most Popular
+ Hikers rescued after using Google Gemini for planning 
+ Anthony Ha 
+ Feds launch investigation into Tesla’s Cybercab deployment 
+ Sean O'Kane 
+ Kirsten Korosec 
+ Tesla is asking people if they want to buy and run Cybercab fleets 
+ Kirsten Korosec 
+ OpenAI launches Astra, its powerful (and controversial) new model 
+ Lucas Ropek 
+ Norway considers ban on camera-enabled wearable ‘pervert glasses’ 
+ Zack Whittaker 
+ Uber is laying off 10% of staff, or 3,300 people 
+ Ram Iyer 
+ AfterQuery reportedly becomes Y Combinator’s fastest-ever unicorn, now valued at $3.2B 
+ Julie Bort 
+ Loading the next article 
+ Error loading the next article 
+ X 
+ LinkedIn 
+ Facebook 
+ Instagram 
+ youTube 
+ Mastodon 
+ Threads 
+ Bluesky 
+ TechCrunch 
+ Staff 
+ Contact Us 
+ Advertise 
+ Site Map 
+ Terms of Service 
+ Privacy Policy 
+ RSS Terms of Use 
+ Code of Conduct 
+ OpenAI 
+ Hugging Face 
+ Flock 
+ Startup Battlefield 
+ Disrupt 2026 
+ Tech Layoffs 
+ ChatGPT 
+ © 2026 TechCrunch Media LLC.

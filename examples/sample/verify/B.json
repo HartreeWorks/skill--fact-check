@@ -1,0 +1,175 @@
+[
+  {
+    "id": "c015",
+    "status": "contradicted",
+    "sources": [
+      {
+        "key": "gazette",
+        "url": "https://example.org/marlow/gazette",
+        "quote": "commuters and shoppers arriving at the station on the east bank no longer cross to the west bank",
+        "locator": "Paragraph 2 of main text",
+        "verified_against": "gazette.txt"
+      }
+    ],
+    "note": "The document claims traffic moved FROM east TO west bank, but the source shows the opposite: people arriving at the east bank (station) are NOT crossing to the west bank (market square), meaning they stay on the east bank. The direction stated in the document is backwards."
+  },
+  {
+    "id": "c016",
+    "status": "supported",
+    "sources": [
+      {
+        "key": "gazette",
+        "url": "https://example.org/marlow/gazette",
+        "quote": "Market square traders say the closure of the Kingfisher footbridge has cut their takings by about 20 percent",
+        "locator": "Opening of main text",
+        "verified_against": "gazette.txt"
+      }
+    ],
+    "note": "Document's 'down by a fifth' matches the source's 'about 20 percent' (20% = 1/5)."
+  },
+  {
+    "id": "c017",
+    "status": "contradicted",
+    "sources": [
+      {
+        "key": "council-minutes",
+        "url": "https://example.org/marlow/council-minutes",
+        "quote": "hoped to have a service running by 1 June 2026",
+        "locator": "Section 7.4",
+        "verified_against": "council-minutes.txt"
+      },
+      {
+        "key": "gazette",
+        "url": "https://example.org/marlow/gazette",
+        "quote": "A council spokesperson said a shuttle bus between the station and the market square was expected to be running by 1 June",
+        "locator": "Paragraph 2 of main text",
+        "verified_against": "gazette.txt"
+      }
+    ],
+    "note": "Document claims shuttle bus promised by 1 May, but both council minutes and the Gazette itself report 1 June. The date in the document is one month early."
+  },
+  {
+    "id": "c018",
+    "status": "supported-with-caveat",
+    "sources": [
+      {
+        "key": "engineering-report",
+        "url": "https://example.org/marlow/engineering-report",
+        "quote": "The same drainage detail was used on the 40 footbridges of this design built between 1994 and 1999 under the county bridge programme",
+        "locator": "Section 2.3",
+        "verified_against": "engineering-report.txt"
+      }
+    ],
+    "note": "Source confirms 40 bridges of same design from 1994-1999 (within the 1990s). However, the source does not explicitly say the bridges were built 'across England'—it only mentions 'county bridge programme'. Suggest: '40 cable-stayed footbridges of the same design built in the 1990s' or add 'in England' only if confirmed elsewhere."
+  },
+  {
+    "id": "c019",
+    "status": "supported",
+    "sources": [
+      {
+        "key": "engineering-report",
+        "url": "https://example.org/marlow/engineering-report",
+        "quote": "The same drainage detail was used on the 40 footbridges of this design",
+        "locator": "Section 2.3",
+        "verified_against": "engineering-report.txt"
+      }
+    ],
+    "note": "Report explicitly states the drainage detail that failed at Marlow was common to all 40 bridges of this design."
+  },
+  {
+    "id": "c020",
+    "status": "supported",
+    "sources": [
+      {
+        "key": "engineering-report",
+        "url": "https://example.org/marlow/engineering-report",
+        "quote": "We recommend that the owners of those structures inspect the anchorages",
+        "locator": "Section 2.3",
+        "verified_against": "engineering-report.txt"
+      }
+    ],
+    "note": "The report's recommendation to inspect the other structures implies they have not yet been inspected. No evidence in any source of inspections having been performed on the other 39 bridges."
+  },
+  {
+    "id": "c021",
+    "status": "unsupported",
+    "sources": [],
+    "note": "No evidence in any source supports this characterisation. The sources discuss only the Marlow bridge closure; there is no data on frequency trends for such closures."
+  },
+  {
+    "id": "c022",
+    "status": "unsupported",
+    "sources": [],
+    "note": "No evidence in any source supports this characterisation. The sources discuss only the Marlow bridge; there is no data on maintenance budgets or growth trends in local transport spending."
+  },
+  {
+    "id": "c023",
+    "status": "unverifiable",
+    "sources": [
+      {
+        "key": "engineering-report",
+        "url": "https://example.org/marlow/engineering-report",
+        "quote": "We recommend that the owners of those structures inspect the anchorages",
+        "locator": "Section 2.3",
+        "verified_against": "engineering-report.txt"
+      }
+    ],
+    "note": "This is the author's own recommendation. The engineering report recommends inspection of the structures but does not specify 'every bridge of this design before the end of the year'—the end-of-year deadline is the document author's addition."
+  },
+  {
+    "id": "c024",
+    "status": "supported",
+    "sources": [
+      {
+        "key": "engineering-report",
+        "url": "https://example.org/marlow/engineering-report",
+        "quote": "Halden Associates / Structural inspection report: Kingfisher Footbridge, Marlow",
+        "locator": "Document header",
+        "verified_against": "engineering-report.txt"
+      }
+    ],
+    "note": "Link correctly resolves to the Halden Associates engineering report as described in the document."
+  },
+  {
+    "id": "c025",
+    "status": "supported",
+    "sources": [
+      {
+        "key": "council-minutes",
+        "url": "https://example.org/marlow/council-minutes",
+        "quote": "Minutes of the Full Council meeting held on Thursday 2 April 2026",
+        "locator": "Document header",
+        "verified_against": "council-minutes.txt"
+      }
+    ],
+    "note": "Link correctly resolves to council minutes from the meeting of 2 April 2026."
+  },
+  {
+    "id": "c026",
+    "status": "supported",
+    "sources": [
+      {
+        "key": "gazette",
+        "url": "https://example.org/marlow/gazette",
+        "quote": "Marlow Gazette, 9 April 2026",
+        "locator": "Document header",
+        "verified_against": "gazette.txt"
+      }
+    ],
+    "note": "Link correctly resolves to a report from the Marlow Gazette as claimed."
+  },
+  {
+    "id": "c027",
+    "status": "supported",
+    "sources": [
+      {
+        "key": "engineering-report",
+        "url": "https://example.org/marlow/engineering-report",
+        "quote": "Halden Associates",
+        "locator": "Document header",
+        "verified_against": "engineering-report.txt"
+      }
+    ],
+    "note": "The engineering report is authored by Halden Associates as stated in the document."
+  }
+]

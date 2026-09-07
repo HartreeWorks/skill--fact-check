@@ -1,0 +1,11 @@
+# slug<TAB>url
+metr-report	https://metr.org/blog/2026-08-26-openai-hugging-face-incident-investigation/
+openai-road-ahead	https://openai.com/index/hugging-face-incident-and-the-road-ahead/
+openai-technical-report	https://cdn.openai.com/pdf/67869394-cb91-4c12-888c-5cbd85c7814c/OpenAI-Hugging-Face%20Incident-Technical-Report.pdf
+huggingface-timeline	https://huggingface.co/blog/agent-intrusion-technical-timeline
+casar-letter-10-aug	https://casar.house.gov/sites/evo-subsites/casar.house.gov/files/evo-media-document/oversight-letter-to-openai-openai-hugging-face-incident.pdf
+casar-follow-up-2-sep	https://casar.house.gov/sites/evo-subsites/casar.house.gov/files/evo-media-document/openai-follow-up-letter.pdf
+pacing-the-frontier	https://www.pacingthefrontier.com/
+openai-collective-cyberdefense	https://openai.com/collective-cyberdefense/
+techcrunch-pledge	https://techcrunch.com/2026/08/27/openai-anthropic-google-and-100-other-companies-call-for-action-to-defend-against-rogue-ai/
+sanders-release	https://www.sanders.senate.gov/press-releases/news-sanders-casar-introduce-legislation-to-ban-artificial-superintelligence-and-temporarily-pause-advanced-ai-development/

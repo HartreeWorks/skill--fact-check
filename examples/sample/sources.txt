@@ -1,0 +1,4 @@
+# slug<TAB>target. Sources for the sample are local files; real runs list URLs.
+engineering-report	examples/sample/sources/engineering-report.txt
+council-minutes	examples/sample/sources/council-minutes.txt
+gazette	examples/sample/sources/gazette.txt

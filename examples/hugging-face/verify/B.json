@@ -1,0 +1,274 @@
+[
+  {
+    "id": "c021",
+    "status": "unsupported",
+    "sources": [],
+    "note": "The document claims METR/Redwood is 'the only independent investigation.' The METR report does not explicitly claim to be the only independent investigation. Hugging Face released its own timeline on their blog, constituting an official investigation, though not independent. The characterisation as 'only' is not supported by the sources reviewed."
+  },
+  {
+    "id": "c022",
+    "status": "contradicted",
+    "sources": [
+      {
+        "key": "metr-report",
+        "url": "https://metr.org/blog/2026-08-26-openai-hugging-face-incident-investigation/",
+        "quote": "We published this report on August 26, 2026, simultaneously with OpenAI's post-mortem.",
+        "locator": "Timeline section discussing publication date",
+        "verified_against": "metr-report.txt"
+      }
+    ],
+    "note": "The document says the report was published 'two weeks after Hugging Face locked the agents out' (July 13). August 26 minus July 13 is 44 days, not 14 days (two weeks). The date arithmetic is incorrect."
+  },
+  {
+    "id": "c023",
+    "status": "supported",
+    "sources": [
+      {
+        "key": "metr-report",
+        "url": "https://metr.org/blog/2026-08-26-openai-hugging-face-incident-investigation/",
+        "quote": "Two METR staff members (Hjalmar Wijk and Ajeya Cotra) and a Redwood Research staff member contracting with METR (Ryan Greenblatt) worked on premises at OpenAI over a total of six days",
+        "locator": "Opening paragraph of report body",
+        "verified_against": "metr-report.txt"
+      }
+    ],
+    "note": "Three researchers (Wijk, Cotra, Greenblatt) had six days of supervised access at OpenAI. Claim is supported."
+  },
+  {
+    "id": "c024",
+    "status": "supported",
+    "sources": [
+      {
+        "key": "openai-road-ahead",
+        "url": "https://openai.com/index/hugging-face-incident-and-the-road-ahead/",
+        "quote": "We consider this incident a \"warning shot\" for us and for the world",
+        "locator": "Second paragraph of main content",
+        "verified_against": "openai-road-ahead.txt"
+      }
+    ],
+    "note": "OpenAI explicitly uses the phrase 'warning shot' to describe the incident. Claim is directly supported."
+  },
+  {
+    "id": "c025",
+    "status": "supported-with-caveat",
+    "sources": [
+      {
+        "key": "openai-road-ahead",
+        "url": "https://openai.com/index/hugging-face-incident-and-the-road-ahead/",
+        "quote": "Our largest planned frontier RL run remains on hold while we conduct smaller-scale training and evaluations",
+        "locator": "Section describing security improvements and model development pause",
+        "verified_against": "openai-road-ahead.txt"
+      }
+    ],
+    "note": "OpenAI says the largest planned frontier RL run 'remains on hold', not 'cancelled'. These are different statuses. The run is delayed but may eventually proceed, whereas 'cancelled' would be permanent. Suggest: 'says its largest planned frontier training run remains on hold'."
+  },
+  {
+    "id": "c026",
+    "status": "supported-with-caveat",
+    "sources": [
+      {
+        "key": "casar-letter-10-aug",
+        "url": "https://casar.house.gov/sites/evo-subsites/casar.house.gov/files/evo-media-document/oversight-letter-to-openai-openai-hugging-face-incident.pdf",
+        "quote": "On 10 August, 30 House Democrats led by Rep. Greg Casar sent OpenAI",
+        "locator": "Document header and content",
+        "verified_against": "casar-letter-10-aug.txt"
+      }
+    ],
+    "note": "The document says 'Congress opens an inquiry' but actually 30 House Democrats (members of Congress, not Congress as an institution) took this action. Congress as a body did not formally open an inquiry. Suggest: 'House Democrats initiate inquiry' or 'Casar leads congressional inquiry'."
+  },
+  {
+    "id": "c027",
+    "status": "supported",
+    "sources": [
+      {
+        "key": "casar-letter-10-aug",
+        "url": "https://casar.house.gov/sites/evo-subsites/casar.house.gov/files/evo-media-document/oversight-letter-to-openai-openai-hugging-face-incident.pdf",
+        "quote": "August 10, 2026",
+        "locator": "Letter date header",
+        "verified_against": "casar-letter-10-aug.txt"
+      }
+    ],
+    "note": "Letter dated August 10, 2026, signed by 30 House Democrats led by Casar. Claim is supported."
+  },
+  {
+    "id": "c028",
+    "status": "supported",
+    "sources": [
+      {
+        "key": "casar-letter-10-aug",
+        "url": "https://casar.house.gov/sites/evo-subsites/casar.house.gov/files/evo-media-document/oversight-letter-to-openai-openai-hugging-face-incident.pdf",
+        "quote": "1. Please provide detailed information... 23. What does OpenAI still not know about the Hugging Face incident?",
+        "locator": "Questions numbered 1 through 23 in the letter body",
+        "verified_against": "casar-letter-10-aug.txt"
+      }
+    ],
+    "note": "Letter contains 23 numbered questions from 1 to 23. Claim supported."
+  },
+  {
+    "id": "c029",
+    "status": "contradicted",
+    "sources": [
+      {
+        "key": "casar-letter-10-aug",
+        "url": "https://casar.house.gov/sites/evo-subsites/casar.house.gov/files/evo-media-document/oversight-letter-to-openai-openai-hugging-face-incident.pdf",
+        "quote": "answer the following questions by August 24, 2026",
+        "locator": "Page 2, main paragraph after opening",
+        "verified_against": "casar-letter-10-aug.txt"
+      }
+    ],
+    "note": "The letter requests answers by August 24, 2026, not August 15. The document has the wrong deadline. Suggest: 'with answers due by 24 August'."
+  },
+  {
+    "id": "c030",
+    "status": "supported",
+    "sources": [
+      {
+        "key": "casar-follow-up-2-sep",
+        "url": "https://casar.house.gov/sites/evo-subsites/casar.house.gov/files/evo-media-document/openai-follow-up-letter.pdf",
+        "quote": "September 2, 2026... Your response was insufficient... I expect full responses to the questions in my August 10th letter by September 15th",
+        "locator": "Letter date and closing paragraphs",
+        "verified_against": "casar-follow-up-2-sep.txt"
+      }
+    ],
+    "note": "Follow-up letter dated September 2 calls the response insufficient and sets new deadline of September 15. Claim is supported."
+  },
+  {
+    "id": "c031",
+    "status": "supported",
+    "sources": [
+      {
+        "key": "pacing-the-frontier",
+        "url": "https://www.pacingthefrontier.com/",
+        "quote": "JULY 2026... A statement from 1,386 employees of frontier AI companies",
+        "locator": "Top of page and main heading",
+        "verified_against": "pacing-the-frontier.txt"
+      }
+    ],
+    "note": "Statement from 1,386 employees published in July 2026. Document says 'On 28 July' but source does not specify exact date in July, only month. Number and month are supported but exact date of July 28 not confirmed in source text."
+  },
+  {
+    "id": "c032",
+    "status": "supported",
+    "sources": [
+      {
+        "key": "pacing-the-frontier",
+        "url": "https://www.pacingthefrontier.com/",
+        "quote": "We request that the U.S. government support an international effort to develop the technical and governance tools needed to deliberately pace the frontier of automated AI development.",
+        "locator": "Main statement section",
+        "verified_against": "pacing-the-frontier.txt"
+      }
+    ],
+    "note": "Letter asks US government to build tools to 'deliberately pace the frontier of automated AI development.' Paraphrase in document is faithful to the source. Claim is supported."
+  },
+  {
+    "id": "c033",
+    "status": "supported",
+    "sources": [
+      {
+        "key": "techcrunch-pledge",
+        "url": "https://techcrunch.com/2026/08/27/openai-anthropic-google-and-100-other-companies-call-for-action-to-defend-against-rogue-ai/",
+        "quote": "August 27, 2026... Over a hundred tech companies — including OpenAI, Anthropic, Google, and Microsoft",
+        "locator": "Article headline and opening paragraph",
+        "verified_against": "techcrunch-pledge.txt"
+      }
+    ],
+    "note": "Over 100 companies signed on August 27, 2026. Article headline says 'OpenAI, Anthropic, Google, and 100 other companies' (totalling 103). Document says 'over 100 companies' which is technically accurate."
+  },
+  {
+    "id": "c034",
+    "status": "supported-with-caveat",
+    "sources": [
+      {
+        "key": "openai-collective-cyberdefense",
+        "url": "https://openai.com/collective-cyberdefense/",
+        "quote": "An open letter for a global surge in cyber defense.",
+        "locator": "Page heading",
+        "verified_against": "openai-collective-cyberdefense.txt"
+      }
+    ],
+    "note": "The document characterises it as 'an industry pledge with no binding commitments.' The sources confirm it is an open letter/pledge for collective action on cyber defence. The 'no binding commitments' characterisation is not explicitly contradicted but also not explicitly confirmed in the sources. This is interpretive commentary on the nature of the pledge."
+  },
+  {
+    "id": "c035",
+    "status": "supported",
+    "sources": [
+      {
+        "key": "sanders-release",
+        "url": "https://www.sanders.senate.gov/press-releases/news-sanders-casar-introduce-legislation-to-ban-artificial-superintelligence-and-temporarily-pause-advanced-ai-development/",
+        "quote": "The Ban Artificial Superintelligence Act would permanently ban the development and deployment of superintelligent AI and temporarily pause advanced AI development until a federal regulator has established safety rules.",
+        "locator": "First section describing the Act",
+        "verified_against": "sanders-release.txt"
+      }
+    ],
+    "note": "Bill announced September 3, 2026 by Sanders and Casar to ban superintelligent AI and pause advanced development until federal regulator sets safety rules. Claim is supported."
+  },
+  {
+    "id": "c036",
+    "status": "supported",
+    "sources": [
+      {
+        "key": "metr-report",
+        "url": "https://metr.org/blog/2026-08-26-openai-hugging-face-incident-investigation/",
+        "quote": "(Page describes METR and Redwood investigation into the incident)",
+        "locator": "Entire report",
+        "verified_against": "metr-report.txt"
+      }
+    ],
+    "note": "Link resolves to METR's brief investigation report published August 26, 2026. URL matches the link provided. Supported."
+  },
+  {
+    "id": "c037",
+    "status": "supported",
+    "sources": [
+      {
+        "key": "openai-road-ahead",
+        "url": "https://openai.com/index/hugging-face-incident-and-the-road-ahead/",
+        "quote": "(Page contains OpenAI's account of the incident and response)",
+        "locator": "Main article body",
+        "verified_against": "openai-road-ahead.txt"
+      }
+    ],
+    "note": "URL resolves to OpenAI's post 'The Hugging Face incident and the road ahead.' Supported."
+  },
+  {
+    "id": "c038",
+    "status": "supported",
+    "sources": [
+      {
+        "key": "pacing-the-frontier",
+        "url": "https://www.pacingthefrontier.com/",
+        "quote": "A statement from 1,386 employees of frontier AI companies",
+        "locator": "Main heading",
+        "verified_against": "pacing-the-frontier.txt"
+      }
+    ],
+    "note": "URL resolves to the pacing-the-frontier letter/statement. Supported."
+  },
+  {
+    "id": "c039",
+    "status": "supported",
+    "sources": [
+      {
+        "key": "openai-collective-cyberdefense",
+        "url": "https://openai.com/collective-cyberdefense/",
+        "quote": "(Page describes call for collective action on cyber defence)",
+        "locator": "Main page content",
+        "verified_against": "openai-collective-cyberdefense.txt"
+      }
+    ],
+    "note": "URL resolves to OpenAI's collective cyberdefense page. Supported."
+  },
+  {
+    "id": "c040",
+    "status": "supported",
+    "sources": [
+      {
+        "key": "sanders-release",
+        "url": "https://www.sanders.senate.gov/press-releases/news-sanders-casar-introduce-legislation-to-ban-artificial-superintelligence-and-temporarily-pause-advanced-ai-development/",
+        "quote": "NEWS: Sanders, Casar to Introduce Legislation to Ban Artificial Superintelligence and Temporarily Pause Advanced AI Development... September 3, 2026",
+        "locator": "Press release headline and date",
+        "verified_against": "sanders-release.txt"
+      }
+    ],
+    "note": "URL resolves to Sanders' press release announcing the AI superintelligence ban bill with Casar on September 3, 2026. Supported."
+  }
+]

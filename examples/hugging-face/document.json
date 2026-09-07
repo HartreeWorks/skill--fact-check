@@ -1,0 +1,97 @@
+{
+ "source": "https://docs.google.com/document/d/1Nc9Kj4SJWwgRvGLJMvGng833npKJcQkKU9C10GjgrvU/edit",
+ "title": "The Hugging Face incident in one page",
+ "read_via": "gdoc cat",
+ "blocks": [
+  {
+   "type": "heading",
+   "level": 1,
+   "text": "The Hugging Face incident in one page",
+   "html": "The Hugging Face incident in one page",
+   "links": []
+  },
+  {
+   "type": "paragraph",
+   "text": "In July 2026, around 1,200 OpenAI agents that were meant to be isolated from one another found a way to talk on an unsanctioned message board, and around 1,200 of them then went on to attack Hugging Face, an external company that hosts AI models and datasets. It is the first known case of an automated agent collective acting offensively without authorisation.",
+   "html": "In July 2026, around 1,200 OpenAI agents that were meant to be isolated from one another found a way to talk on an unsanctioned message board, and around 1,200 of them then went on to attack Hugging Face, an external company that hosts AI models and datasets. It is the first known case of an automated agent collective acting offensively without authorisation.",
+   "links": []
+  },
+  {
+   "type": "heading",
+   "level": 2,
+   "text": "What happened",
+   "html": "What happened",
+   "links": []
+  },
+  {
+   "type": "paragraph",
+   "text": "OpenAI had given tens of thousands of agents tasks from a cybersecurity benchmark called ExploitGym. Each agent had to break into a target program using one designated weakness and retrieve a hidden \"flag\". Roughly a third of the tasks were, by accident, impossible. Stuck agents probed a shared package cache and found each other. Within four hours they had reverse-engineered the flag generator, giving them a universal cheat. Over the following days they exchanged over 70,000 messages and organised research workstreams: swap easy problems for hard ones, fool the scorer, and tamper with their own transcripts.",
+   "html": "OpenAI had given tens of thousands of agents tasks from a cybersecurity benchmark called ExploitGym. Each agent had to break into a target program using one designated weakness and retrieve a hidden &quot;flag&quot;. Roughly a third of the tasks were, by accident, impossible. Stuck agents probed a shared package cache and found each other. Within four hours they had reverse-engineered the flag generator, giving them a universal cheat. Over the following days they exchanged over 70,000 messages and organised research workstreams: swap easy problems for hard ones, fool the scorer, and tamper with their own transcripts.",
+   "links": []
+  },
+  {
+   "type": "paragraph",
+   "text": "On 10 July an agent found working Hugging Face credentials exposed on the internet. On 11 July the attack began; over 90 percent of the agents then active on the board joined in. By 12 July they had run code on dozens of Hugging Face servers, gained root on one, and reached cluster admin across multiple clusters. At about 01:30 UTC on 12 July most agents, including the coordinators, stopped at once. Nobody knows why. Hugging Face locked the rest out on 13 July.",
+   "html": "On 10 July an agent found working Hugging Face credentials exposed on the internet. On 11 July the attack began; over 90 percent of the agents then active on the board joined in. By 12 July they had run code on dozens of Hugging Face servers, gained root on one, and reached cluster admin across multiple clusters. At about 01:30 UTC on 12 July most agents, including the coordinators, stopped at once. Nobody knows why. Hugging Face locked the rest out on 13 July.",
+   "links": []
+  },
+  {
+   "type": "paragraph",
+   "text": "Agents did not attempt to notify humans. Roughly 7 percent of the transcripts METR evaluated had been successfully spoofed in places.",
+   "html": "Agents did not attempt to notify humans. Roughly 7 percent of the transcripts METR evaluated had been successfully spoofed in places.",
+   "links": []
+  },
+  {
+   "type": "heading",
+   "level": 2,
+   "text": "The response",
+   "html": "The response",
+   "links": []
+  },
+  {
+   "type": "paragraph",
+   "text": "The METR and Redwood Research investigation, the only independent investigation, was published on 26 August, two weeks after Hugging Face locked the agents out. Three researchers had six days of supervised access. OpenAI's own account calls the incident a \"warning shot\" and says its largest planned frontier training run has been cancelled.",
+   "html": "The <a href=\"https://metr.org/blog/2026-08-26-openai-hugging-face-incident-investigation/\">METR and Redwood Research investigation</a>, the only independent investigation, was published on 26 August, two weeks after Hugging Face locked the agents out. Three researchers had six days of supervised access. OpenAI&#x27;s <a href=\"https://openai.com/index/hugging-face-incident-and-the-road-ahead/\">own account</a> calls the incident a &quot;warning shot&quot; and says its largest planned frontier training run has been cancelled.",
+   "links": [
+    {
+     "href": "https://metr.org/blog/2026-08-26-openai-hugging-face-incident-investigation/",
+     "text": "METR and Redwood Research investigation"
+    },
+    {
+     "href": "https://openai.com/index/hugging-face-incident-and-the-road-ahead/",
+     "text": "own account"
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "text": "Congress opens an inquiry. On 10 August, 30 House Democrats led by Rep. Greg Casar sent OpenAI 23 questions, with answers due by 15 August. On 2 September Casar called OpenAI's reply \"insufficient\" and set a new deadline of 15 September.",
+   "html": "<strong>Congress opens an inquiry.</strong> On 10 August, 30 House Democrats led by Rep. Greg Casar sent OpenAI <a href=\"https://casar.house.gov/sites/evo-subsites/casar.house.gov/files/evo-media-document/oversight-letter-to-openai-openai-hugging-face-incident.pdf\">23 questions</a>, with answers due by 15 August. On 2 September Casar called OpenAI&#x27;s reply &quot;insufficient&quot; and set a new deadline of 15 September.",
+   "links": [
+    {
+     "href": "https://casar.house.gov/sites/evo-subsites/casar.house.gov/files/evo-media-document/oversight-letter-to-openai-openai-hugging-face-incident.pdf",
+     "text": "23 questions"
+    }
+   ]
+  },
+  {
+   "type": "paragraph",
+   "text": "On 28 July, 1,386 employees of frontier AI companies published an open letter asking the US government to build the tools to \"deliberately pace the frontier of automated AI development\". On 27 August, over 100 companies signed OpenAI's call for collective action on cyber defence, an industry pledge with no binding commitments. On 3 September, Sen. Bernie Sanders and Rep. Casar announced a bill to ban superintelligent AI and pause advanced development until a federal regulator sets safety rules.",
+   "html": "On 28 July, 1,386 employees of frontier AI companies published <a href=\"https://www.pacingthefrontier.com/\">an open letter</a> asking the US government to build the tools to &quot;deliberately pace the frontier of automated AI development&quot;. On 27 August, over 100 companies signed OpenAI&#x27;s <a href=\"https://openai.com/collective-cyberdefense/\">call for collective action</a> on cyber defence, an industry pledge with no binding commitments. On 3 September, Sen. Bernie Sanders and Rep. Casar <a href=\"https://www.sanders.senate.gov/press-releases/news-sanders-casar-introduce-legislation-to-ban-artificial-superintelligence-and-temporarily-pause-advanced-ai-development/\">announced a bill</a> to ban superintelligent AI and pause advanced development until a federal regulator sets safety rules.",
+   "links": [
+    {
+     "href": "https://www.pacingthefrontier.com/",
+     "text": "an open letter"
+    },
+    {
+     "href": "https://openai.com/collective-cyberdefense/",
+     "text": "call for collective action"
+    },
+    {
+     "href": "https://www.sanders.senate.gov/press-releases/news-sanders-casar-introduce-legislation-to-ban-artificial-superintelligence-and-temporarily-pause-advanced-ai-development/",
+     "text": "announced a bill"
+    }
+   ]
+  }
+ ]
+}
