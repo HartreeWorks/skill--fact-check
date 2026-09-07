@@ -48,6 +48,40 @@ def render_block(b):
     return f"<p>{h}</p>"
 
 
+def nrm(x):
+    for a, b in (("’", "'"), ("‘", "'"), ("“", '"'), ("”", '"'), ("–", "-"), ("—", "-"), ("\u00a0", " ")): x = x.replace(a, b)
+    return x
+
+
+def attach_excerpts(work_dir, claims, radius=1500):
+    """For every source quote that was matched in a file under sources/, embed the passage
+    around it (about `radius` characters each side) so the page can show it without the
+    sources folder being hosted alongside. Adds `excerpt`, `excerpt_start` (offset of the
+    quote within the excerpt) and `excerpt_len` to the source record."""
+    cache = {}
+    for c in claims:
+        for src in c.get("sources", []):
+            v = (src.get("verified_against") or "").split(" ")[0]
+            path = os.path.join(work_dir, "sources", v)
+            if not v or not os.path.exists(path) or not src.get("quote"): continue
+            if path not in cache:
+                raw = open(path, encoding="utf-8", errors="ignore").read()
+                cache[path] = (raw, nrm(raw).lower())
+            raw, low = cache[path]
+            q = nrm(src["quote"]).strip().strip('"').lower()
+            i = low.find(q)
+            if i < 0:
+                head = q[:60]; i = low.find(head)
+                if i < 0: continue
+                qlen = len(head)
+            else:
+                qlen = len(q)
+            start, end = max(0, i - radius), min(len(raw), i + qlen + radius)
+            src["excerpt"] = raw[start:end]
+            src["excerpt_start"] = i - start
+            src["excerpt_len"] = qlen
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("work_dir"); ap.add_argument("--out")
@@ -56,6 +90,7 @@ def main():
     doc = json.load(open(os.path.join(a.work_dir, "document.json")))
     claims = json.load(open(os.path.join(a.work_dir, "claims.json")))
     out = a.out or os.path.join(a.work_dir, "review.html")
+    attach_excerpts(a.work_dir, claims)
     # Render blocks, grouping consecutive list items.
     parts, in_list = [], False
     for b in doc["blocks"]:

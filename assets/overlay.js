@@ -73,6 +73,9 @@ body.fc-wide #fc-side.fc-split{width:780px;flex-direction:row}\
 #fc-side .nav .step{border:1px solid #d3cfc4;background:#fff;height:28px;width:28px;justify-content:center;padding:0;border-radius:6px;color:#1c1b18;display:inline-flex;align-items:center;gap:5px;font-size:14px}#fc-side .nav .step:hover{background:#f1efe9}\
 #fc-side kbd{font:600 10px/1 ' + SANS + ';color:#6b6862;border:1px solid #d3cfc4;border-bottom-width:2px;border-radius:3px;padding:2px 4px;background:#faf9f6}\
 #fc-side .nav .keys{border:0;background:transparent;color:#8a877f;font-size:11px;padding:4px 6px;border-radius:5px;white-space:nowrap}#fc-side .nav .keys:hover{background:#eceae3;color:#1c1b18}\
+#fc-modal .box.wide{width:760px}#fc-modal h2 .sub{font-weight:400;font-size:13px;color:#8a877f}\
+#fc-modal .excerpt{max-height:60vh;overflow:auto;white-space:pre-wrap;font:15px/1.6 ' + SERIF + ';color:#3d3b36;background:#faf9f6;border:1px solid #e2dfd6;border-radius:6px;padding:14px 16px;margin:0 0 14px}#fc-modal .excerpt mark{background:#fbe9bf;box-shadow:inset 0 -2px #dda634;color:#1c1b18}\
+#fc-modal .row a{font-size:13px}#fc-modal .row a.faint{color:#8a877f}\
 #fc-modal table{border-collapse:collapse;width:100%;margin:0 0 14px}#fc-modal td{padding:6px 0;border-bottom:1px solid #eceae3;vertical-align:top}#fc-modal td:first-child{width:38%;white-space:nowrap}#fc-modal th{text-align:left;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#8a877f;padding:10px 0 4px}\
 #fc-side .cardwrap{flex:none;padding:10px 12px 0;max-height:62%;overflow:auto}\
 #fc-side .card{display:flex;flex-direction:column;gap:10px;padding:12px 16px 8px;background:#fff;border:1px solid #e2dfd6;border-radius:8px;box-shadow:0 1px 2px rgba(0,0,0,.04)}\
@@ -316,6 +319,19 @@ mark[data-fc][data-pulse="1"]{animation:fc-pulse .6s ease 2}\
     h += '</table><div class="row"><button class="btn" data-act="closemodal">OK <kbd class="enter">↵</kbd></button></div></div>';
     modal.innerHTML = h; document.body.appendChild(modal); modal.querySelector('button').focus();
   }
+  function showExcerpt(cid, si) {
+    var c = byId[cid], x = c && (c.sources || [])[si]; if (!x || !x.excerpt) return;
+    closeModal();
+    var fname = String(x.verified_against).split(' ')[0];
+    var ex = x.excerpt, a = x.excerpt_start || 0, b = a + (x.excerpt_len || 0);
+    modal = document.createElement('div'); modal.id = 'fc-modal';
+    var h = '<div class="box wide" role="dialog" aria-modal="true"><h2>' + esc(x.key || fname) + ' <span class="sub">' + esc(fname) + (x.locator ? ' · ' + esc(x.locator) : '') + '</span></h2>';
+    h += '<div class="excerpt">' + esc(ex.slice(0, a)) + '<mark>' + esc(ex.slice(a, b)) + '</mark>' + esc(ex.slice(b)) + '</div>';
+    h += '<div class="row"><button class="btn" data-act="closemodal">Close <kbd class="enter">↵</kbd></button>' + (x.url ? '<a href="' + esc(x.url) + '" target="_blank" rel="noopener">Open the original ↗</a>' : '') + '<a href="sources/' + esc(fname) + '" target="_blank" rel="noopener" class="faint">Full saved text ↗</a></div></div>';
+    modal.innerHTML = h; document.body.appendChild(modal);
+    var mk = modal.querySelector('.excerpt mark'); if (mk) mk.scrollIntoView({ block: 'center' });
+    modal.querySelector('button').focus();
+  }
   function closeModal() { if (modal) { modal.remove(); modal = null; } }
   document.addEventListener('click', function (e) {
     if (!modal) return;
@@ -405,8 +421,10 @@ mark[data-fc][data-pulse="1"]{animation:fc-pulse .6s ease 2}\
       h += '<div class="src"><div class="h"><b>' + esc(x.key || x.url || 'Source') + '</b><span class="loc">' + esc(x.locator || '') + '</span>' + (href ? '<a href="' + esc(href) + '" target="_blank" rel="noopener">Open ↗</a>' : '') + '</div>';
       if (x.quote) h += '<div class="q">' + esc(x.quote) + '</div>';
       if (x.verified_against) {
-        var va = String(x.verified_against), fname = va.split(' ')[0], fileHref = /^https?:/.test(fname) ? fname : (/\.\w+$/.test(fname) ? 'sources/' + fname : '');
-        h += '<div class="fine">matched in ' + (fileHref ? '<a href="' + esc(fileHref) + '" target="_blank" rel="noopener" title="Open the saved source text">' + esc(va) + '</a>' : esc(va)) + '</div>';
+        var va = String(x.verified_against), fname = va.split(' ')[0];
+        if (x.excerpt) h += '<div class="fine">matched in <a href="#" data-act="excerpt" data-cid="' + esc(c.id) + '" data-si="' + (c.sources || []).indexOf(x) + '" title="Show the passage in the saved source text">' + esc(va) + '</a></div>';
+        else if (/^https?:/.test(fname)) h += '<div class="fine">matched in <a href="' + esc(fname) + '" target="_blank" rel="noopener">' + esc(va) + '</a></div>';
+        else h += '<div class="fine">matched in ' + esc(va) + '</div>';
       }
       h += '</div>';
     });
@@ -467,6 +485,8 @@ mark[data-fc][data-pulse="1"]{animation:fc-pulse .6s ease 2}\
   function back() { view = 'list'; selId = null; refresh(); }
 
   side.addEventListener('click', function (e) {
+    var ex = e.target.closest('a[data-act="excerpt"]');
+    if (ex) { e.preventDefault(); showExcerpt(ex.getAttribute('data-cid'), +ex.getAttribute('data-si')); return; }
     var b = e.target.closest('button,tr.r'); if (!b) return;
     if (b.hasAttribute('data-filter')) { filter = b.getAttribute('data-filter'); renderSide(); paint(); return; }
     if (b.classList.contains('item') || b.classList.contains('r')) { select(b.getAttribute('data-id'), true); return; }
@@ -479,6 +499,7 @@ mark[data-fc][data-pulse="1"]{animation:fc-pulse .6s ease 2}\
     if (a === 'writefix') { forceEdit = true; renderSide(); sizeAll(); side.querySelector('[data-f="replacement"]').focus(); }
     if (a === 'copytable') copy('table');
     if (a === 'shortcuts') showShortcuts();
+    if (a === 'excerpt') { e.preventDefault(); showExcerpt(b.getAttribute('data-cid'), +b.getAttribute('data-si')); }
   });
   side.addEventListener('input', function (e) {
     var f = e.target.getAttribute('data-f'); if (!f || !selId) return;
