@@ -60,7 +60,7 @@ body{margin:0;background:#eeece6;color:#1c1b18;font:18px/1.7 "Source Serif 4",Ge
   var css = '\
 body.fc-active{padding-top:54px;padding-right:400px}\
 body.fc-active.fc-narrow{padding-right:0;padding-bottom:60vh}\
-body.fc-active.fc-wide{padding-right:780px}\
+body.fc-active.fc-wide.fc-detail{padding-right:780px}\
 #fc-top{position:fixed;top:0;left:0;right:0;height:54px;z-index:99990;display:flex;align-items:center;gap:20px;padding:0 20px;box-sizing:border-box;background:#faf9f6;border-bottom:1px solid #e2dfd6;color:#1c1b18;font:14px/1.45 ' + SANS + '}\
 #fc-top .brand{display:flex;align-items:baseline;gap:12px;min-width:0}\
 #fc-top .eyebrow{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#8a877f}\
@@ -75,7 +75,7 @@ body.fc-active.fc-wide{padding-right:780px}\
 #fc-top button.send{display:flex;align-items:center;gap:7px;border-color:#2e7d4f;background:#2e7d4f;color:#fff;font-weight:600;padding:6px 14px;box-shadow:0 1px 2px rgba(46,125,79,.3)}#fc-top button.send:hover{background:#256a41}\
 #fc-side{position:fixed;top:54px;right:0;bottom:0;width:400px;z-index:99990;display:flex;flex-direction:column;background:#faf9f6;border-left:1px solid #e2dfd6;color:#1c1b18;font:14px/1.45 ' + SANS + ';box-sizing:border-box}\
 body.fc-narrow #fc-side{top:auto;left:0;width:auto;height:60vh;border-left:0;border-top:1px solid #e2dfd6;box-shadow:0 -6px 20px rgba(0,0,0,.08)}\
-body.fc-wide #fc-side{width:780px}body.fc-wide #fc-side.fc-split{flex-direction:row}\
+body.fc-wide #fc-side.fc-split{width:780px;flex-direction:row}\
 #fc-side .col{display:flex;flex-direction:column;min-height:0;min-width:0}\
 #fc-side .col.card{flex:none;width:380px;border-right:1px solid #e2dfd6}\
 #fc-side .col.card .cardwrap{max-height:none;flex:1;padding-bottom:12px}\
@@ -102,9 +102,9 @@ body.fc-wide #fc-side{width:780px}body.fc-wide #fc-side.fc-split{flex-direction:
 #fc-side .nav{flex:none;display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:8px 10px 8px 8px;border-bottom:1px solid #e2dfd6}\
 #fc-side .nav .back{border:0;background:transparent;color:#1c1b18;padding:6px 8px;border-radius:6px;display:flex;align-items:center;gap:6px;white-space:nowrap}#fc-side .nav .back span{color:#6b6862}#fc-side .nav .back:hover{background:#eceae3}\
 #fc-side .nav .pos{margin-left:auto;font-size:12px;color:#6b6862;white-space:nowrap}\
-#fc-side .nav .step{border:1px solid #d3cfc4;background:#fff;height:28px;padding:0 7px;border-radius:6px;color:#1c1b18;display:inline-flex;align-items:center;gap:5px;font-size:14px}#fc-side .nav .step:hover{background:#f1efe9}\
+#fc-side .nav .step{border:1px solid #d3cfc4;background:#fff;height:28px;width:28px;justify-content:center;padding:0;border-radius:6px;color:#1c1b18;display:inline-flex;align-items:center;gap:5px;font-size:14px}#fc-side .nav .step:hover{background:#f1efe9}\
 #fc-side kbd{font:600 10px/1 ' + SANS + ';color:#6b6862;border:1px solid #d3cfc4;border-bottom-width:2px;border-radius:3px;padding:2px 4px;background:#faf9f6}\
-#fc-side .nav .keys{flex-basis:100%;font-size:11px;color:#8a877f;white-space:nowrap;padding:2px 0 0 4px}\
+#fc-side .nav .keys{flex-basis:100%;font-size:11px;color:#8a877f;white-space:nowrap;padding:2px 0 0 4px}#fc-side .nav .keys .typing{color:#a09d95}\
 #fc-side .cardwrap{flex:none;padding:10px 12px 0;max-height:62%;overflow:auto}\
 #fc-side .card{display:flex;flex-direction:column;gap:10px;padding:12px 16px 8px;background:#fff;border:1px solid #e2dfd6;border-radius:8px;box-shadow:0 1px 2px rgba(0,0,0,.04)}\
 #fc-side .meta{display:flex;align-items:center;gap:8px}\
@@ -341,14 +341,14 @@ mark[data-fc][data-pulse="1"]{animation:fc-pulse .6s ease 2}\
   // ---- sidebar -------------------------------------------------------------------
   function renderSide() {
     var wide = document.body.classList.contains('fc-wide');
-    if (view === 'table') { side.classList.remove('fc-split'); side.innerHTML = renderTable(); return; }
+    if (view === 'table') { side.classList.remove('fc-split'); document.body.classList.remove('fc-detail'); side.innerHTML = renderTable(); return; }
     if (view === 'detail' && byId[selId]) {
       var d = renderDetail(byId[selId]);
-      side.classList.toggle('fc-split', wide);
+      side.classList.toggle('fc-split', wide); document.body.classList.toggle('fc-detail', wide);
       side.innerHTML = wide ? '<div class="col card">' + d.nav + d.card + '</div><div class="col evidence">' + d.body + '</div>' : d.nav + d.card + d.body;
       return;
     }
-    side.classList.remove('fc-split');
+    side.classList.remove('fc-split'); document.body.classList.remove('fc-detail');
     view = 'list'; side.innerHTML = renderList();
   }
   function renderList() {
@@ -396,7 +396,7 @@ mark[data-fc][data-pulse="1"]{animation:fc-pulse .6s ease 2}\
     var replacement = draft != null ? draft : (rec.replacement != null ? rec.replacement : sug);
     var nav = '<div class="nav"><button class="back" data-act="back">← <span>' + ({ issues: 'Issues', all: 'All claims' })[filter] + '</span></button>';
     var h = '';
-    nav += '<span class="pos">' + (pos >= 0 ? (pos + 1) + ' of ' + navl.length : '') + '</span><button class="step" data-act="prev" title="Previous issue (K or ↑)"><kbd>K</kbd>‹</button><button class="step" data-act="next" title="Next issue (J or ↓)">›<kbd>J</kbd></button><span class="keys" title="Keyboard: 1 queue edit, 2 dismiss, Esc back to the list"><kbd>1</kbd> queue <kbd>2</kbd> dismiss <kbd>Esc</kbd></span></div>';
+    nav += '<span class="pos">' + (pos >= 0 ? (pos + 1) + ' of ' + navl.length : '') + '</span><button class="step" data-act="prev" title="Previous issue (K or ↑)">‹</button><button class="step" data-act="next" title="Next issue (J or ↓)">›</button><span class="keys" title="While typing in a box, hold ⌥ (Alt) with the same key; ⌘↵ or Ctrl+↵ queues the edit"><kbd>J</kbd> next <kbd>K</kbd> prev <kbd>1</kbd> queue <kbd>2</kbd> dismiss <span class="typing">· in a text box hold <kbd>⌥</kbd>, or <kbd>⌘↵</kbd> to queue</span></span></div>';
     // decision card
     h += '<div class="cardwrap"><div class="card">';
     h += '<div class="meta"><span class="pill" style="background:' + (s.pill || '#e9e6de') + ';color:' + s.color + '">' + esc(s.label) + '</span><span class="kind">' + esc(KIND[c.kind] || c.kind || '') + '</span><span class="cid">' + esc(c.id) + '</span></div>';
@@ -464,6 +464,8 @@ mark[data-fc][data-pulse="1"]{animation:fc-pulse .6s ease 2}\
     selId = id; view = 'detail'; more = false; forceEdit = false; draft = null;
     refresh();
     if (scroll) scrollTo(id);
+    var ta = side.querySelector('[data-f="replacement"]');
+    if (ta) { ta.focus({ preventScroll: true }); ta.setSelectionRange(ta.value.length, ta.value.length); }
   }
   function scrollTo(id) {
     var m = document.querySelector('mark[data-fc="' + id + '"]'); if (!m) return;
@@ -515,11 +517,14 @@ mark[data-fc][data-pulse="1"]{animation:fc-pulse .6s ease 2}\
   }, true);
   document.addEventListener('keydown', function (e) {
     if (modal) { if (e.key === 'Enter' || e.key === 'Escape') { e.preventDefault(); closeModal(); } return; }
-    if (/TEXTAREA|INPUT/.test(e.target.tagName)) return;
-    if (e.key === 'j' || e.key === 'ArrowDown') { e.preventDefault(); step(1); }
-    if (e.key === 'k' || e.key === 'ArrowUp') { e.preventDefault(); step(-1); }
-    if (e.key === 'Escape') back();
-    if (view === 'detail' && /^[12]$/.test(e.key)) decide(['apply', 'dismiss'][+e.key - 1]);
+    var typing = /TEXTAREA|INPUT/.test(e.target.tagName);
+    if (typing && (e.metaKey || e.ctrlKey) && e.key === 'Enter' && view === 'detail') { e.preventDefault(); decide('apply'); return; }
+    if (typing && !e.altKey) return;
+    if (e.metaKey || e.ctrlKey) return;
+    var k = e.code === 'KeyJ' ? 'j' : e.code === 'KeyK' ? 'k' : e.code === 'Digit1' ? '1' : e.code === 'Digit2' ? '2' : e.key;
+    if (k === 'j' || k === 'ArrowDown') { e.preventDefault(); step(1); }
+    if (k === 'k' || k === 'ArrowUp') { e.preventDefault(); step(-1); }
+    if (view === 'detail' && (k === '1' || k === '2')) { e.preventDefault(); decide(k === '1' ? 'apply' : 'dismiss'); }
   });
   function onResize() {
     var wide = innerWidth >= 1500;
