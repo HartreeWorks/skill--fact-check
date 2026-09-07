@@ -35,7 +35,7 @@ Link claims (`kind: link`) are `supported` when the URL resolves to the describe
       "url": "https://metr.org/blog/2026-08-26-openai-hugging-face-incident-investigation/",
       "quote": "Roughly 1200 agents meant to be isolated from one another found a way to communicate with one another on an unsanctioned message board, sending over 70,000 messages and files during the investigation period.",
       "locator": "Summary, para 2",
-      "verified_against": "metr-report.txt",
+      "verified_against": "metr-report.md",
       "no_fragment": false
     }
   ],
@@ -49,7 +49,7 @@ Field rules:
 - `anchor` is an exact substring of `document.txt`. Curly quotes, dashes and whitespace are normalised on both sides, so either form works. Keep anchors short enough to survive nearby edits and long enough to be unique; add `occurrence` (1-based) when the same phrase appears more than once. Anchors of different claims must not overlap.
 - `claim` is the claim in the checker's own words: what would have to be true.
 - `kind`: `fact`, `characterisation` (a strength-of-wording claim such as "first known", "only", "historic"), `link` (the link points at the document the sentence implies), `author-view` (the publishing organisation's own position; check it against their published material).
-- `sources[].quote` is verbatim. `verified_against` is the file under `sources/` where the quote was re-found, or the URL with "(fetched <date>)" when the source could not be saved as text. `audit_quotes.py` enforces the file case.
+- `sources[].quote` is verbatim. `verified_against` is the file under `sources/` where the quote was re-found (`.md` for web pages and Google Docs, `.txt` for PDFs), or the URL with "(fetched <date>)" when the source could not be saved. `audit_quotes.py` enforces the file case and ignores Markdown markup when matching. The review page embeds every cited file so the reviewer can read the passage in context.
 - `no_fragment: true` stops the review page adding a text-fragment link (use for PDFs and pages whose text differs from the saved copy).
 - `note` says what the page gets right or wrong and, when wording should change, ends with `Suggest: '...'`. The review page pre-fills the replacement box from that phrase.
 - `checked_by` records every pass that touched the claim.

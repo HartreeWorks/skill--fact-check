@@ -76,7 +76,8 @@ body.fc-wide #fc-side.fc-split{width:780px;flex-direction:row}\
 #fc-side kbd{font:600 10px/1 ' + SANS + ';color:#6b6862;border:1px solid #d3cfc4;border-bottom-width:2px;border-radius:3px;padding:2px 4px;background:#faf9f6}\
 #fc-side .nav .keys{border:0;background:transparent;color:#8a877f;font-size:11px;padding:4px 6px;border-radius:5px;white-space:nowrap}#fc-side .nav .keys:hover{background:#eceae3;color:#1c1b18}\
 #fc-modal .box.wide{width:760px}#fc-modal h2 .sub{font-weight:400;font-size:13px;color:#8a877f}\
-#fc-modal .excerpt{max-height:60vh;overflow:auto;white-space:pre-wrap;font:15px/1.6 ' + SERIF + ';color:#3d3b36;background:#faf9f6;border:1px solid #e2dfd6;border-radius:6px;padding:14px 16px;margin:0 0 14px}#fc-modal .excerpt mark{background:#fbe9bf;box-shadow:inset 0 -2px #dda634;color:#1c1b18}\
+#fc-modal .excerpt{max-height:60vh;overflow:auto;font:15px/1.6 ' + SERIF + ';color:#3d3b36;background:#faf9f6;border:1px solid #e2dfd6;border-radius:6px;padding:14px 18px;margin:0 0 14px}#fc-modal .excerpt mark.hit{background:#fbe9bf;box-shadow:inset 0 -2px #dda634;color:#1c1b18}\
+#fc-modal .excerpt p{margin:0 0 12px}#fc-modal .excerpt h1,#fc-modal .excerpt h2,#fc-modal .excerpt h3,#fc-modal .excerpt h4,#fc-modal .excerpt h5,#fc-modal .excerpt h6{font:700 15px/1.3 ' + SANS + ';margin:18px 0 8px;color:#1c1b18}#fc-modal .excerpt h2{font-size:17px}#fc-modal .excerpt ul{margin:0 0 12px;padding-left:22px}#fc-modal .excerpt li{margin:0 0 4px}#fc-modal .excerpt blockquote{margin:0 0 12px;padding-left:12px;border-left:3px solid #d9d5cb}#fc-modal .excerpt a{color:#2456a4}#fc-modal .excerpt .cells span{display:inline-block;margin:0 10px 4px 0;padding:1px 6px;background:#fff;border:1px solid #e2dfd6;border-radius:3px;font-size:13px}\
 #fc-modal .row a{font-size:13px}#fc-modal .row .faint{color:#8a877f;font-size:12px}\
 #fc-modal table{border-collapse:collapse;width:100%;margin:0 0 14px}#fc-modal td{padding:6px 0;border-bottom:1px solid #eceae3;vertical-align:top}#fc-modal td:first-child{width:38%;white-space:nowrap}#fc-modal th{text-align:left;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#8a877f;padding:10px 0 4px}\
 #fc-side .cardwrap{flex:none;padding:10px 12px 0;max-height:62%;overflow:auto}\
@@ -114,6 +115,7 @@ body.fc-wide #fc-side.fc-split{width:780px;flex-direction:row}\
 #fc-side .src{display:flex;flex-direction:column;gap:4px;padding:10px 12px;background:#fff;border:1px solid #e6e3dc;border-radius:6px;margin-bottom:8px}\
 #fc-side .src .h{display:flex;gap:8px;align-items:baseline;font-size:12px}#fc-side .src .h b{font-weight:600}#fc-side .src .h .loc{color:#8a877f}#fc-side .src .h a{margin-left:auto;color:#2456a4;text-decoration:none}\
 #fc-side .src .q{font:15px/1.5 ' + SERIF + ';color:#2a2925;white-space:pre-wrap;max-height:160px;overflow:auto}\
+#fc-side .srcacts{display:flex;align-items:center;gap:10px;margin-top:8px;font-size:12px}#fc-side .srcacts .act{color:#2456a4;text-decoration:none;font-weight:500}#fc-side .srcacts .act:hover{text-decoration:underline}#fc-side .srcacts .fine{margin-left:auto}\
 #fc-side .fine{font-size:11px;color:#a09d95}#fc-side .fine a{color:#2456a4;text-decoration:none}#fc-side .fine a:hover{text-decoration:underline}\
 #fc-side .more{align-self:flex-start;border:0;background:transparent;color:#2456a4;padding:0;font-size:13px}\
 #fc-side .nosrc{font-size:13px;color:#b3261e}\
@@ -325,24 +327,55 @@ mark[data-fc][data-pulse="1"]{animation:fc-pulse .6s ease 2}\
     h += '</table><div class="row"><button class="btn" data-act="closemodal">OK <kbd class="enter">↵</kbd></button></div></div>';
     modal.innerHTML = h; document.body.appendChild(modal); modal.querySelector('button').focus();
   }
+  function mdInline(t) {
+    t = esc(t);
+    t = t.replace(/\[([^\]]+)\]\((https?:[^)\s]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+    t = t.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>').replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>').replace(/`([^`]+)`/g, '<code>$1</code>');
+    return t;
+  }
+  function mdRender(md) {
+    var out = [], para = [], inList = false, i, line, m;
+    var flush = function () { if (para.length) { out.push('<p>' + mdInline(para.join(' ')) + '</p>'); para = []; } };
+    var closeList = function () { if (inList) { out.push('</ul>'); inList = false; } };
+    var lines = md.split('\n');
+    for (i = 0; i < lines.length; i++) {
+      line = lines[i];
+      if (!line.trim()) { flush(); closeList(); continue; }
+      if ((m = /^\s{0,3}(#{1,6})\s+(.*)$/.exec(line))) { flush(); closeList(); var l = Math.min(m[1].length + 1, 6); out.push('<h' + l + '>' + mdInline(m[2]) + '</h' + l + '>'); continue; }
+      if ((m = /^\s{0,3}(?:[-*+]|\d+[.)])\s+(.*)$/.exec(line))) { flush(); if (!inList) { out.push('<ul>'); inList = true; } out.push('<li>' + mdInline(m[1]) + '</li>'); continue; }
+      if ((m = /^\s{0,3}>\s?(.*)$/.exec(line))) { flush(); closeList(); out.push('<blockquote>' + mdInline(m[1]) + '</blockquote>'); continue; }
+      if (/^\s{0,3}\|/.test(line)) { flush(); closeList(); out.push('<p class="cells">' + line.split('|').filter(function (c) { return c.trim(); }).map(function (c) { return '<span>' + mdInline(c.trim()) + '</span>'; }).join('') + '</p>'); continue; }
+      closeList(); para.push(line.trim());
+    }
+    flush(); closeList();
+    return out.join('\n');
+  }
+  // Highlight the first occurrence of `quote` inside `el` (text-node walk, same normalisation as the anchors).
+  function highlightIn(el, quote) {
+    var idx = buildIndex(el), q = normStr(quote).replace(/^"|"$/g, '');
+    var at = idx.str.indexOf(q);
+    if (at < 0 && q.length > 60) { q = q.slice(0, 60); at = idx.str.indexOf(q); }
+    if (at < 0) return null;
+    var segs = [], cur = null, k;
+    for (k = at; k < at + q.length; k++) { var mm = idx.map[k]; if (!cur || cur.node !== mm.node) { cur = { node: mm.node, from: mm.off, to: mm.off + 1 }; segs.push(cur); } else cur.to = mm.off + 1; }
+    var first = null;
+    segs.forEach(function (sg) { var tail = sg.node.splitText(sg.to), mid = sg.node.splitText(sg.from), mk = document.createElement('mark'); mk.className = 'hit'; sg.node.parentNode.insertBefore(mk, tail); mk.appendChild(mid); first = first || mk; });
+    return first;
+  }
   function showExcerpt(cid, si) {
     var c = byId[cid], x = c && (c.sources || [])[si]; if (!x || !x.excerpt) return;
     closeModal();
     var fname = String(x.verified_against).split(' ')[0];
     var full = embedded.sources && embedded.sources[fname];
-    var ex = x.excerpt, a = x.excerpt_start || 0, b = a + (x.excerpt_len || 0);
-    if (full) {
-      // Locate the excerpt's quote inside the full text so the whole file is shown, scrolled to it.
-      var probe = ex.slice(a, b), i = full.indexOf(probe);
-      if (i < 0) { i = full.indexOf(ex); if (i >= 0) i += a; }
-      if (i >= 0) { ex = full; a = i; b = i + probe.length; }
-    }
+    var text = full || x.excerpt || '', isMd = /\.md$/i.test(fname);
     modal = document.createElement('div'); modal.id = 'fc-modal';
+    var url = x.url || ((embedded.source_urls || {})[fname] || '');
+    var site = url ? url + (x.no_fragment ? '' : textFragment(x.quote)) : '';
     var h = '<div class="box wide" role="dialog" aria-modal="true"><h2>' + esc(x.key || fname) + ' <span class="sub">' + esc(fname) + (x.locator ? ' · ' + esc(x.locator) : '') + '</span></h2>';
-    h += '<div class="excerpt">' + esc(ex.slice(0, a)) + '<mark>' + esc(ex.slice(a, b)) + '</mark>' + esc(ex.slice(b)) + '</div>';
-    h += '<div class="row"><button class="btn" data-act="closemodal">Close <kbd class="enter">↵</kbd></button>' + (x.url ? '<a href="' + esc(x.url) + '" target="_blank" rel="noopener">Open the original ↗</a>' : '') + '<span class="faint">' + (full ? 'Full saved text, ' + Math.round(full.length / 1000) + 'k characters' : 'Passage from the saved text') + '</span></div></div>';
+    h += '<div class="excerpt' + (isMd ? ' md' : '') + '">' + (isMd ? mdRender(text) : '<p style="white-space:pre-wrap">' + esc(text) + '</p>') + '</div>';
+    h += '<div class="row"><button class="btn" data-act="closemodal">Close <kbd class="enter">↵</kbd></button>' + (site ? '<a href="' + esc(site) + '" target="_blank" rel="noopener" title="Open the live page, scrolled to this passage where the browser supports it">Open website ↗</a>' : '') + '<span class="faint">' + (full ? 'Full saved text, ' + Math.round(full.length / 1000) + 'k characters' : 'Passage from the saved text') + '</span></div></div>';
     modal.innerHTML = h; document.body.appendChild(modal);
-    var mk = modal.querySelector('.excerpt mark'); if (mk) mk.scrollIntoView({ block: 'center' });
+    var mk = highlightIn(modal.querySelector('.excerpt'), x.quote || ''); if (mk) mk.scrollIntoView({ block: 'center' });
     modal.querySelector('button').focus();
   }
   function closeModal() { if (modal) { modal.remove(); modal = null; } }
@@ -432,15 +465,17 @@ mark[data-fc][data-pulse="1"]{animation:fc-pulse .6s ease 2}\
     h += '<section><div class="lbl">' + (srcs.length > 1 ? 'What the sources say' : 'What the source says') + '</div>';
     if (!srcs.length) h += '<div class="nosrc">No source recorded for this claim.</div>';
     shown.forEach(function (x) {
-      var href = x.url ? x.url + (x.no_fragment ? '' : textFragment(x.quote)) : '';
-      h += '<div class="src"><div class="h"><b>' + esc(x.key || x.url || 'Source') + '</b><span class="loc">' + esc(x.locator || '') + '</span>' + (href ? '<a href="' + esc(href) + '" target="_blank" rel="noopener">Open ↗</a>' : '') + '</div>';
+      var url = x.url || ((embedded.source_urls || {})[String(x.verified_against || '').split(' ')[0]] || '');
+      var href = url ? url + (x.no_fragment ? '' : textFragment(x.quote)) : '';
+      h += '<div class="src"><div class="h"><b>' + esc(x.key || x.url || 'Source') + '</b><span class="loc">' + esc(x.locator || '') + '</span></div>';
       if (x.quote) h += '<div class="q">' + esc(x.quote) + '</div>';
-      if (x.verified_against) {
-        var va = String(x.verified_against), fname = va.split(' ')[0];
-        if (x.excerpt) h += '<div class="fine">matched in <a href="#" data-act="excerpt" data-cid="' + esc(c.id) + '" data-si="' + (c.sources || []).indexOf(x) + '" title="Show the passage in the saved source text">' + esc(va) + '</a></div>';
-        else if (/^https?:/.test(fname)) h += '<div class="fine">matched in <a href="' + esc(fname) + '" target="_blank" rel="noopener">' + esc(va) + '</a></div>';
-        else h += '<div class="fine">matched in ' + esc(va) + '</div>';
-      }
+      var va = x.verified_against ? String(x.verified_against) : '', fname = va.split(' ')[0];
+      var canView = !!(x.excerpt || (embedded.sources && embedded.sources[fname]));
+      h += '<div class="srcacts">';
+      if (canView) h += '<a href="#" class="act" data-act="excerpt" data-cid="' + esc(c.id) + '" data-si="' + (c.sources || []).indexOf(x) + '" title="Read the saved source text with this passage highlighted">Source viewer</a>';
+      if (href) h += '<a href="' + esc(href) + '" class="act" target="_blank" rel="noopener" title="Open the live page, scrolled to this passage where the browser supports it">Website ↗</a>';
+      if (va) h += '<span class="fine">matched in ' + esc(fname) + '</span>';
+      h += '</div>';
       h += '</div>';
     });
     if (srcs.length > 2) h += '<button class="more" data-act="more">' + (more ? 'Show fewer' : 'Show ' + (srcs.length - 2) + ' more source' + (srcs.length - 2 > 1 ? 's' : '')) + '</button>';

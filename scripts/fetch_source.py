@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
-"""Fetch each source into sources/<slug>.txt so quotes can be verified by string search.
+"""Fetch each source into sources/<slug>.md (web pages, Google Docs) or .txt (PDFs, plain text)
+so quotes can be verified by string search and read comfortably in the review page.
 
 Usage:
   fetch_source.py <sources_dir> <url-or-file> [<url-or-file> ...] [--account EMAIL]
   fetch_source.py <sources_dir> --list sources.txt        # one URL per line, optional "slug<TAB>url"
 
-Handles HTML (tags stripped, scripts dropped), PDF (pdftotext if installed, else pypdf),
+Handles HTML (converted to Markdown: headings, lists, links kept), PDF (pdftotext if installed, else pypdf),
 Google Docs (gdoc CLI, else export URL), and bot-blocked pages (403/429/503 fall back to
 the newest Wayback Machine snapshot). Appends a row per source to sources/index.tsv:
 slug, status (ok, THIN for under 500 characters, FAILED), bytes, url, how.
@@ -21,12 +22,14 @@ def slugify(url):
     return u[:80].lower() or "source"
 
 
-def html_to_text(s):
-    s = re.sub(r"<(script|style|noscript|svg)[^>]*>.*?</\1>", " ", s, flags=re.S | re.I)
-    s = re.sub(r"<br\s*/?>|</(p|div|li|h[1-6]|tr|blockquote|section|article)>", "\n", s, flags=re.I)
-    t = html.unescape(re.sub(r"<[^>]+>", " ", s))
-    t = re.sub(r"[ \t ]+", " ", t)
-    return re.sub(r"\n\s*\n+", "\n", t).strip() + "\n"
+def html_to_text(s, base_url=""):
+    """HTML -> Markdown, keeping headings, lists, quotes, links and emphasis so the saved
+    source reads well in the viewer. Uses the same extractor as the document under review."""
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    from extract_document import from_html, blocks_to_markdown
+    title, blocks = from_html(s, base_url)
+    md = blocks_to_markdown(blocks)
+    return ("# " + title.strip() + "\n\n" + md) if title.strip() and not md.lstrip().startswith("# ") else md
 
 
 def get(url):
@@ -57,7 +60,7 @@ def pdf_to_text(data):
 def google_doc(doc_id, account):
     if shutil.which("gdoc"):
         r = subprocess.run(["gdoc", "cat"] + (["--account", account] if account else []) + [doc_id], capture_output=True, text=True)
-        if r.returncode == 0 and r.stdout.strip(): return r.stdout, "gdoc cat"
+        if r.returncode == 0 and r.stdout.strip(): return r.stdout, "gdoc cat (markdown)"
     data, _, _ = get(f"https://docs.google.com/document/d/{doc_id}/export?format=txt")
     return data.decode("utf-8", errors="replace"), "docs export"
 
@@ -67,7 +70,7 @@ def fetch_one(target, account):
     if os.path.exists(target):
         data = open(target, "rb").read()
         if target.lower().endswith(".pdf"): return pdf_to_text(data), "local pdf"
-        if target.lower().endswith((".html", ".htm")): return html_to_text(data.decode("utf-8", errors="replace")), "local html"
+        if target.lower().endswith((".html", ".htm")): return html_to_text(data.decode("utf-8", errors="replace")), "local html (markdown)"
         return data.decode("utf-8", errors="replace"), "local file"
     m = re.search(r"docs\.google\.com/document/d/([A-Za-z0-9_-]+)", target)
     if m: return google_doc(m.group(1), account)
@@ -80,7 +83,7 @@ def fetch_one(target, account):
         data, ctype, final = get(snap); how = f"wayback {snap}"
     if "pdf" in ctype.lower() or data[:5] == b"%PDF-": return pdf_to_text(data), how + " (pdf)"
     text = data.decode("utf-8", errors="replace")
-    if "html" in ctype.lower() or "<html" in text[:2000].lower(): return html_to_text(text), how + " (html)"
+    if "html" in ctype.lower() or "<html" in text[:2000].lower(): return html_to_text(text, final), how + " (html, markdown)"
     return text, how + " (text)"
 
 
@@ -104,11 +107,12 @@ def main():
         slug = slug or slugify(target)
         try:
             text, how = fetch_one(target, a.account)
-            path = os.path.join(a.sources_dir, slug + ".txt")
+            ext = ".md" if "markdown" in how else ".txt"
+            path = os.path.join(a.sources_dir, slug + ext)
             open(path, "w").write(text)
             status = "ok" if len(text.strip()) >= 500 else "THIN"
             index.write(f"{slug}\t{status}\t{len(text)}\t{target}\t{how}\n")
-            print(f"{status:<5} {slug}.txt  {len(text):>8} chars  {how}" + ("  (too little text to cite; fetch it another way)" if status == "THIN" else ""))
+            print(f"{status:<5} {slug}{ext}  {len(text):>8} chars  {how}" + ("  (too little text to cite; fetch it another way)" if status == "THIN" else ""))
             ok += 1
         except Exception as e:
             index.write(f"{slug}\tFAILED\t0\t{target}\t{e}\n")

@@ -121,10 +121,36 @@ def from_html(src, base_url=""):
     if p.seen_main and any(b["in_main"] for b in blocks):
         blocks = [b for b in blocks if b["in_main"]]
     for b in blocks:
-        b.pop("in_main", None); b.pop("tag", None)
+        b.pop("in_main", None)
+        tag = b.pop("tag", "")
+        if b["type"] == "heading" and tag[:1] == "h" and tag[1:].isdigit(): b["level"] = int(tag[1:])
         for l in b["links"]:
             if base_url and l["href"].startswith("/"): l["href"] = re.match(r"https?://[^/]+", base_url).group(0) + l["href"]
     return p.title.strip(), blocks
+
+
+def inline_html_to_md(h):
+    """Inline html kept by the extractor (a, strong, em, code) -> Markdown."""
+    h = re.sub(r'<a href="([^"]*)">(.*?)</a>', lambda m: "[%s](%s)" % (m.group(2), html.unescape(m.group(1))), h, flags=re.S)
+    h = re.sub(r"<(strong|b)>(.*?)</\1>", r"**\2**", h, flags=re.S)
+    h = re.sub(r"<(em|i)>(.*?)</\1>", r"*\2*", h, flags=re.S)
+    h = re.sub(r"<code>(.*?)</code>", r"`\1`", h, flags=re.S)
+    h = re.sub(r"<[^>]+>", "", h)
+    return html.unescape(h)
+
+
+def blocks_to_markdown(blocks):
+    """Render extracted blocks as readable Markdown (headings, lists, quotes, links kept)."""
+    out, prev = [], None
+    for b in blocks:
+        t = b["type"]; body = inline_html_to_md(b.get("html") or html.escape(b["text"]))
+        if t == "heading": out.append("\n" + "#" * min(max(int(b.get("level", 2)), 1), 6) + " " + body + "\n")
+        elif t == "list": out.append(("" if prev == "list" else "\n") + "- " + body)
+        elif t == "quote": out.append("\n> " + body + "\n")
+        elif t == "cell": out.append(("" if prev == "cell" else "\n") + "| " + body + " |")
+        else: out.append("\n" + body + "\n")
+        prev = t
+    return re.sub(r"\n{3,}", "\n\n", "\n".join(out)).strip() + "\n"
 
 
 def from_markdown(md):

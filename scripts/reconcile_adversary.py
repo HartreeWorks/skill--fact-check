@@ -23,7 +23,15 @@ RANK = {"supported": 0, "supported-with-caveat": 1, "unverifiable": 2, "unsuppor
 
 def nrm(x):
     for a, b in (("’", "'"), ("‘", "'"), ("“", '"'), ("”", '"'), ("–", "-"), ("—", "-"), (" ", " ")): x = x.replace(a, b)
-    return re.sub(r"\s+", " ", x)
+    return re.sub(r"\s+", " ", demark(x))
+
+
+def demark(x):
+    """Strip Markdown markup so a quote copied with or without it still matches."""
+    x = re.sub(r"\[([^\]]*)\]\([^)]*\)", r"\1", x)
+    x = re.sub(r"^\s{0,3}(#{1,6}\s+|>\s?|[-*+]\s+|\d+[.)]\s+)", "", x, flags=re.M)
+    x = re.sub(r"[*_`]{1,3}", "", x)
+    return x.replace("|", " ")
 
 
 def nd(x): return re.sub(r"\s+", " ", re.sub(r"\d", "", x))

@@ -50,7 +50,15 @@ def render_block(b):
 
 def nrm(x):
     for a, b in (("’", "'"), ("‘", "'"), ("“", '"'), ("”", '"'), ("–", "-"), ("—", "-"), ("\u00a0", " ")): x = x.replace(a, b)
-    return x
+    return demark(x)
+
+
+def demark(x):
+    """Strip Markdown markup so a quote copied with or without it still matches."""
+    x = re.sub(r"\[([^\]]*)\]\([^)]*\)", r"\1", x)
+    x = re.sub(r"^\s{0,3}(#{1,6}\s+|>\s?|[-*+]\s+|\d+[.)]\s+)", "", x, flags=re.M)
+    x = re.sub(r"[*_`]{1,3}", "", x)
+    return x.replace("|", " ")
 
 
 def attach_excerpts(work_dir, claims, radius=1500):
@@ -106,6 +114,13 @@ def main():
     out = a.out or os.path.join(a.work_dir, "review.html")
     attach_excerpts(a.work_dir, claims)
     sources = embed_sources(a.work_dir, claims)
+    source_urls = {}
+    idx = os.path.join(a.work_dir, "sources", "index.tsv")
+    if os.path.exists(idx):
+        for line in open(idx):
+            parts = line.rstrip("\n").split("\t")
+            if len(parts) >= 4 and parts[3].startswith("http"):
+                for ext in (".md", ".txt"): source_urls.setdefault(parts[0] + ext, parts[3])
     # Render blocks, grouping consecutive list items.
     parts, in_list = [], False
     for b in doc["blocks"]:
@@ -120,7 +135,7 @@ def main():
     orphans = [c for c in claims if norm(c.get("anchor", "")) not in text_tight]
     for c in orphans: sys.stderr.write(f"orphan {c['id']}: {c.get('anchor','')[:80]}\n")
     overlay = open(OVERLAY, encoding="utf-8").read()
-    data = json.dumps({"doc": doc.get("source", ""), "title": doc.get("title", ""), "claims": claims, "sources": sources}, ensure_ascii=False).replace("</", "<\\/")
+    data = json.dumps({"doc": doc.get("source", ""), "title": doc.get("title", ""), "claims": claims, "sources": sources, "source_urls": source_urls}, ensure_ascii=False).replace("</", "<\\/")
     title = doc.get("title") or "Fact check"
     page = f"""<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
